@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { db, auth } from './firebase-config';  // Import Firebase config
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
 
-function App() {
-  const [count, setCount] = useState(0)
+// Components (You'll create these components later)
+import AdminDashboard from './AdminDashboard';
+import HomePage from './HomePage';
+import LoginPage from './LoginPage';
+
+const App = () => {
+  const [user, setUser] = useState(null);
+  const [bookings, setBookings] = useState([]);
+
+  // Handle Firebase authentication state change
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch bookings data from Firestore (assuming collection is "bookings")
+  useEffect(() => {
+    const fetchBookings = async () => {
+      const bookingsCollection = collection(db, 'bookings');
+      const bookingSnapshot = await getDocs(bookingsCollection);
+      const bookingList = bookingSnapshot.docs.map(doc => doc.data());
+      setBookings(bookingList);
+    };
+
+    if (user) {
+      fetchBookings();
+    }
+  }, [user]);
 
   return (
-    <>
+    <Router>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Welcome to Straya Visuals</h1>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminDashboard bookings={bookings} />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </Router>
+  );
+};
 
-export default App
+export default App;
