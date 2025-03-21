@@ -52,7 +52,7 @@ const AdminDashboard = () => {
   const updateStatus = async (id, newStatus) => {
     try {
       await updateDoc(doc(db, 'bookings', id), { status: newStatus });
-      // Local state will be updated automatically by onSnapshot
+      // Local state is updated automatically by onSnapshot
     } catch (error) {
       console.error('Error updating status:', error);
     }
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     try {
       await deleteDoc(doc(db, 'bookings', id));
-      // Local state will be updated automatically by onSnapshot
+      // Local state is updated automatically by onSnapshot
     } catch (error) {
       console.error('Error deleting booking:', error);
     }
@@ -122,15 +122,30 @@ const AdminDashboard = () => {
                   </td>
                   <td className="border px-4 py-2">{booking.status || 'pending'}</td>
                   <td className="border px-4 py-2 space-x-2">
-                    <button
-                      onClick={() => updateStatus(booking.id, 'approved')}
-                      className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                      Approve
-                    </button>
+                    {/* Show Approve button ONLY if status is not already 'approved' */}
+                    {booking.status !== 'approved' && (
+                      <button
+                        onClick={() => updateStatus(booking.id, 'approved')}
+                        className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                      >
+                        Approve
+                      </button>
+                    )}
+
+                    {/* Show Cancel Request button ONLY if status is 'approved' */}
+                    {booking.status === 'approved' && (
+                      <button
+                        onClick={() => updateStatus(booking.id, 'cancelled')}
+                        className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      >
+                        Cancel Request
+                      </button>
+                    )}
+
+                    {/* Delete button is always available */}
                     <button
                       onClick={() => handleDelete(booking.id)}
-                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      className="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
                     >
                       Delete
                     </button>

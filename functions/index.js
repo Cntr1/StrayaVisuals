@@ -36,11 +36,7 @@ export const sendBookingConfirmation = onDocumentCreated(
     const refreshToken = GMAIL_REFRESH_TOKEN.value();
 
     // Create OAuth2 client at runtime
-    const oauth2Client = new OAuth2Client(
-      clientId,
-      clientSecret,
-      'https://developers.google.com/oauthplayground'
-    );
+    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
     oauth2Client.setCredentials({ refresh_token: refreshToken });
 
     // Create nodemailer transporter
@@ -88,7 +84,7 @@ Straya Visuals Team`,
 );
 
 // ===============
-// 2) Approval Email (onUpdate when status -> "approved")
+// 2) Approval Email (onUpdate -> status = "approved")
 // ===============
 export const sendApprovalEmail = onDocumentUpdated(
   {
@@ -99,7 +95,7 @@ export const sendApprovalEmail = onDocumentUpdated(
   async (event) => {
     const before = event.data?.before;
     const after = event.data?.after;
-    if (!after?.exists) return; // Document was deleted or doesn't exist
+    if (!after?.exists) return; // Document was deleted
 
     const oldStatus = before?.data()?.status;
     const newStatus = after.data().status;
@@ -110,21 +106,16 @@ export const sendApprovalEmail = onDocumentUpdated(
     if (oldStatus === newStatus) return;
     if (newStatus !== 'approved') return;
 
-    // Retrieve secrets at runtime
+    // Retrieve secrets
     const gmailEmail = GMAIL_EMAIL.value();
     const clientId = GMAIL_CLIENT_ID.value();
     const clientSecret = GMAIL_CLIENT_SECRET.value();
     const refreshToken = GMAIL_REFRESH_TOKEN.value();
 
     // Create OAuth2 client
-    const oauth2Client = new OAuth2Client(
-      clientId,
-      clientSecret,
-      'https://developers.google.com/oauthplayground'
-    );
+    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
     oauth2Client.setCredentials({ refresh_token: refreshToken });
 
-    // Transporter creation
     async function getTransporter() {
       const accessTokenResponse = await oauth2Client.getAccessToken();
       const accessToken = accessTokenResponse.token;
@@ -166,6 +157,81 @@ Straya Visuals Team`,
       console.log('Approval email sent to:', booking.email);
     } catch (error) {
       console.error('Failed to send approval email:', error);
+    }
+  }
+);
+
+// ===============
+// 3) Cancellation Email (onUpdate -> status = "cancelled")
+// ===============
+export const sendCancellationEmail = onDocumentUpdated(
+  {
+    document: 'bookings/{bookingId}',
+    region: 'us-central1',
+    secrets: [GMAIL_EMAIL, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN],
+  },
+  async (event) => {
+    const before = event.data?.before;
+    const after = event.data?.after;
+    if (!after?.exists) return; // Document was deleted
+
+    const oldStatus = before?.data()?.status;
+    const newStatus = after.data().status;
+    const booking = after.data();
+    const bookingId = event.params.bookingId;
+
+    // Only proceed if status changed AND newStatus is "cancelled"
+    if (oldStatus === newStatus) return;
+    if (newStatus !== 'cancelled') return;
+
+    // Retrieve secrets
+    const gmailEmail = GMAIL_EMAIL.value();
+    const clientId = GMAIL_CLIENT_ID.value();
+    const clientSecret = GMAIL_CLIENT_SECRET.value();
+    const refreshToken = GMAIL_REFRESH_TOKEN.value();
+
+    // Create OAuth2 client
+    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
+    oauth2Client.setCredentials({ refresh_token: refreshToken });
+
+    async function getTransporter() {
+      const accessTokenResponse = await oauth2Client.getAccessToken();
+      const accessToken = accessTokenResponse.token;
+      return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          type: 'OAuth2',
+          user: gmailEmail,
+          clientId,
+          clientSecret,
+          refreshToken,
+          accessToken,
+        },
+      });
+    }
+
+    // Prepare the cancellation email
+    const mailOptions = {
+      from: gmailEmail,
+      to: booking.email,
+      subject: 'Booking Cancelled - Straya Visuals',
+      text: `Hello ${booking.name},
+
+Your booking (ID: ${bookingId}) for our ${booking.service} service on ${booking.date} has been cancelled.
+
+Best regards,
+Straya Visuals Team`,
+      html: `<p>Hello ${booking.name},</p>
+             <p>Your booking (ID: <strong>${bookingId}</strong>) for our <strong>${booking.service}</strong> service on <strong>${booking.date}</strong> has been <strong>cancelled</strong>.</p>
+             <p>Best regards,<br/>Straya Visuals Team</p>`,
+    };
+
+    try {
+      const transporter = await getTransporter();
+      await transporter.sendMail(mailOptions);
+      console.log('Cancellation email sent to:', booking.email);
+    } catch (error) {
+      console.error('Failed to send cancellation email:', error);
     }
   }
 );
