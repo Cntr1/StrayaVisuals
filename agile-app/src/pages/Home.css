@@ -1,0 +1,44 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 1000;
+  }
+
+  .logo img {
+    height: 50px;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+
+  .nav-links li {
+    display: inline;
+  }
+
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+
+  .profile {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-icon {
+    font-size: 40px;  /* Adjust the size of the user icon */
+    color: white;
+    cursor: pointer;
+  }

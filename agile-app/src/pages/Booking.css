@@ -1,0 +1,58 @@
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 15px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  /* Logo */
+  .logo img {
+    height: 50px;
+    width: auto;
+  }
+
+  /* Navigation Links */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .nav-links li {
+    display: inline;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover {
+    color: #f4a261;
+  }
+
+  /* Profile Icon */
+  .profile img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .profile img:hover {
+    transform: scale(1.1);
+  }
+
+
