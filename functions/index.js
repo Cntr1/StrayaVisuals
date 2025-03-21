@@ -29,7 +29,7 @@ export const sendBookingConfirmation = onDocumentCreated(
     const booking = snap.data();
     const bookingId = event.params.bookingId;
 
-    // Runtime secrets
+    // Retrieve secrets at runtime
     const gmailEmail = GMAIL_EMAIL.value();
     const clientId = GMAIL_CLIENT_ID.value();
     const clientSecret = GMAIL_CLIENT_SECRET.value();
@@ -56,23 +56,27 @@ export const sendBookingConfirmation = onDocumentCreated(
       });
     }
 
-    // Prepare email details
+    // Prepare the email content
     const mailOptions = {
       from: gmailEmail,
       to: booking.email,
       subject: 'Booking Request - Straya Visuals',
       text: `Hello ${booking.name},
 
-Thank you for your booking request for our ${booking.service} service. Your requested booking date is ${booking.date}. Your booking ID is ${bookingId}.
+Thank you for your booking request for our ${booking.service} service. 
+Your requested booking date is ${booking.date}, and your chosen time slot is ${booking.timeSlot || 'N/A'}.
+Your booking ID is ${bookingId}.
 
 Best regards,
 Straya Visuals Team`,
       html: `<p>Hello ${booking.name},</p>
-             <p>Thank you for your booking request for our <strong>${booking.service}</strong> service. Your requested booking date is <strong>${booking.date}</strong>.</p>
+             <p>Thank you for your booking request for our <strong>${booking.service}</strong> service.</p>
+             <p>Your requested booking date is <strong>${booking.date}</strong>, and your chosen time slot is <strong>${booking.timeSlot || 'N/A'}</strong>.</p>
              <p>Your booking ID is <strong>${bookingId}</strong>.</p>
              <p>Best regards,<br/>Straya Visuals Team</p>`,
     };
 
+    // Send email
     try {
       const transporter = await getTransporter();
       await transporter.sendMail(mailOptions);
@@ -132,25 +136,27 @@ export const sendApprovalEmail = onDocumentUpdated(
       });
     }
 
-    // Prepare the approval email
+    // Prepare approval email
     const mailOptions = {
       from: gmailEmail,
       to: booking.email,
       subject: 'Booking Approved - Straya Visuals',
       text: `Hello ${booking.name},
 
-Good news! Your booking (ID: ${bookingId}) for ${booking.service} on ${booking.date} has been approved.
+Good news! Your booking (ID: ${bookingId}) for ${booking.service} on ${booking.date} 
+at ${booking.timeSlot || 'N/A'} has been approved.
 
 We look forward to working with you!
 
 Best regards,
 Straya Visuals Team`,
       html: `<p>Hello ${booking.name},</p>
-             <p>Good news! Your booking (ID: <strong>${bookingId}</strong>) for <strong>${booking.service}</strong> on <strong>${booking.date}</strong> has been <strong>approved</strong>.</p>
+             <p>Good news! Your booking (ID: <strong>${bookingId}</strong>) for <strong>${booking.service}</strong> on <strong>${booking.date}</strong> at <strong>${booking.timeSlot || 'N/A'}</strong> has been <strong>approved</strong>.</p>
              <p>We look forward to working with you!</p>
              <p>Best regards,<br/>Straya Visuals Team</p>`,
     };
 
+    // Send email
     try {
       const transporter = await getTransporter();
       await transporter.sendMail(mailOptions);
@@ -210,22 +216,24 @@ export const sendCancellationEmail = onDocumentUpdated(
       });
     }
 
-    // Prepare the cancellation email
+    // Prepare cancellation email
     const mailOptions = {
       from: gmailEmail,
       to: booking.email,
       subject: 'Booking Cancelled - Straya Visuals',
       text: `Hello ${booking.name},
 
-Your booking (ID: ${bookingId}) for our ${booking.service} service on ${booking.date} has been cancelled.
+Your booking (ID: ${bookingId}) for our ${booking.service} on ${booking.date} 
+at ${booking.timeSlot || 'N/A'} has been cancelled.
 
 Best regards,
 Straya Visuals Team`,
       html: `<p>Hello ${booking.name},</p>
-             <p>Your booking (ID: <strong>${bookingId}</strong>) for our <strong>${booking.service}</strong> service on <strong>${booking.date}</strong> has been <strong>cancelled</strong>.</p>
+             <p>Your booking (ID: <strong>${bookingId}</strong>) for our <strong>${booking.service}</strong> on <strong>${booking.date}</strong> at <strong>${booking.timeSlot || 'N/A'}</strong> has been <strong>cancelled</strong>.</p>
              <p>Best regards,<br/>Straya Visuals Team</p>`,
     };
 
+    // Send email
     try {
       const transporter = await getTransporter();
       await transporter.sendMail(mailOptions);
