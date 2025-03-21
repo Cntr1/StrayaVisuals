@@ -1,10 +1,12 @@
-module.exports = {
+export default {
   env: {
     es6: true,
-    node: true,
+    node: true, // Ensure Node.js environment is enabled
+    //commonjs: true, // Enable CommonJS globals like 'module'
   },
   parserOptions: {
-    "ecmaVersion": 2018,
+    ecmaVersion: 2022, // Use a recent ECMAScript version
+    sourceType: "module", // Use ES modules
   },
   extends: [
     "eslint:recommended",
@@ -13,7 +15,7 @@ module.exports = {
   rules: {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
-    "quotes": ["error", "double", {"allowTemplateLiterals": true}],
+    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
   },
   overrides: [
     {

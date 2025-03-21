@@ -2,6 +2,7 @@
   "name": "straya-visuals",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "tailwind:init": "tailwindcss init -p",
     "dev": "vite",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "firebase": "^11.4.0",
+    "google-auth-library": "^9.15.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
