@@ -7,22 +7,16 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import AdminDashboard from './AdminDashboard';
 import LoginPage from './LoginPage';
 import BookingForm from './BookingForm';
-
-// Import HomePage from the Homepage folder
 import HomePage from './Homepage/HomePage';
-
-// Import the ProtectedRoute component (for /admin)
 import ProtectedRoute from './ProtectedRoute';
-
-// Import Footer and the new Navbar components
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
+import './app.css';
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
 
-  // Listen for Firebase authentication state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -30,10 +24,8 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-  // Fetch bookings data from Firestore (assuming collection is "bookings")
   useEffect(() => {
     if (!user) return;
-  
     const unsubscribe = onSnapshot(
       collection(db, 'bookings'),
       (snapshot) => {
@@ -47,28 +39,30 @@ const App = () => {
         console.error('Error getting real-time bookings:', error);
       }
     );
-  
     return () => unsubscribe();
   }, [user]);
 
   return (
     <Router>
-      <div>
-        <Navbar /> {/* Global Navbar now uses the home page navigation style */}
-        <Routes>
-          <Route path="/" element={<HomePage />} />  {/* HomePage route */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/booking" element={<BookingForm />} />
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <AdminDashboard bookings={bookings} />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-        <Footer /> {/* Global Footer */}
+      <div className="app-container global-background">
+        <Navbar />
+        {/* Main content container */}
+        <div className="content-container">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/booking" element={<BookingForm />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard bookings={bookings} />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+        <Footer />
       </div>
     </Router>
   );

@@ -96,7 +96,8 @@ const BookingForm = () => {
   ];
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
+    // Updated container class: using a semi-transparent white background for readability
+    <div className="max-w-md mx-auto p-6 bg-white bg-opacity-75 rounded-lg shadow-md mt-8">
       <h2 className="text-2xl font-semibold mb-6 text-center">Book Our Service</h2>
       {errorMessage && <p className="mb-4 text-center text-red-600">{errorMessage}</p>}
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,11 +1,13 @@
+// src/Homepage/HomePageItems.jsx
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js"; 
-import { Link } from "react-router-dom";
+// No need to import Link since the embedded nav is removed
 
 const StrayaVisualsHome = () => {
   return (
-    <div className="bg-light min-vh-100" style={{ background: 'linear-gradient(to right, #f8f8f8, #ffeb99)' }}>
+    // Removed bg-light and inline gradient; the universal background from App.jsx applies
+    <div className="min-vh-100">
       {/* Hero Section */}
       <div className="position-relative w-100" style={{ height: "75vh" }}>
         <video autoPlay loop muted className="position-relative w-100 h-100" style={{ objectFit: "cover" }}>
@@ -13,17 +15,6 @@ const StrayaVisualsHome = () => {
           Your browser does not support the video tag.
         </video>
         <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div> 
-        <nav className="position-absolute top-0 w-100 p-3 d-flex justify-content-between align-items-center">
-          <img src="/StrayaVisualsLogo.jpg" alt="Straya Visuals Logo" style={{ width: "80px" }} className="ms-3" />
-          <div className="d-flex">
-            <Link to="/" className="text-white mx-3 text-decoration-none hover-underline">Home</Link>
-            <Link to="/about" className="text-white mx-3 text-decoration-none hover-underline">About</Link>
-            <Link to="/portfolio" className="text-white mx-3 text-decoration-none hover-underline">Portfolio</Link>
-            <Link to="/login" className="text-white mx-3 text-decoration-none hover-underline">Dashboard</Link> {/* Link to Dashboard */}
-            <Link to="/bookings" className="text-white mx-3 text-decoration-none hover-underline">Bookings</Link>
-            <Link to="/social" className="text-white mx-3 text-decoration-none hover-underline">Social</Link>
-          </div>
-        </nav>
         <div className="position-absolute top-50 start-50 translate-middle text-center">
           <h1 className="text-white display-4 fw-bold">Straya Visuals</h1>
           <p className="text-white lead">Capturing Moments, Creating Memories</p>
@@ -135,31 +126,6 @@ const StrayaVisualsHome = () => {
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-dark text-white mt-5 py-4" style={{ background: 'linear-gradient(to right, #1a1a1a, #333)' }}>
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <div className="d-flex align-items-center text-warning">
-                <span className="me-2">📞</span> +61 451 782 030
-              </div>
-              <div className="d-flex align-items-center text-warning mt-2">
-                <span className="me-2">📍</span> 4 Karabit Close, Scoresby
-              </div>
-            </div>
-            <div className="col-md-6 text-end">
-              <div className="d-flex justify-content-end gap-3">
-                <a href="#" className="text-white text-decoration-none hover-scale">Facebook</a>
-                <a href="#" className="text-white text-decoration-none hover-scale">Instagram</a>
-                <a href="#" className="text-white text-decoration-none hover-scale">Twitter</a>
-              </div>
-            </div>
-          </div>
-          <hr className="w-100 border-secondary my-3" />
-          <p className="text-warning fw-bold text-center mb-0">© StrayaVisuals</p>
-        </div>
-      </footer>
     </div>
   );
 };
