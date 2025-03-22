@@ -1,23 +1,22 @@
 // src/App.jsx
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { db, auth } from './firebase-config';  // Import Firebase config
+import { db, auth } from './firebase-config';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
 import AdminDashboard from './AdminDashboard';
 import LoginPage from './LoginPage';
 import BookingForm from './BookingForm';
 
-// Define a dummy HomePage component since you don't have one yet.
-const HomePage = () => (
-  <div className="text-center mt-8">
-    <h2>Home Page</h2>
-    <p>Coming soon...</p>
-  </div>
-);
+// Import HomePage from the Homepage folder
+import HomePage from './Homepage/HomePage';
 
-// Import the ProtectedRoute component
+// Import the ProtectedRoute component (for /admin)
 import ProtectedRoute from './ProtectedRoute';
+
+// Import Footer and the new Navbar components
+import Footer from './components/Footer';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -31,7 +30,7 @@ const App = () => {
     return () => unsubscribe();
   }, []);
 
-    // Fetch bookings data from Firestore (assuming collection is "bookings")
+  // Fetch bookings data from Firestore (assuming collection is "bookings")
   useEffect(() => {
     if (!user) return;
   
@@ -55,12 +54,11 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h1>Welcome to Straya Visuals</h1>
+        <Navbar /> {/* Global Navbar now uses the home page navigation style */}
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />  {/* HomePage route */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/booking" element={<BookingForm />} />
-          {/* Wrap the admin route in ProtectedRoute */}
           <Route
             path="/admin"
             element={
@@ -70,6 +68,7 @@ const App = () => {
             }
           />
         </Routes>
+        <Footer /> {/* Global Footer */}
       </div>
     </Router>
   );
