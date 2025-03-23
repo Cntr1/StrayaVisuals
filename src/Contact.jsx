@@ -262,27 +262,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <div>
-      <nav className="nav-contact">
-        <ul>
-          <div className="nav-left">
-            <li>
-              <img src={logo} alt="Logo" className="nav-logo"/>
-            </li>
-          </div>
-          <div className="nav-center">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/booking">Booking</Link></li>
-            <li><Link to="/equipment">Equipment</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/contact" id="selected">Contact Us</Link></li>
-          </div>
-          <div className="nav-profile">
-            <li><a href="#"><i className="fa fa-user"></i></a></li>
-          </div>
-        </ul>
-      </nav>
-
+    <div>      
       <div className="image-container-contact">
         <div className="video-wrapper">
           <video
@@ -462,94 +442,7 @@ const Contact = () => {
               <div className="social-username-contact">{social.username}</div>
             </div>
         ))}
-      </div>
-
-      <footer className="footer-10" style={{minHeight: "654px"}}>
-        <div className="container" style={{minWidth: "1440px"}}>
-          <div className="row mb-5 pb-3 no-gutters" style={{marginTop: "30px"}}>
-            {[
-              {icon: "fa-phone", text: "+(61) 451 782 030 | +(61) 451 782 982"},
-              {icon: "fa-location-arrow", text: "4 Karabil Close, Scoresby, Melbourne"},
-              {icon: "fa-inbox", text: "strayavisuals@email.com"}
-            ].map((item, index) => (
-                <div key={index} className="col-md-4 mb-md-0 mb-4 d-flex">
-                  <div className={`con con-${index + 1} w-100 py-5`}>
-                    <div className="con-info w-100 text-center">
-                      <div className="icon d-flex align-items-center justify-content-center">
-                        <span className={`fa ${item.icon}`} style={{color: "lightgray"}}></span>
-                      </div>
-                      <div className="text">
-                        <span style={{color: "lightgray", fontWeight: "1000", fontSize: "15px"}}>{item.text}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            ))}
-          </div>
-
-          <div className="row">
-            <div className="col-md-7">
-              <div className="row" style={{marginTop: "30px"}}>
-                {[
-                  {heading: "Quick Links", links: ["Home", "Booking", "Equipments", "About", "Contact Us"]},
-                  {
-                    heading: "Packages",
-                    links: ["Promotional Videos", "Music Videos", "FHD Videography", "Drone Footage"]
-                  },
-                  {heading: "Our Work", links: ["Gallery", "Blog", "Testimonials"]}
-                ].map((section, index) => (
-                    <div key={index} className="col-md-4 mb-md-0 mb-4">
-                      <h2 className="footer-heading">{section.heading}</h2>
-                      <ul className="list-unstyled" style={{marginBottom: "35px"}}>
-                        {section.links.map((link, idx) => (
-                            <li style={{marginBottom: "10px"}} key={idx}><a href="#" className="d-block">{link}</a>
-                            </li>
-                        ))}
-                      </ul>
-                    </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="col-md-5 mb-md-0 mb-4" style={{marginTop: "30px"}}>
-              <h2 className="footer-heading" style={{marginLeft: "93px"}}>Subscribe to Our News Letter</h2>
-              <form action="#" className="subscribe-form">
-                <div className="form-group d-flex" style={{marginLeft: "95px"}}>
-                  <input style={{height: "52px"}} type="text" className="form-control rounded-left"
-                         placeholder="Enter your email address"/>
-                  <button type="submit" className="form-control submit rounded-right"
-                          style={{width: "180px"}}>Subscribe
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <div className="row mt-5 pt-4 border-top">
-            <div className="col-md-6 col-lg-8 mb-md-0 mb-4">
-              <p className="copyright mb-0" style={{textAlign: "left"}}>
-                Copyright &copy; {new Date().getFullYear()} StrayaVisuals | All rights reserved.
-              </p>
-            </div>
-            <div className="col-md-6 col-lg-4 text-md-right">
-              <ul className="ftco-footer-social p-0">
-                {[
-                  {id: "fbi", platform: "Facebook", link: "https://www.facebook.com/StrayaVisuals", icon: "bi-facebook"},
-                  {id: "ini", platform: "Instagram", link: "https://www.instagram.com/StrayaVisuals", icon: "bi-instagram"},
-                  {id: "twi", platform: "Twitter", link: "https://www.x.com/StrayaVisuals", icon: "bi-twitter"}
-                ].map((social, index) => (
-                    <li key={index} id={social.id} className="ftco-animate">
-                      <a onClick={() => window.open(social.link, "_blank")} data-toggle="tooltip"
-                         data-placement="top" title={social.platform}>
-                        <span className={`bi ${social.icon}`}></span>
-                      </a>
-                    </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
+      </div>      
     </div>
   );
 };

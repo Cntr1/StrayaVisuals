@@ -14,7 +14,8 @@ const StrayaVisualsHome = () => {
           <source src="/HeroVideo1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div> 
+        <div className="position-absolute top-0 start-0 w-100 h-100 custom-overlay"></div>
+
         <div className="position-absolute top-50 start-50 translate-middle text-center">
           <h1 className="text-white display-4 fw-bold">Straya Visuals</h1>
           <p className="text-white lead">Capturing Moments, Creating Memories</p>

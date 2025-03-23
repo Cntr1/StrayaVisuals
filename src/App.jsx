@@ -1,4 +1,4 @@
-// src/App.jsx (wrap your app with VideoContext.Provider)
+// src/App.jsx
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { db, auth } from './firebase-config';
@@ -9,12 +9,14 @@ import LoginPage from './LoginPage';
 import BookingForm from './BookingForm';
 import HomePage from './Homepage/HomePage';
 import ProtectedRoute from './ProtectedRoute';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import Header from './components/Header'; // Your universal header
+import Footer from './components/Footer'; // Your universal footer
 import VideoDashboard from './components/VideoDashboard';
 import FeaturedFilms from './Portfolio';
-import Contact from './Contact'; // Import the Contact page
-import { VideoContext } from './VideoContext'; // Import VideoContext
+import Contact from './Contact';
+import EquipmentFront from "./EquipmentFront";
+import { VideoContext } from './VideoContext';
+import About from './About';
 import './app.css';
 
 const App = () => {
@@ -50,15 +52,17 @@ const App = () => {
   return (
     <Router>
       <VideoContext.Provider value={{ videos, setVideos }}>
-        <div className="app-container global-background">
-          <Navbar />
+        <div className="app-container">
+          <Header />
           <div className="content-container">
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/booking" element={<BookingForm />} />
               <Route path="/portfolio" element={<FeaturedFilms />} />
-              <Route path="/social" element={<Contact />} /> {/* New Social/Contact route */}
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/equipment" element={<EquipmentFront />} />
               <Route
                 path="/admin"
                 element={
