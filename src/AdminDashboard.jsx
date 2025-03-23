@@ -91,7 +91,6 @@ const AdminDashboard = () => {
           {booking.serviceType || booking.service || 'N/A'}
         </td>
         <td className="border px-3 py-2 flex flex-col space-y-2 md:space-x-2 md:space-y-0 md:flex-row">
-          {/* Approve only if not approved */}
           {booking.status !== 'approved' && (
             <button
               onClick={() => updateStatus(booking.id, 'approved')}
@@ -100,7 +99,6 @@ const AdminDashboard = () => {
               Approve
             </button>
           )}
-          {/* Cancel only if approved */}
           {booking.status === 'approved' && (
             <button
               onClick={() => updateStatus(booking.id, 'cancelled')}
@@ -109,7 +107,6 @@ const AdminDashboard = () => {
               Cancel
             </button>
           )}
-          {/* Delete always */}
           <button
             onClick={() => deleteBooking(booking.id)}
             className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
@@ -126,25 +123,31 @@ const AdminDashboard = () => {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Straya Visuals Admin Panel</h1>
-        <button
-          onClick={handleLogout}
-          className="px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Logout
-        </button>
+        <div className="flex space-x-4">
+          {/* New Video Dashboard Button */}
+          <button
+            onClick={() => navigate("/admin/videos")}
+            className="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Video Dashboard
+          </button>
+          <button
+            onClick={handleLogout}
+            className="px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       <h2 className="text-2xl font-semibold mb-4">All Bookings</h2>
 
-      {/* Loading */}
       {loading && <p className="mb-4">Loading bookings...</p>}
 
-      {/* No Bookings */}
       {!loading && bookings.length === 0 && (
         <p className="mb-4">No bookings found.</p>
       )}
 
-      {/* Bookings Table */}
       {!loading && bookings.length > 0 && (
         <table className="w-full border-collapse bg-white shadow-lg">
           <thead className="bg-gray-200">

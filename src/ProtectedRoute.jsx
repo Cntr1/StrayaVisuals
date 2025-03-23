@@ -1,7 +1,7 @@
 // src/ProtectedRoute.jsx
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const ADMIN_EMAIL = 'noreply.strayavisuals@gmail.com'; // Replace with your admin's email
 
@@ -11,8 +11,7 @@ const ProtectedRoute = ({ children }) => {
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      // If there's a logged in user and their email matches the admin email, authorize.
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.email === ADMIN_EMAIL) {
         setAuthorized(true);
       } else {
@@ -24,13 +23,7 @@ const ProtectedRoute = ({ children }) => {
   }, [auth]);
 
   if (loading) return <p>Loading...</p>;
-
-  // If not authorized, redirect to the login page.
-  if (!authorized) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Otherwise, render the protected component.
+  if (!authorized) return <Navigate to="/login" replace />;
   return children;
 };
 
