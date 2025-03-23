@@ -1,4 +1,3 @@
-// src/BookingForm.jsx
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { getFirestore, doc, getDoc, setDoc, query, where, collection, getDocs } from 'firebase/firestore';
@@ -8,8 +7,15 @@ import { useNavigate } from 'react-router-dom';
 const db = getFirestore(app);
 
 const BookingForm = () => {
-  const { register, handleSubmit, formState: { errors }, reset, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+  } = useForm();
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [bookedSlots, setBookedSlots] = useState([]);
   const navigate = useNavigate();
   const watchDate = watch('date');
@@ -75,9 +81,9 @@ const BookingForm = () => {
         status: 'pending',
       });
 
-      window.alert("Thank you for your booking!");
+      setSuccessMessage("Thank you for your booking!");
+      setTimeout(() => setSuccessMessage(''), 3000);
       reset();
-      navigate("/");
     } catch (error) {
       console.error("Error submitting booking:", error);
       setErrorMessage("There was an error. Please try again.");
@@ -96,60 +102,100 @@ const BookingForm = () => {
   ];
 
   return (
-    // Updated container class: using a semi-transparent white background for readability
-    <div className="max-w-md mx-auto p-6 bg-white bg-opacity-75 rounded-lg shadow-md mt-8">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Book Our Service</h2>
-      {errorMessage && <p className="mb-4 text-center text-red-600">{errorMessage}</p>}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Name</label>
-          <input type="text" {...register("name", { required: "Name is required." })} className="w-full px-3 py-2 border rounded" />
-          {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>}
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Email</label>
-          <input type="email" {...register("email", {
-            required: "Email is required.",
-            pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email." },
-          })} className="w-full px-3 py-2 border rounded" />
-          {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Service Type</label>
-          <select {...register("service", { required: "Service is required." })} className="w-full px-3 py-2 border rounded">
-            <option value="">Select a Service</option>
-            <option value="wedding">Wedding Videography</option>
-            <option value="corporate">Corporate Videography</option>
-            <option value="documentary">Documentary</option>
-            <option value="event">Event Coverage</option>
-          </select>
-          {errors.service && <p className="text-red-600 text-sm mt-1">{errors.service.message}</p>}
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Date</label>
-          <input type="date" {...register("date", {
-            required: "Date is required.",
-            validate: validateFutureDate,
-          })} className="w-full px-3 py-2 border rounded" min={getTomorrowDate()} />
-          {errors.date && <p className="text-red-600 text-sm mt-1">{errors.date.message}</p>}
-        </div>
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Time Slot</label>
-          <select {...register("timeSlot", { required: "Time slot is required." })} className="w-full px-3 py-2 border rounded">
-            <option value="">Select a Time Slot</option>
-            {timeSlots.map(slot => (
-              <option key={slot} value={slot} disabled={bookedSlots.includes(slot)}>
-                {slot} {bookedSlots.includes(slot) ? '(Booked)' : ''}
-              </option>
-            ))}
-          </select>
-          {errors.timeSlot && <p className="text-red-600 text-sm mt-1">{errors.timeSlot.message}</p>}
+    // Outer container uses min-h-[calc(100vh-100px)] to account for parent's 100px padding
+    <div className="min-h-[calc(100vh-100px)] flex items-center justify-center bg-transparent">
+      <div className="max-w-md w-full p-8 bg-white bg-opacity-70 rounded-xl shadow-lg backdrop-blur-sm">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800">Book a Session</h1>
+          <p className="text-gray-600 mt-2">Let’s capture your moments beautifully!</p>
         </div>
 
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-          Submit Booking
-        </button>
-      </form>
+        {errorMessage && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
+            {errorMessage}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 text-center">
+            {successMessage}
+          </div>
+        )}
+
+        {/* Increase vertical spacing between form fields */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-center">
+          <div>
+            <label className="block text-gray-700 mb-2">Name</label>
+            <input 
+              type="text" 
+              {...register("name", { required: "Name is required." })}
+              className="mx-auto w-11/12 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+            {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Email</label>
+            <input 
+              type="email" 
+              {...register("email", {
+                required: "Email is required.",
+                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email." },
+              })}
+              className="mx-auto w-11/12 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+            />
+            {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Service Type</label>
+            <select 
+              {...register("service", { required: "Service is required." })}
+              className="mx-auto w-11/12 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+            >
+              <option value="">Select a Service</option>
+              <option value="wedding">Wedding Videography</option>
+              <option value="corporate">Corporate Videography</option>
+              <option value="documentary">Documentary</option>
+              <option value="event">Event Coverage</option>
+            </select>
+            {errors.service && <p className="text-red-600 text-sm mt-1">{errors.service.message}</p>}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Date</label>
+            <input 
+              type="date" 
+              {...register("date", {
+                required: "Date is required.",
+                validate: validateFutureDate,
+              })}
+              className="mx-auto w-11/12 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+              min={getTomorrowDate()}
+            />
+            {errors.date && <p className="text-red-600 text-sm mt-1">{errors.date.message}</p>}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Time Slot</label>
+            <select 
+              {...register("timeSlot", { required: "Time slot is required." })}
+              className="mx-auto w-11/12 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+            >
+              <option value="">Select a Time Slot</option>
+              {timeSlots.map(slot => (
+                <option key={slot} value={slot} disabled={bookedSlots.includes(slot)}>
+                  {slot} {bookedSlots.includes(slot) ? '(Booked)' : ''}
+                </option>
+              ))}
+            </select>
+            {errors.timeSlot && <p className="text-red-600 text-sm mt-1">{errors.timeSlot.message}</p>}
+          </div>
+          <button 
+            type="submit" 
+            className="mx-auto block w-11/12 bg-orange-500 text-white font-semibold py-2 rounded-md hover:bg-orange-600 transition duration-300"
+          >
+            Submit Booking
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

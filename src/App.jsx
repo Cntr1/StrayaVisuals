@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import VideoDashboard from './components/VideoDashboard';
 import FeaturedFilms from './Portfolio';
+import Contact from './Contact'; // Import the Contact page
 import { VideoContext } from './VideoContext'; // Import VideoContext
 import './app.css';
 
@@ -57,6 +58,7 @@ const App = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/booking" element={<BookingForm />} />
               <Route path="/portfolio" element={<FeaturedFilms />} />
+              <Route path="/social" element={<Contact />} /> {/* New Social/Contact route */}
               <Route
                 path="/admin"
                 element={
