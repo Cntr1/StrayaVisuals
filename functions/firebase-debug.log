@@ -1,0 +1,51 @@
+[debug] [2025-03-21T06:17:56.923Z] ----------------------------------------------------------------------
+[debug] [2025-03-21T06:17:56.926Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\dsdem\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init hosting
+[debug] [2025-03-21T06:17:56.927Z] CLI Version:   13.35.1
+[debug] [2025-03-21T06:17:56.927Z] Platform:      win32
+[debug] [2025-03-21T06:17:56.927Z] Node Version:  v22.14.0
+[debug] [2025-03-21T06:17:56.927Z] Time:          Fri Mar 21 2025 11:47:56 GMT+0530 (India Standard Time)
+[debug] [2025-03-21T06:17:56.927Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-21T06:17:57.108Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-21T06:17:57.108Z] > authorizing via signed-in user (damiansdemel@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\dsdem\Documents\straya-visuals
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-03-21T06:18:07.881Z] Using project from CLI flag: straya-visuals
+[debug] [2025-03-21T06:18:07.882Z] Checked if tokens are valid: true, expires at: 1742540328566
+[debug] [2025-03-21T06:18:07.882Z] Checked if tokens are valid: true, expires at: 1742540328566
+[debug] [2025-03-21T06:18:07.883Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/straya-visuals [none]
+[debug] [2025-03-21T06:18:08.410Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/straya-visuals 200
+[debug] [2025-03-21T06:18:08.410Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/straya-visuals {"projectId":"straya-visuals","projectNumber":"1071214991411","displayName":"straya-visuals","name":"projects/straya-visuals","resources":{"hostingSite":"straya-visuals"},"state":"ACTIVE","etag":"1_42e88fc2-9156-4041-8cbf-a0a1c0ddc7cb"}
+[info] i  Using project straya-visuals (straya-visuals) 
+[info] 
+=== Hosting Setup
+[debug] [2025-03-21T06:18:08.419Z] Checked if tokens are valid: true, expires at: 1742540328566
+[debug] [2025-03-21T06:18:08.419Z] Checked if tokens are valid: true, expires at: 1742540328566
+[debug] [2025-03-21T06:18:08.419Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/straya-visuals [none]
+[debug] [2025-03-21T06:18:09.726Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/straya-visuals 200
+[debug] [2025-03-21T06:18:09.726Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/straya-visuals {"projectId":"straya-visuals","projectNumber":"1071214991411","displayName":"straya-visuals","name":"projects/straya-visuals","resources":{"hostingSite":"straya-visuals"},"state":"ACTIVE","etag":"1_42e88fc2-9156-4041-8cbf-a0a1c0ddc7cb"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
