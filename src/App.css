@@ -17,16 +17,20 @@ html, body, #root {
 
 .content-container {
   flex: 1;
+  padding-top: 100px; /* adjust if your header is taller/shorter */
 }
 
 /* You can remove or comment out this block if it's not needed: */
-/* .global-background {
+.global-background {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.84), rgba(247, 177, 63, 1));
   min-height: 100vh;
-  width: 100%;
-  padding-top: 100px;
-} */
+  width: 100%;  
+}
 
 .custom-overlay {
   background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+body {
+  font-family: Comfortaa,sans-serif;
 }

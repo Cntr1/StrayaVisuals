@@ -340,7 +340,7 @@ const Contact = () => {
 
       <div className="cta-container-contact">
         <div className="line-contact"></div>
-        <div className="cta-text-contact">Ready to record your memories? Let's get started!</div>
+        <div className="cta-text-contact">Any Questions? Feel free to ask us below, our team will get in touch with you as soon as we can!</div>
         <div className="line-contact"></div>
       </div>
 

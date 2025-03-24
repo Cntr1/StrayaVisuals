@@ -119,55 +119,61 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="p-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Straya Visuals Admin Panel</h1>
-        <div className="flex space-x-4">
-          {/* New Video Dashboard Button */}
-          <button
-            onClick={() => navigate("/admin/videos")}
-            className="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Video Dashboard
-          </button>
-          <button
-            onClick={handleLogout}
-            className="px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Logout
-          </button>
+    <section className="w-full flex justify-center px-4 py-10 bg-gray-100 min-h-screen">
+      <div className="w-full max-w-6xl flex flex-col items-center text-center">
+        {/* Header */}
+        <div className="w-full flex flex-col md:flex-row justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold mb-4 md:mb-0">Straya Visuals Admin Panel</h1>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => navigate("/admin/videos")}
+              className="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Video Dashboard
+            </button>
+            <button
+              onClick={handleLogout}
+              className="px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Logout
+            </button>
+          </div>
         </div>
+  
+        <h2 className="text-2xl font-semibold mb-4">All Bookings</h2>
+  
+        {loading && <p className="mb-4">Loading bookings...</p>}
+  
+        {!loading && bookings.length === 0 && (
+          <p className="mb-4">No bookings found.</p>
+        )}
+  
+        {!loading && bookings.length > 0 && (
+          <div className="w-full overflow-x-auto mt-6">
+            <table className="w-full max-w-5xl mx-auto border-collapse bg-white shadow-lg">
+              <thead className="bg-gray-200">
+                <tr>
+                  <th className="border px-3 py-2">Name</th>
+                  <th className="border px-3 py-2">Status</th>
+                  <th className="border px-3 py-2">Email</th>
+                  <th className="border px-3 py-2">Service Date</th>
+                  <th className="border px-3 py-2">Time Slot</th>
+                  <th className="border px-3 py-2">Service Type</th>
+                  <th className="border px-3 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map(renderBookingRow)}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
-
-      <h2 className="text-2xl font-semibold mb-4">All Bookings</h2>
-
-      {loading && <p className="mb-4">Loading bookings...</p>}
-
-      {!loading && bookings.length === 0 && (
-        <p className="mb-4">No bookings found.</p>
-      )}
-
-      {!loading && bookings.length > 0 && (
-        <table className="w-full border-collapse bg-white shadow-lg">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="border px-3 py-2">Name</th>
-              <th className="border px-3 py-2">Status</th>
-              <th className="border px-3 py-2">Email</th>
-              <th className="border px-3 py-2">Service Date</th>
-              <th className="border px-3 py-2">Time Slot</th>
-              <th className="border px-3 py-2">Service Type</th>
-              <th className="border px-3 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookings.map(renderBookingRow)}
-          </tbody>
-        </table>
-      )}
-    </div>
+    </section>
   );
+  
+  
+  
 };
 
 export default AdminDashboard;
