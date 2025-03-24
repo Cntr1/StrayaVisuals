@@ -262,7 +262,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <div>      
+    <div style={{width:"110%", marginLeft:"-5%", marginTop:"-20px"}}>
       <div className="image-container-contact">
         <div className="video-wrapper">
           <video
@@ -442,7 +442,7 @@ const Contact = () => {
               <div className="social-username-contact">{social.username}</div>
             </div>
         ))}
-      </div>      
+      </div>
     </div>
   );
 };
