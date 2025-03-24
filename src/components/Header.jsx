@@ -28,6 +28,7 @@ const Header = () => {
             </NavLink>
           </li>
         </div>
+
         <div className="nav-center">
           <li><NavLink to="/" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Home</NavLink></li>
           <li><NavLink to="/booking" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Booking</NavLink></li>
@@ -35,8 +36,11 @@ const Header = () => {
           <li><NavLink to="/about" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>About</NavLink></li>
           <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Contact Us</NavLink></li>
         </div>
-        <div className="nav-profile">
-          <li><a href="#"><i className="fa fa-user"></i></a></li>
+
+        <div className="nav-profile" style={{ visibility: "hidden" }}>
+          <li>
+            <a href="#"><i className="fa fa-user"></i></a>
+          </li>
         </div>
       </ul>
     </nav>

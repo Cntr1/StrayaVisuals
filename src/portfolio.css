@@ -13,8 +13,7 @@
 
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'Space Grotesk', sans-serif;
+  padding: 0;  
   background: var(--primary-dark);
   color: var(--text-color);
   overflow-x: hidden;
@@ -60,13 +59,12 @@ body {
   gap: 2rem;
 }
 
-.nav-link {
-  color: var(--text-color);
-  font-family: 'Space Grotesk', sans-serif;
+/* .nav-link {
+  color: var(--text-color);  
   font-weight: 500;
   position: relative;
   transition: all 0.3s ease;
-}
+} */
 
 .nav-link:hover {
   color: var(--accent-gold);
@@ -105,17 +103,19 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -2;
+  z-index: 0;
+  backdrop-filter: blur(2px);
 }
 
 .hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.9) 100%); /* Changed to white overlay */
-  z-index: -1;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1); /* was likely 0.2 or 0.3 before */
+  z-index: 2; 
+  
 }
 
 .hero-content {
@@ -183,10 +183,10 @@ body {
   box-shadow: var(--glow-shadow);
 }
 
-/* Content Styles */
+/* Content Styles
 .content-container {
   padding: 2rem 4rem;
-}
+} */
 
 .section-title {
   text-align: center;
@@ -217,8 +217,7 @@ body {
 
 .filter-button {
   border-radius: 30px;
-  padding: 0.5rem 1.5rem;
-  font-family: 'Space Grotesk', sans-serif;
+  padding: 0.5rem 1.5rem;  
   font-weight: 500;
   transition: all 0.3s ease;
 }

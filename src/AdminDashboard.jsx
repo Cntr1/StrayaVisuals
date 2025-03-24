@@ -1,18 +1,20 @@
-// src/AdminDashboard.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, onSnapshot, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebase-config';
+import styles from './AdminDashboard.module.css';
 
 const AdminDashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [filter, setFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const bookingsPerPage = 10;
   const navigate = useNavigate();
   const auth = getAuth();
 
-  // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
@@ -24,50 +26,35 @@ const AdminDashboard = () => {
     return () => unsubscribe();
   }, [auth, navigate]);
 
-  // Real-time snapshot of bookings
   useEffect(() => {
     if (!user) return;
-
-    const unsubscribe = onSnapshot(
-      collection(db, 'bookings'),
-      (snapshot) => {
-        const bookingData = snapshot.docs.map((docSnap) => ({
-          id: docSnap.id,
-          ...docSnap.data(),
-        }));
-        setBookings(bookingData);
-        setLoading(false);
-      },
-      (error) => {
-        console.error('Error fetching bookings:', error);
-        setLoading(false);
-      }
-    );
-
+    const unsubscribe = onSnapshot(collection(db, 'bookings'), (snapshot) => {
+      const bookingData = snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        ...docSnap.data(),
+      }));
+      setBookings(bookingData);
+      setLoading(false);
+    });
     return () => unsubscribe();
   }, [user]);
 
-  // Update booking status (approve/cancel)
   const updateStatus = async (bookingId, newStatus) => {
     try {
       await updateDoc(doc(db, 'bookings', bookingId), { status: newStatus });
-      // onSnapshot automatically updates local state
     } catch (error) {
       console.error('Error updating status:', error);
     }
   };
 
-  // Delete a booking
   const deleteBooking = async (bookingId) => {
     try {
       await deleteDoc(doc(db, 'bookings', bookingId));
-      // onSnapshot will remove from local state
     } catch (error) {
       console.error('Error deleting booking:', error);
     }
   };
 
-  // Logout
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -77,103 +64,133 @@ const AdminDashboard = () => {
     }
   };
 
-  // Render function for each booking row
-  const renderBookingRow = (booking) => {
-    return (
-      <tr key={booking.id}>
-        <td className="border px-3 py-2">{booking.name}</td>
-        <td className="border px-3 py-2">{booking.status || 'pending'}</td>
-        <td className="border px-3 py-2">{booking.email}</td>
-        <td className="border px-3 py-2">{booking.serviceDate || booking.date || 'N/A'}</td>
-        {/* NEW Time Slot Column */}
-        <td className="border px-3 py-2">{booking.timeSlot || 'N/A'}</td>
-        <td className="border px-3 py-2">
-          {booking.serviceType || booking.service || 'N/A'}
-        </td>
-        <td className="border px-3 py-2 flex flex-col space-y-2 md:space-x-2 md:space-y-0 md:flex-row">
-          {booking.status !== 'approved' && (
-            <button
-              onClick={() => updateStatus(booking.id, 'approved')}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-            >
-              Approve
-            </button>
-          )}
-          {booking.status === 'approved' && (
-            <button
-              onClick={() => updateStatus(booking.id, 'cancelled')}
-              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-            >
-              Cancel
-            </button>
-          )}
-          <button
-            onClick={() => deleteBooking(booking.id)}
-            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    );
-  };
+  const filteredBookings = filter === 'all'
+    ? bookings
+    : bookings.filter((b) => (b.status || 'pending') === filter);
+
+  const totalPages = Math.ceil(filteredBookings.length / bookingsPerPage);
+  const paginatedBookings = filteredBookings.slice(
+    (currentPage - 1) * bookingsPerPage,
+    currentPage * bookingsPerPage
+  );
 
   return (
-    <section className="w-full flex justify-center px-4 py-10 bg-gray-100 min-h-screen">
-      <div className="w-full max-w-6xl flex flex-col items-center text-center">
+    <section className={styles.dashboardContainer}>
+      <div className={styles.innerWrapper}>
         {/* Header */}
-        <div className="w-full flex flex-col md:flex-row justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold mb-4 md:mb-0">Straya Visuals Admin Panel</h1>
-          <div className="flex space-x-4">
-            <button
-              onClick={() => navigate("/admin/videos")}
-              className="px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
+        <div className={styles.headerActions}>
+          <h1 className="text-3xl font-bold mb-4 md:mb-0 text-center text-white mx-auto">Straya Visuals Admin Panel</h1>
+          <div className={styles.buttonGroup}>
+            <button onClick={() => navigate("/admin/videos")} className={`${styles.button} ${styles.blue}`}>
               Video Dashboard
             </button>
-            <button
-              onClick={handleLogout}
-              className="px-5 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-            >
+            <button onClick={handleLogout} className={`${styles.button} ${styles.red}`}>
               Logout
             </button>
           </div>
         </div>
-  
-        <h2 className="text-2xl font-semibold mb-4">All Bookings</h2>
-  
-        {loading && <p className="mb-4">Loading bookings...</p>}
-  
-        {!loading && bookings.length === 0 && (
-          <p className="mb-4">No bookings found.</p>
-        )}
-  
+
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap gap-3 mb-4">
+          {['pending', 'approved', 'cancelled', 'all'].map((status) => (
+            <button
+              key={status}
+              onClick={() => {
+                setFilter(status);
+                setCurrentPage(1);
+              }}
+              className={`${styles.filterButton} ${
+                filter === status ? styles.activeFilter : styles.inactiveFilter
+              }`}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* Table */}
         {!loading && bookings.length > 0 && (
-          <div className="w-full overflow-x-auto mt-6">
-            <table className="w-full max-w-5xl mx-auto border-collapse bg-white shadow-lg">
-              <thead className="bg-gray-200">
+          <div className="w-full max-w-6xl mx-auto overflow-x-auto mt-6">
+            <table className="w-full border-collapse bg-[#1c1505] text-white shadow-lg rounded-lg overflow-hidden">
+              <thead className="bg-[#241901] text-white uppercase text-sm sticky top-0 z-10">
                 <tr>
-                  <th className="border px-3 py-2">Name</th>
-                  <th className="border px-3 py-2">Status</th>
-                  <th className="border px-3 py-2">Email</th>
-                  <th className="border px-3 py-2">Service Date</th>
-                  <th className="border px-3 py-2">Time Slot</th>
-                  <th className="border px-3 py-2">Service Type</th>
-                  <th className="border px-3 py-2">Actions</th>
+                  <th className="border px-4 py-3">Name</th>
+                  <th className="border px-4 py-3">Status</th>
+                  <th className="border px-4 py-3"><i className="fa fa-envelope mr-2" />Email</th>
+                  <th className="border px-4 py-3"><i className="fa fa-calendar mr-2" />Date</th>
+                  <th className="border px-4 py-3"><i className="fa fa-clock-o mr-2" />Time</th>
+                  <th className="border px-4 py-3"><i className="fa fa-video-camera mr-2" />Service</th>
+                  <th className="border px-4 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {bookings.map(renderBookingRow)}
+                {paginatedBookings.map((booking) => (
+                  <tr key={booking.id} className="hover:bg-[#3a2e1a] transition duration-200 ease-in-out">
+                    <td className="border px-4 py-3">{booking.name}</td>
+                    <td className="border px-4 py-3">
+                      <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
+                        booking.status === 'approved'
+                          ? 'bg-green-200 text-green-800'
+                          : booking.status === 'cancelled'
+                          ? 'bg-red-200 text-red-800'
+                          : 'bg-yellow-200 text-yellow-800'
+                      }`}>
+                        {booking.status || 'pending'}
+                      </span>
+                    </td>
+                    <td className="border px-4 py-3">{booking.email}</td>
+                    <td className="border px-4 py-3">{booking.date || booking.serviceDate}</td>
+                    <td className="border px-4 py-3">{booking.timeSlot || 'N/A'}</td>
+                    <td className="border px-4 py-3">{booking.serviceType || booking.service}</td>
+                    <td className="border px-4 py-3 flex flex-wrap gap-2 justify-center">
+                      {booking.status !== 'approved' && (
+                        <button onClick={() => updateStatus(booking.id, 'approved')} className={styles.approveButton}>
+                          Approve
+                        </button>
+                      )}
+                      {booking.status === 'approved' && (
+                        <button onClick={() => updateStatus(booking.id, 'cancelled')} className={`${styles.button} ${styles.red} text-xs`}>
+                          Cancel
+                        </button>
+                      )}
+                      <button onClick={() => deleteBooking(booking.id)} className={`${styles.button} ${styles.gray} text-xs`}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         )}
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-6 space-x-4">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`${styles.button} ${styles.dark}`}
+            >
+              Previous
+            </button>
+            <span className="text-sm mt-2">Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`${styles.button} ${styles.dark}`}
+            >
+              Next
+            </button>
+          </div>
+        )}
+
+        {/* Fallback */}
+        {loading && <p className="mt-6">Loading bookings...</p>}
+        {!loading && bookings.length === 0 && <p className="mt-6">No bookings found.</p>}
       </div>
     </section>
   );
-  
-  
-  
 };
 
 export default AdminDashboard;
