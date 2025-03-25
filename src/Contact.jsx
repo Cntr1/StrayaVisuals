@@ -444,7 +444,6 @@ const Contact = () => {
         ))}
       </div>
     </div>
-
   );
 };
 
