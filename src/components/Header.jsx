@@ -31,6 +31,7 @@ const Header = () => {
 
         <div className="nav-center">
           <li><NavLink to="/" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Home</NavLink></li>
+          <li><NavLink to="/portfolio" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Portfolio</NavLink></li>
           <li><NavLink to="/booking" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Booking</NavLink></li>
           <li><NavLink to="/equipment" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Equipment</NavLink></li>
           <li><NavLink to="/about" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>About</NavLink></li>
