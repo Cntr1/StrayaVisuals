@@ -35,7 +35,7 @@ nav.nav-contact .nav-left li {
 }
 
 nav.nav-contact {
-  position: relative;
+  position: fixed
 }
 
 nav.nav-contact .nav-center {
