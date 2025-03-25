@@ -1,55 +1,81 @@
-/* src/components/header.css */
-.header {
-    background-color: #333; /* Dark background for contrast */
-    padding: 1rem 2rem;
-  }
-  
-  .nav-flex {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-left,
-  .nav-center,
-  .nav-profile {
-    display: flex;
-    align-items: center;
-  }
-  
-  .nav-center {
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .nav-center a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 1rem;
-  }
-  
-  #selected {
-    border-bottom: 2px solid #fff; /* For an active link indicator */
-  }
-  
-  .nav-logo {
-    width: 60px;
-    height: auto;
-  }
-  
-  .nav-profile a {
-    color: #fff;
-    font-size: 1.5rem;
-  }
-  
-  .nav-contact .nav-link.active {
-    background-color: orange !important;
-    color: black !important;
-    /* Optionally, add padding or border-radius if needed */
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-  }
-  
+.nav-contact {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  background-color: rgba(36, 25, 1, 0.95);
+  font-family: Comfortaa, sans-serif;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-contact.scrolled {
+  background-color: rgba(36, 25, 1, 0.8);
+}
+
+.nav-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1410.75px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+}
+
+nav.nav-contact .nav-left,
+nav.nav-contact .nav-center,
+nav.nav-contact .nav-profile {
+  display: flex;
+  align-items: center;
+}
+
+nav.nav-contact .nav-left li {
+  list-style: none;
+}
+
+nav.nav-contact {
+  position: relative;
+}
+
+nav.nav-contact .nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.nav-profile {
+  margin-left: auto;
+}
+
+.nav-logo {
+  width: 70px;
+  height: auto;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #f9b233;
+}
+
+.nav-contact .nav-link.active {
+  background-color: orange !important;
+  color: black !important;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.nav-profile a {
+  color: white;
+  font-size: 1.5rem;
+}

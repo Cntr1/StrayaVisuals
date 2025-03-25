@@ -1,77 +1,45 @@
-// src/components/Header.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import logo from "/images/logo.jpeg"; // Ensure your logo is located in public/images/
-
-// Import the CSS used by your Contact page header (if needed)
+import logo from "/images/logo.jpeg";
 import "../css/contact/base.css";
 import "../css/contact/font-awesome.min.css";
 import "../css/footer/style.css";
+import "./header.css";
 
 const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="nav-contact">
-      <ul>
+    <nav className={`nav-contact ${scrolled ? "scrolled" : ""}`}>
+      <ul className="nav-flex">
         <div className="nav-left">
           <li>
-            {/* Wrap the logo in a NavLink that routes to /admin */}
             <NavLink to="/admin">
               <img src={logo} alt="Logo" className="nav-logo" />
             </NavLink>
           </li>
         </div>
+
         <div className="nav-center">
-          <li>
-            <NavLink 
-              to="/" 
-              data-discover="true" 
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              to="/booking" 
-              data-discover="true" 
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Booking
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              to="/equipment" 
-              data-discover="true" 
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Equipment
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              to="/about" 
-              data-discover="true" 
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              About
-            </NavLink>
-          </li>
-          <li>
-            <NavLink 
-              to="/contact" 
-              data-discover="true" 
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Contact Us
-            </NavLink>
-          </li>
+          <li><NavLink to="/" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Home</NavLink></li>
+          <li><NavLink to="/booking" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Booking</NavLink></li>
+          <li><NavLink to="/equipment" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Equipment</NavLink></li>
+          <li><NavLink to="/about" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>About</NavLink></li>
+          <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>Contact Us</NavLink></li>
         </div>
-        <div className="nav-profile">
+
+        <div className="nav-profile" style={{ visibility: "hidden" }}>
           <li>
-            <a href="#">
-              <i className="fa fa-user"></i>
-            </a>
+            <a href="#"><i className="fa fa-user"></i></a>
           </li>
         </div>
       </ul>

@@ -6,11 +6,11 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { collection, onSnapshot } from 'firebase/firestore';
 import AdminDashboard from './AdminDashboard';
 import LoginPage from './LoginPage';
-import BookingForm from './BookingForm';
+import BookingFancy from "./BookingFancy";
 import HomePage from './Homepage/HomePage';
 import ProtectedRoute from './ProtectedRoute';
-import Header from './components/Header'; // Your universal header
-import Footer from './components/Footer'; // Your universal footer
+import Header from './components/Header';
+import Footer from './components/Footer';
 import VideoDashboard from './components/VideoDashboard';
 import FeaturedFilms from './Portfolio';
 import Contact from './Contact';
@@ -52,36 +52,39 @@ const App = () => {
   return (
     <Router>
       <VideoContext.Provider value={{ videos, setVideos }}>
-        <div className="app-container">
-          <Header />
-          <div className="content-container">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/booking" element={<BookingForm />} />
-              <Route path="/portfolio" element={<FeaturedFilms />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/equipment" element={<EquipmentFront />} />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute>
-                    <AdminDashboard bookings={bookings} />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/videos"
-                element={
-                  <ProtectedRoute>
-                    <VideoDashboard />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
+        {/* 🔥 Add global background wrapper here */}
+        <div className="global-background">
+          <div className="app-container">
+            <Header />
+            <div className="content-container">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/booking" element={<BookingFancy />} />
+                <Route path="/portfolio" element={<FeaturedFilms />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/equipment" element={<EquipmentFront />} />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute>
+                      <AdminDashboard bookings={bookings} />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/videos"
+                  element={
+                    <ProtectedRoute>
+                      <VideoDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </div>
+            <Footer />
           </div>
-          <Footer />
         </div>
       </VideoContext.Provider>
     </Router>

@@ -22,7 +22,7 @@ import instagramIcon from "/images/contact/socials/instagram-icon.png";
 import instagramCover from "/images/contact/socials/instagram-cover.jpg";
 import instagramProfile from "/images/contact/socials/instagram-profile.jpeg";
 import logo from '/images/logo.jpeg';
-import emailjs from 'emailjs-com';
+
 import video1 from "/images/contact/1.mp4";
 import video2 from "/images/contact/2.mp4";
 import video3 from "/images/contact/3.mp4";
@@ -164,25 +164,7 @@ const Contact = () => {
       // Add a new document to Firestore in the "contactMessages" collection
       await addDoc(collection(db, "contactMessages"), newFormData);
 
-      const emailTemplateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        event_type: eventType,
-        other_event: otherEvent || '-',
-        event_date: formData.eventDate,
-        event_time: formData.eventTime,
-        event_location: formData.eventLocation,
-        event_budget: formData.eventBudget,
-        special_requests: formData.specialRequests || 'None',
-        submitted_at: newFormData.submittedAt,
-      };
-
-      await emailjs.send(
-        'service_88a1s3h',
-        'template_pi7jnf4',
-        emailTemplateParams,
-        'LD7alCHFjTmPHJlNM'
-      );
+      
 
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 3000);
@@ -340,7 +322,7 @@ const Contact = () => {
 
       <div className="cta-container-contact">
         <div className="line-contact"></div>
-        <div className="cta-text-contact">Ready to record your memories? Let's get started!</div>
+        <div className="cta-text-contact">Any Questions? Feel free to ask us below, our team will get in touch with you as soon as we can!</div>
         <div className="line-contact"></div>
       </div>
 
@@ -354,7 +336,7 @@ const Contact = () => {
           <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email}
                  onChange={handleInputChange} required/>
 
-          <label htmlFor="event-type">Type of Your Event *</label>
+          {/* <label htmlFor="event-type">Type of Your Event *</label>
           <select id="event-type" name="event-type" value={eventType} onChange={handleEventTypeChange} required>
             <option value="" disabled>Select the type of your event</option>
             <option value="wedding">Wedding</option>
@@ -401,9 +383,9 @@ const Contact = () => {
               <input type="number" id="event-budget" name="eventBudget" placeholder="Enter your approximate budget"
                      min="0" value={formData.eventBudget} onChange={handleInputChange} required/>
             </div>
-          </div>
+          </div> */}
 
-          <label htmlFor="special-requests">Any Special Requests?</label>
+          <label htmlFor="special-requests">What do you have in mind?</label>
           <textarea id="special-requests" name="specialRequests"
                     placeholder="Don’t hesitate to ask, We’ll do our best to fulfill your wishes!"
                     value={formData.specialRequests} onChange={handleInputChange}></textarea>

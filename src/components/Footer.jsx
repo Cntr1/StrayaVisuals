@@ -5,7 +5,7 @@ import "../css/footer/style.css";
 
 const Footer = () => {
   return (
-    <footer className="footer-10" style={{ minHeight: "654px" }}>
+    <footer className="footer-10">
       <div className="container" style={{ minWidth: "1440px" }}>
         {/* First row of contact info */}
         <div className="row mb-5 pb-3 no-gutters" style={{ marginTop: "30px" }}>
