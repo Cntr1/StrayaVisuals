@@ -336,55 +336,6 @@ const Contact = () => {
           <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email}
                  onChange={handleInputChange} required/>
 
-          <label htmlFor="event-type">Type of Your Event *</label>
-          <select id="event-type" name="event-type" value={eventType} onChange={handleEventTypeChange} required>
-            <option value="" disabled>Select the type of your event</option>
-            <option value="wedding">Wedding</option>
-            <option value="birthday">Birthday</option>
-            <option value="engagement">Engagement</option>
-            <option value="gender-reveal">Gender Reveal</option>
-            <option value="concert">Concert</option>
-            <option value="get-together">Get Together</option>
-            <option value="convocation">Convocation</option>
-            <option value="school-event">School Event</option>
-            <option value="office-event">Office Event</option>
-            <option value="other">Other</option>
-          </select>
-
-          {eventType === "other" && (
-              <div id="other-event-container">
-                <label htmlFor="other-event">Please Specify</label>
-                <input type="text" id="other-event" name="other-event" placeholder="Specify your event"
-                       value={otherEvent} onChange={(e) => setOtherEvent(e.target.value)} required/>
-              </div>
-          )}
-
-          <div className="date-time-container-contact">
-            <div>
-              <label htmlFor="event-date">Date of the Event *</label>
-              <input ref={dateInputRef} type="date" id="event-date" name="eventDate" value={formData.eventDate}
-                     onChange={handleInputChange} required/>
-            </div>
-            <div>
-              <label htmlFor="event-time">Time of the Event *</label>
-              <input ref={timeInputRef} type="time" id="event-time" name="eventTime" value={formData.eventTime}
-                     onChange={handleInputChange} required/>
-            </div>
-          </div>
-
-          <div className="location-budget-container-contact">
-            <div>
-              <label htmlFor="event-location">Location of the Event *</label>
-              <input type="text" id="event-location" name="eventLocation" placeholder="Enter location"
-                     value={formData.eventLocation} onChange={handleInputChange} required/>
-            </div>
-            <div>
-              <label htmlFor="event-budget">Your Budget *</label>
-              <input type="number" id="event-budget" name="eventBudget" placeholder="Enter your approximate budget"
-                     min="0" value={formData.eventBudget} onChange={handleInputChange} required/>
-            </div>
-          </div> 
-
           <label htmlFor="special-requests">What do you have in mind?</label>
           <textarea id="special-requests" name="specialRequests"
                     placeholder="Don’t hesitate to ask, We’ll do our best to fulfill your wishes!"
