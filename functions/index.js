@@ -1,26 +1,84 @@
-import { onDocumentCreated, onDocumentUpdated } from 'firebase-functions/v2/firestore';
-import { defineSecret } from 'firebase-functions/params';
-import { initializeApp } from 'firebase-admin/app';
-import nodemailer from 'nodemailer';
-import { OAuth2Client } from 'google-auth-library';
+import {
+  onDocumentCreated,
+  onDocumentUpdated,
+} from "firebase-functions/v2/firestore";
+import { defineSecret } from "firebase-functions/params";
+import { initializeApp } from "firebase-admin/app";
+import nodemailer from "nodemailer";
+import { OAuth2Client } from "google-auth-library";
 
 // Initialize Firebase Admin SDK
 initializeApp();
 
-// Define secrets (no direct .value() calls here!)
-const GMAIL_EMAIL = defineSecret('GMAIL_EMAIL');
-const GMAIL_CLIENT_ID = defineSecret('GMAIL_CLIENT_ID');
-const GMAIL_CLIENT_SECRET = defineSecret('GMAIL_CLIENT_SECRET');
-const GMAIL_REFRESH_TOKEN = defineSecret('GMAIL_REFRESH_TOKEN');
+// Define secrets
+const GMAIL_EMAIL = defineSecret("GMAIL_EMAIL");
+const GMAIL_CLIENT_ID = defineSecret("GMAIL_CLIENT_ID");
+const GMAIL_CLIENT_SECRET = defineSecret("GMAIL_CLIENT_SECRET");
+const GMAIL_REFRESH_TOKEN = defineSecret("GMAIL_REFRESH_TOKEN");
+
+// Function to create OAuth2 client and transporter
+async function createTransporter() {
+  const gmailEmail = GMAIL_EMAIL.value();
+  const clientId = GMAIL_CLIENT_ID.value();
+  const clientSecret = GMAIL_CLIENT_SECRET.value();
+  const refreshToken = GMAIL_REFRESH_TOKEN.value();
+
+  const oauth2Client = new OAuth2Client(
+    clientId,
+    clientSecret,
+    "https://developers.google.com/oauthplayground",
+  );
+  oauth2Client.setCredentials({ refresh_token: refreshToken });
+
+  const accessTokenResponse = await oauth2Client.getAccessToken();
+  const accessToken = accessTokenResponse.token;
+
+  return nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: gmailEmail,
+      clientId,
+      clientSecret,
+      refreshToken,
+      accessToken,
+    },
+  });
+}
+
+// Function to send email
+async function sendEmail(to, subject, text, html) {
+  const transporter = await createTransporter();
+  const mailOptions = {
+    from: GMAIL_EMAIL.value(),
+    to,
+    cc: GMAIL_EMAIL.value(), // CC to yourself
+    subject,
+    text,
+    html,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`${subject} email sent to:`, to);
+  } catch (error) {
+    console.error(`Failed to send ${subject} email:`, error);
+  }
+}
 
 // ===============
 // 1) Booking Request Confirmation (onCreate)
 // ===============
 export const sendBookingConfirmation = onDocumentCreated(
   {
-    document: 'bookings/{bookingId}',
-    region: 'us-central1',
-    secrets: [GMAIL_EMAIL, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN],
+    document: "bookings/{bookingId}",
+    region: "us-central1",
+    secrets: [
+      GMAIL_EMAIL,
+      GMAIL_CLIENT_ID,
+      GMAIL_CLIENT_SECRET,
+      GMAIL_REFRESH_TOKEN,
+    ],
   },
   async (event) => {
     const snap = event.data;
@@ -29,62 +87,45 @@ export const sendBookingConfirmation = onDocumentCreated(
     const booking = snap.data();
     const bookingId = event.params.bookingId;
 
-    // Retrieve secrets at runtime
-    const gmailEmail = GMAIL_EMAIL.value();
-    const clientId = GMAIL_CLIENT_ID.value();
-    const clientSecret = GMAIL_CLIENT_SECRET.value();
-    const refreshToken = GMAIL_REFRESH_TOKEN.value();
+    const subject = "Booking Request - Straya Visuals";
+    const text = `Hello ${booking.name},
 
-    // Create OAuth2 client at runtime
-    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
-    oauth2Client.setCredentials({ refresh_token: refreshToken });
+Thank you for your booking request. Here are the details:
 
-    // Create nodemailer transporter
-    async function getTransporter() {
-      const accessTokenResponse = await oauth2Client.getAccessToken();
-      const accessToken = accessTokenResponse.token;
-      return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          type: 'OAuth2',
-          user: gmailEmail,
-          clientId,
-          clientSecret,
-          refreshToken,
-          accessToken,
-        },
-      });
-    }
+Name: ${booking.name}
+Email: ${booking.email}
+Type of Service: ${booking.service}
+Date of Service: ${booking.date}
+Time Slot: ${booking.timeSlot}
+Location: ${booking.location}
+Your Budget: ${booking.budget}
+Any Special Requests: ${booking.specialRequests || "None"}
 
-    // Prepare the email content
-    const mailOptions = {
-      from: gmailEmail,
-      to: booking.email,
-      subject: 'Booking Request - Straya Visuals',
-      text: `Hello ${booking.name},
-
-Thank you for your booking request for our ${booking.service} service. 
-Your requested booking date is ${booking.date}, and your chosen time slot is ${booking.timeSlot || 'N/A'}.
 Your booking ID is ${bookingId}.
 
 Best regards,
-Straya Visuals Team`,
-      html: `<p>Hello ${booking.name},</p>
-             <p>Thank you for your booking request for our <strong>${booking.service}</strong> service.</p>
-             <p>Your requested booking date is <strong>${booking.date}</strong>, and your chosen time slot is <strong>${booking.timeSlot || 'N/A'}</strong>.</p>
-             <p>Your booking ID is <strong>${bookingId}</strong>.</p>
-             <p>Best regards,<br/>Straya Visuals Team</p>`,
-    };
+Straya Visuals Team`;
 
-    // Send email
-    try {
-      const transporter = await getTransporter();
-      await transporter.sendMail(mailOptions);
-      console.log('Booking request email sent to:', booking.email);
-    } catch (error) {
-      console.error('Failed to send booking request email:', error);
-    }
-  }
+    const html = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <img src="https://straya-visuals.web.app/images/logo.jpeg" alt="Straya Visuals Logo" style="max-width: 200px;"/>
+      <p>Hello ${booking.name},</p>
+      <p>Thank you for your booking request. Here are the details:</p>
+      <ul>
+        <li><strong>Name:</strong> ${booking.name}</li>
+        <li><strong>Email:</strong> ${booking.email}</li>
+        <li><strong>Type of Service:</strong> ${booking.service}</li>
+        <li><strong>Date of Service:</strong> ${booking.date}</li>
+        <li><strong>Time Slot:</strong> ${booking.timeSlot}</li>
+        <li><strong>Location:</strong> ${booking.location}</li>
+        <li><strong>Your Budget:</strong> ${booking.budget}</li>
+        <li><strong>Any Special Requests:</strong> ${booking.specialRequests || "None"}</li>
+      </ul>
+      <p>Your booking ID is <strong>${bookingId}</strong>.</p>      
+      <p>Best regards,<br/>Straya Visuals Team</p>
+    </div>`;
+
+    await sendEmail(booking.email, subject, text, html);
+  },
 );
 
 // ===============
@@ -92,166 +133,136 @@ Straya Visuals Team`,
 // ===============
 export const sendApprovalEmail = onDocumentUpdated(
   {
-    document: 'bookings/{bookingId}',
-    region: 'us-central1',
-    secrets: [GMAIL_EMAIL, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN],
+    document: "bookings/{bookingId}",
+    region: "us-central1",
+    secrets: [
+      GMAIL_EMAIL,
+      GMAIL_CLIENT_ID,
+      GMAIL_CLIENT_SECRET,
+      GMAIL_REFRESH_TOKEN,
+    ],
   },
   async (event) => {
     const before = event.data?.before;
     const after = event.data?.after;
-    if (!after?.exists) return; // Document was deleted
+    if (!after?.exists) return;
 
     const oldStatus = before?.data()?.status;
     const newStatus = after.data().status;
+    if (oldStatus === newStatus || newStatus !== "approved") return;
+
     const booking = after.data();
     const bookingId = event.params.bookingId;
 
-    // Only proceed if status changed AND newStatus is "approved"
-    if (oldStatus === newStatus) return;
-    if (newStatus !== 'approved') return;
+    const subject = "Booking Approved - Straya Visuals";
+    const text = `Hello ${booking.name},
 
-    // Retrieve secrets
-    const gmailEmail = GMAIL_EMAIL.value();
-    const clientId = GMAIL_CLIENT_ID.value();
-    const clientSecret = GMAIL_CLIENT_SECRET.value();
-    const refreshToken = GMAIL_REFRESH_TOKEN.value();
+Great news! Your booking has been approved. Here are the details:
 
-    // Create OAuth2 client
-    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
-    oauth2Client.setCredentials({ refresh_token: refreshToken });
+Name: ${booking.name}
+Email: ${booking.email}
+Type of Service: ${booking.service}
+Date of Service: ${booking.date}
+Time Slot: ${booking.timeSlot}
+Location: ${booking.location}
+Your Budget: ${booking.budget}
+Any Special Requests: ${booking.specialRequests || "None"}
 
-    async function getTransporter() {
-      const accessTokenResponse = await oauth2Client.getAccessToken();
-      const accessToken = accessTokenResponse.token;
-      return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          type: 'OAuth2',
-          user: gmailEmail,
-          clientId,
-          clientSecret,
-          refreshToken,
-          accessToken,
-        },
-      });
-    }
-
-    // Prepare approval email
-    const mailOptions = {
-      from: gmailEmail,
-      to: booking.email,
-      subject: 'Booking Approved - Straya Visuals',
-      text: `Hello ${booking.name},
-
-Good news! Your booking (ID: ${bookingId}) for ${booking.service} on ${booking.date} 
-at ${booking.timeSlot || 'N/A'} has been approved.
-
-We look forward to working with you!
+Your booking ID is ${bookingId}.
 
 Best regards,
-Straya Visuals Team`,
-      html: `<p>Hello ${booking.name},</p>
-             <p>Good news! Your booking (ID: <strong>${bookingId}</strong>) for <strong>${booking.service}</strong> on <strong>${booking.date}</strong> at <strong>${booking.timeSlot || 'N/A'}</strong> has been <strong>approved</strong>.</p>
-             <p>We look forward to working with you!</p>
-             <p>Best regards,<br/>Straya Visuals Team</p>`,
-    };
+Straya Visuals Team`;
 
-    // Send email
-    try {
-      const transporter = await getTransporter();
-      await transporter.sendMail(mailOptions);
-      console.log('Approval email sent to:', booking.email);
-    } catch (error) {
-      console.error('Failed to send approval email:', error);
-    }
-  }
+    const html = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <img src="https://straya-visuals.web.app/images/logo.jpeg" alt="Straya Visuals Logo" style="max-width: 200px;"/>
+      <p>Hello ${booking.name},</p>
+      <p><strong>Great news!</strong> Your booking has been <strong>approved</strong>. Here are the details:</p>
+      <ul>
+        <li><strong>Name:</strong> ${booking.name}</li>
+        <li><strong>Email:</strong> ${booking.email}</li>
+        <li><strong>Type of Service:</strong> ${booking.service}</li>
+        <li><strong>Date of Service:</strong> ${booking.date}</li>
+        <li><strong>Time Slot:</strong> ${booking.timeSlot}</li>
+        <li><strong>Location:</strong> ${booking.location}</li>
+        <li><strong>Your Budget:</strong> ${booking.budget}</li>
+        <li><strong>Any Special Requests:</strong> ${booking.specialRequests || "None"}</li>
+      </ul>
+      <p>Your booking ID is <strong>${bookingId}</strong>.</p>      
+      <p>Best regards,<br/>Straya Visuals Team</p>
+    </div>`;
+
+    await sendEmail(booking.email, subject, text, html);
+  },
 );
 
-  // ===============
-  // 3) Cancellation Email (onUpdate -> status = "cancelled")
-  // ===============
-  export const sendCancellationEmail = onDocumentUpdated(
+export const sendCancellationEmail = onDocumentUpdated(
   {
-    document: 'bookings/{bookingId}',
-    region: 'us-central1',
-    secrets: [GMAIL_EMAIL, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN],
-    },
-    async (event) => {
+    document: "bookings/{bookingId}",
+    region: "us-central1",
+    secrets: [
+      GMAIL_EMAIL,
+      GMAIL_CLIENT_ID,
+      GMAIL_CLIENT_SECRET,
+      GMAIL_REFRESH_TOKEN,
+    ],
+  },
+  async (event) => {
     const before = event.data?.before;
     const after = event.data?.after;
-    if (!after?.exists) return; // Document was deleted
+    if (!after?.exists) return;
 
     const oldStatus = before?.data()?.status;
     const newStatus = after.data().status;
+    if (oldStatus === newStatus || newStatus !== "cancelled") return;
+
     const booking = after.data();
     const bookingId = event.params.bookingId;
 
-    // Only proceed if status changed AND newStatus is "cancelled"
-    if (oldStatus === newStatus) return;
-    if (newStatus !== 'cancelled') return;
+    const subject = "Booking Cancelled - Straya Visuals";
+    const text = `Hello ${booking.name},
 
-    // Retrieve secrets
-    const gmailEmail = GMAIL_EMAIL.value();
-    const clientId = GMAIL_CLIENT_ID.value();
-    const clientSecret = GMAIL_CLIENT_SECRET.value();
-    const refreshToken = GMAIL_REFRESH_TOKEN.value();
+We regret to inform you that your booking has been cancelled. Here are the details:
 
-    // Create OAuth2 client
-    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
-    oauth2Client.setCredentials({ refresh_token: refreshToken });
+Name: ${booking.name}
+Email: ${booking.email}
+Booking ID: ${bookingId}
+Date of Service: ${booking.date}
+Time Slot: ${booking.timeSlot}
 
-    async function getTransporter() {
-      const accessTokenResponse = await oauth2Client.getAccessToken();
-      const accessToken = accessTokenResponse.token;
-      return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          type: 'OAuth2',
-          user: gmailEmail,
-          clientId,
-          clientSecret,
-          refreshToken,
-          accessToken,
-        },
-      });
-    }
+If this is a mistake or you have any questions, feel free to reply.
 
-    // Prepare cancellation email
-    const mailOptions = {
-      from: gmailEmail,
-      to: booking.email,
-      subject: 'Booking Cancelled - Straya Visuals',
-      text: `Hello ${booking.name},
+Best regards,
+Straya Visuals Team`;
 
-      Your booking (ID: ${bookingId}) for our ${booking.service} on ${booking.date} 
-      at ${booking.timeSlot || 'N/A'} has been cancelled.
+    const html = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <img src="https://straya-visuals.web.app/images/logo.jpeg" alt="Straya Visuals Logo" style="max-width: 200px;"/>
+      <p>Hello ${booking.name},</p>
+      <p>We regret to inform you that your booking has been <strong>cancelled</strong>. Here are the details:</p>
+      <ul>
+        <li><strong>Name:</strong> ${booking.name}</li>
+        <li><strong>Email:</strong> ${booking.email}</li>
+        <li><strong>Booking ID:</strong> ${bookingId}</li>
+        <li><strong>Date of Service:</strong> ${booking.date}</li>
+        <li><strong>Time Slot:</strong> ${booking.timeSlot}</li>
+      </ul>
+      <p>If this is a mistake or you have any questions, feel free to reply.<br/></p>
+      <p>Best regards,<br/>Straya Visuals Team</p>
+    </div>`;
 
-      Best regards,
-      Straya Visuals Team`,
-      html: `<p>Hello ${booking.name},</p>
-             <p>Your booking (ID: <strong>${bookingId}</strong>) for our <strong>${booking.service}</strong> on <strong>${booking.date}</strong> at <strong>${booking.timeSlot || 'N/A'}</strong> has been <strong>cancelled</strong>.</p>
-             <p>Best regards,<br/>Straya Visuals Team</p>`,
-    };
-
-    // Send email
-    try {
-      const transporter = await getTransporter();
-      await transporter.sendMail(mailOptions);
-      console.log('Cancellation email sent to:', booking.email);
-    } catch (error) {
-      console.error('Failed to send cancellation email:', error);
-    }
-  }
+    await sendEmail(booking.email, subject, text, html);
+  },
 );
 
-  // ===============
-// 4) Contact Form Submission Email (onCreate)
-// ===============
 export const sendContactEmail = onDocumentCreated(
   {
-    document: 'contactMessages/{messageId}',
-    region: 'us-central1',
-    secrets: [GMAIL_EMAIL, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN],
+    document: "contactMessages/{messageId}",
+    region: "us-central1",
+    secrets: [
+      GMAIL_EMAIL,
+      GMAIL_CLIENT_ID,
+      GMAIL_CLIENT_SECRET,
+      GMAIL_REFRESH_TOKEN,
+    ],
   },
   async (event) => {
     const snap = event.data;
@@ -260,56 +271,29 @@ export const sendContactEmail = onDocumentCreated(
     const data = snap.data();
     const messageId = event.params.messageId;
 
-    const gmailEmail = GMAIL_EMAIL.value();
-    const clientId = GMAIL_CLIENT_ID.value();
-    const clientSecret = GMAIL_CLIENT_SECRET.value();
-    const refreshToken = GMAIL_REFRESH_TOKEN.value();
-
-    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
-    oauth2Client.setCredentials({ refresh_token: refreshToken });
-
-    const accessTokenResponse = await oauth2Client.getAccessToken();
-    const accessToken = accessTokenResponse.token;
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: gmailEmail,
-        clientId,
-        clientSecret,
-        refreshToken,
-        accessToken,
-      },
-    });
-
-    const mailOptions = {
-      from: gmailEmail,
-      to: gmailEmail, // or a specific admin email like noreply.strayavisuals@gmail.com
-      subject: `New Contact Form Submission (ID: ${messageId})`,
-      text: `
-New contact form submission received:
+    const subject = `New Contact Form Submission (ID: ${messageId})`;
+    const text = `New contact form submission received:
 
 Name: ${data.name}
 Email: ${data.email}
-Event Type: ${data.eventType}${data.eventType === "other" ? ` (${data.otherEvent})` : ""}
-Date: ${data.eventDate}
-Time: ${data.eventTime}
-Location: ${data.eventLocation}
-Budget: ${data.eventBudget}
-Special Requests: ${data.specialRequests || "None"}
+Phone Number: ${data.phoneNumber}
+Inquiry Type: ${data.inquiryType === "other" ? `Other (${data.otherInquiryType})` : data.inquiryType}
+Inquiry Details: ${data.inquiryDetails}
+
 Submitted At: ${data.submittedAt}
-      `,
-    };
+`;
 
-    try {
-      await transporter.sendMail(mailOptions);
-      console.log("Contact email sent successfully.");
-    } catch (err) {
-      console.error("Failed to send contact email:", err);
-    }
-  }
+    const html = `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+      <img src="https://straya-visuals.web.app/images/logo.jpeg" alt="Straya Visuals Logo" style="max-width: 200px;"/>
+      <h2>New Contact Form Submission</h2>
+      <p><strong>Name:</strong> ${data.name}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Phone Number:</strong> ${data.phoneNumber}</p>
+      <p><strong>Inquiry Type:</strong> ${data.inquiryType === "other" ? `Other (${data.otherInquiryType})` : data.inquiryType}</p>
+      <p><strong>Inquiry Details:</strong><br/>${data.inquiryDetails}</p>
+      <p><em>Submitted At: ${data.submittedAt}</em></p>
+    </div>`;
+
+    await sendEmail(GMAIL_EMAIL.value(), subject, text, html);
+  },
 );
-
-
-

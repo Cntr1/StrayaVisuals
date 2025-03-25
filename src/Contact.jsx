@@ -123,19 +123,16 @@ const Contact = () => {
     };
   }, [currentVideoIndex]);
 
-  const [eventType, setEventType] = useState("");
-  const [otherEvent, setOtherEvent] = useState("");
+  const [inquiryType, setInquiryType] = useState("");
+  const [otherInquiryType, setOtherInquiry] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    eventDate: "",
-    eventTime: "",
-    eventLocation: "",
-    eventBudget: "",
-    specialRequests: "",
+    phoneNumber: "",
+    inquiryDetails: "",
   });
 
   const dateInputRef = useRef(null);
@@ -145,8 +142,8 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleEventTypeChange = (e) => {
-    setEventType(e.target.value);
+  const handleinquiryTypeChange = (e) => {
+    setInquiryType(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -155,8 +152,8 @@ const Contact = () => {
 
     const newFormData = {
       ...formData,
-      eventType,
-      otherEvent,
+      inquiryType,
+      otherInquiryType,
       submittedAt: new Date().toLocaleString()
     };
 
@@ -173,14 +170,11 @@ const Contact = () => {
       setFormData({
         name: "",
         email: "",
-        eventDate: "",
-        eventTime: "",
-        eventLocation: "",
-        eventBudget: "",
-        specialRequests: "",
+        phoneNumber: "",
+        inquiryDetails: "",
       });
-      setEventType("");
-      setOtherEvent("");
+      setInquiryType("");
+      setOtherInquiry("");
     } catch (error) {
       console.error("Error submitting form: ", error);
       alert("Submission failed. Please try again.");
@@ -244,7 +238,7 @@ const Contact = () => {
   }, []);
 
   return (
-    <div>      
+    <div style={{marginTop:"-100px"}}>
       <div className="image-container-contact">
         <div className="video-wrapper">
           <video
@@ -332,63 +326,45 @@ const Contact = () => {
           <input type="text" id="name" name="name" placeholder="Enter your name" value={formData.name}
                  onChange={handleInputChange} required/>
 
-          <label htmlFor="email">Your Email *</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email}
-                 onChange={handleInputChange} required/>
-
-          {/* <label htmlFor="event-type">Type of Your Event *</label>
-          <select id="event-type" name="event-type" value={eventType} onChange={handleEventTypeChange} required>
-            <option value="" disabled>Select the type of your event</option>
-            <option value="wedding">Wedding</option>
-            <option value="birthday">Birthday</option>
-            <option value="engagement">Engagement</option>
-            <option value="gender-reveal">Gender Reveal</option>
-            <option value="concert">Concert</option>
-            <option value="get-together">Get Together</option>
-            <option value="convocation">Convocation</option>
-            <option value="school-event">School Event</option>
-            <option value="office-event">Office Event</option>
-            <option value="other">Other</option>
-          </select>
-
-          {eventType === "other" && (
-              <div id="other-event-container">
-                <label htmlFor="other-event">Please Specify</label>
-                <input type="text" id="other-event" name="other-event" placeholder="Specify your event"
-                       value={otherEvent} onChange={(e) => setOtherEvent(e.target.value)} required/>
-              </div>
-          )}
-
-          <div className="date-time-container-contact">
+          <div className="location-budget-container-contact">
             <div>
-              <label htmlFor="event-date">Date of the Event *</label>
-              <input ref={dateInputRef} type="date" id="event-date" name="eventDate" value={formData.eventDate}
-                     onChange={handleInputChange} required/>
+              <label htmlFor="email">Your Email *</label>
+              <input type="text" id="email" name="email" placeholder="Enter location"
+                     value={formData.email} onChange={handleInputChange} required/>
             </div>
             <div>
-              <label htmlFor="event-time">Time of the Event *</label>
-              <input ref={timeInputRef} type="time" id="event-time" name="eventTime" value={formData.eventTime}
-                     onChange={handleInputChange} required/>
+              <label htmlFor="phone-number">Your Phone Number *</label>
+              <input type="text" id="phone-number" name="phoneNumber" placeholder="Enter your phone number" value={formData.phoneNumber} onChange={(e) => {
+                    const re = /^[0-9\b]+$/;
+                    if (e.target.value === '' || re.test(e.target.value)) {
+                      handleInputChange(e);
+                    }
+                  }} required pattern="[0-9]*" inputMode="numeric"/>
             </div>
           </div>
 
-          <div className="location-budget-container-contact">
-            <div>
-              <label htmlFor="event-location">Location of the Event *</label>
-              <input type="text" id="event-location" name="eventLocation" placeholder="Enter location"
-                     value={formData.eventLocation} onChange={handleInputChange} required/>
-            </div>
-            <div>
-              <label htmlFor="event-budget">Your Budget *</label>
-              <input type="number" id="event-budget" name="eventBudget" placeholder="Enter your approximate budget"
-                     min="0" value={formData.eventBudget} onChange={handleInputChange} required/>
-            </div>
-          </div> */}
+          <label htmlFor="inquiry-type">Type of Your Inquiry *</label>
+          <select id="inquiry-type" name="inquiry-type" value={inquiryType} onChange={handleinquiryTypeChange} required>
+            <option value="" disabled>Select the type of your inquiry</option>
+            <option value="About a Video Packag">About a Video Package</option>
+            <option value="About a Custom Video Request">About a Custom Video Request</option>
+            <option value="About a Booking">About a Booking</option>
+            <option value="other">Other</option>
+          </select>
 
-          <label htmlFor="special-requests">What do you have in mind?</label>
-          <textarea id="special-requests" name="specialRequests"
+          {inquiryType === "other" && (
+              <div id="other-inquiry-type-container">
+                <label htmlFor="other-inquiry-type">Please Specify *</label>
+                <input type="text" id="other-inquiry-type" name="other-inquiry-type" placeholder="Please briefly specify the purpose of your inquiry"
+                       value={otherInquiryType} onChange={(e) => setOtherInquiry(e.target.value)} required/>
+              </div>
+          )}
+
+
+          <label htmlFor="inquiry-details" style={{marginTop:"20px"}}>What is your Inquiry about?</label>
+          <textarea id="inquiry-details" name="inquiryDetails"
                     placeholder="Don’t hesitate to ask, We’ll do our best to fulfill your wishes!"
-                    value={formData.specialRequests} onChange={handleInputChange}></textarea>
+                    value={formData.inquiryDetails} onChange={handleInputChange}></textarea>
 
           <button type="submit" className="send-button-contact" disabled={loading}>
             {loading ? (
