@@ -23,21 +23,28 @@
   padding: 0.75rem 1.25rem;
 }
 
-.nav-left,
-.nav-center,
-.nav-profile {
+nav.nav-contact .nav-left,
+nav.nav-contact .nav-center,
+nav.nav-contact .nav-profile {
   display: flex;
   align-items: center;
 }
 
-.nav-left li {
+nav.nav-contact .nav-left li {
   list-style: none;
 }
 
-.nav-center {
-  flex: 1;
-  justify-content: center;
-  gap: 1.5rem;
+nav.nav-contact {
+  position: relative;
+}
+
+nav.nav-contact .nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
 }
 
 .nav-profile {

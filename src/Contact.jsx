@@ -22,7 +22,7 @@ import instagramIcon from "/images/contact/socials/instagram-icon.png";
 import instagramCover from "/images/contact/socials/instagram-cover.jpg";
 import instagramProfile from "/images/contact/socials/instagram-profile.jpeg";
 import logo from '/images/logo.jpeg';
-import emailjs from 'emailjs-com';
+
 import video1 from "/images/contact/1.mp4";
 import video2 from "/images/contact/2.mp4";
 import video3 from "/images/contact/3.mp4";
@@ -164,25 +164,7 @@ const Contact = () => {
       // Add a new document to Firestore in the "contactMessages" collection
       await addDoc(collection(db, "contactMessages"), newFormData);
 
-      const emailTemplateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        event_type: eventType,
-        other_event: otherEvent || '-',
-        event_date: formData.eventDate,
-        event_time: formData.eventTime,
-        event_location: formData.eventLocation,
-        event_budget: formData.eventBudget,
-        special_requests: formData.specialRequests || 'None',
-        submitted_at: newFormData.submittedAt,
-      };
-
-      await emailjs.send(
-        'service_88a1s3h',
-        'template_pi7jnf4',
-        emailTemplateParams,
-        'LD7alCHFjTmPHJlNM'
-      );
+      
 
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 3000);
