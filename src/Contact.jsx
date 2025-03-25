@@ -336,7 +336,7 @@ const Contact = () => {
           <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email}
                  onChange={handleInputChange} required/>
 
-          {/* <label htmlFor="event-type">Type of Your Event *</label>
+          <label htmlFor="event-type">Type of Your Event *</label>
           <select id="event-type" name="event-type" value={eventType} onChange={handleEventTypeChange} required>
             <option value="" disabled>Select the type of your event</option>
             <option value="wedding">Wedding</option>
@@ -383,7 +383,7 @@ const Contact = () => {
               <input type="number" id="event-budget" name="eventBudget" placeholder="Enter your approximate budget"
                      min="0" value={formData.eventBudget} onChange={handleInputChange} required/>
             </div>
-          </div> */}
+          </div> 
 
           <label htmlFor="special-requests">What do you have in mind?</label>
           <textarea id="special-requests" name="specialRequests"
