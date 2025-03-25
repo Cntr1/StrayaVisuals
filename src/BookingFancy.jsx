@@ -5,6 +5,7 @@ import { getFirestore, doc, getDoc, setDoc, query, where, collection, getDocs } 
 import { app } from "./firebase-config.jsx";
 import { useNavigate } from "react-router-dom";
 
+
 // CSS imports
 import "./css/footer/fonts/ionicons/css/ionicons.min.css";
 import "./css/footer/style.css";
@@ -14,6 +15,7 @@ import "./css/contact/bootstrap.min.css";
 import "./css/contact/base.css";
 import "./css/contact/fonticons.css";
 import "./css/contact/font-awesome.min.css";
+import "./booking.css";
 
 const db = getFirestore(app);
 
@@ -110,21 +112,23 @@ const BookingFancy = () => {
 
   return (
     <section className="contact-form-section-contact w-full flex justify-center px-4">
-      <div className="w-full flex flex-col items-center">
-        {/* CTA Container */}
-        <div className="cta-container-contact text-center w-full">
-          <div className="line-contact"></div>
-          <div className="cta-text-contact">
-            Ready to record your memories? Let's book an appointment!
+      <div className="content-box" style={{ marginTop: 0, marginLeft: "auto", marginRight: "auto", paddingLeft: "50px", paddingRight: "50px", width: "100%" }}>
+        <div className="w-full flex flex-col items-center">
+  
+          {/* CTA Container */}
+          <div className="cta-container-contact text-center w-full">
+            <div className="line-contact"></div>
+            <div className="cta-text-contact">
+              Ready to record your memories? Let's book an appointment!
+            </div>
+            <div className="line-contact"></div>
           </div>
-          <div className="line-contact"></div>
-        </div>
-
-        {/* Booking Form */}
-        <form
-          className="contact-form-contact w-full mx-auto mt-6 space-y-6 text-center"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+  
+          {/* Booking Form */}
+          <form
+            className="contact-form-contact w-full mx-auto mt-6 space-y-6 text-center"
+            onSubmit={handleSubmit(onSubmit)}
+          >
           <label htmlFor="name">Your Name *</label>
           <input
             id="name"
@@ -211,10 +215,13 @@ const BookingFancy = () => {
 
           {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
           {successMessage && <p className="text-green-600 text-sm">{successMessage}</p>}
-        </form>
-      </div>
-    </section>
+          </form>
+
+  </div>
+  </div>
+  </section>
+
   );
-};
+}
 
 export default BookingFancy;
