@@ -6,6 +6,7 @@ import { defineSecret } from "firebase-functions/params";
 import { initializeApp } from "firebase-admin/app";
 import nodemailer from "nodemailer";
 import { OAuth2Client } from "google-auth-library";
+import { google } from 'googleapis';
 
 // Initialize Firebase Admin SDK
 initializeApp();
@@ -125,7 +126,62 @@ Straya Visuals Team`;
     </div>`;
 
     await sendEmail(booking.email, subject, text, html);
-  },
+
+    // ---------------------
+    // Google Calendar Event
+    // ---------------------
+    const gmailEmail = GMAIL_EMAIL.value();
+    const clientId = GMAIL_CLIENT_ID.value();
+    const clientSecret = GMAIL_CLIENT_SECRET.value();
+    const refreshToken = GMAIL_REFRESH_TOKEN.value();
+
+    const oauth2Client = new OAuth2Client(clientId, clientSecret, 'https://developers.google.com/oauthplayground');
+    oauth2Client.setCredentials({ refresh_token: refreshToken });
+
+    const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+
+    // Parse time slot (e.g., "2:00 PM - 3:00 PM")
+    const [startStr, endStr] = booking.timeSlot.split(" - ");
+    const eventDate = booking.date; // e.g., "2025-04-15"
+
+    function formatToRFC3339(dateStr, timeStr) {
+      const [hour, minute, period] = timeStr.match(/(\d+):(\d+)\s?(AM|PM)/i).slice(1);
+      let h = parseInt(hour);
+      if (period.toUpperCase() === 'PM' && h !== 12) h += 12;
+      if (period.toUpperCase() === 'AM' && h === 12) h = 0;
+      return `${dateStr}T${h.toString().padStart(2, '0')}:${minute.padStart(2, '0')}:00`;
+    }
+
+    const startTime = formatToRFC3339(eventDate, startStr);
+    const endTime = formatToRFC3339(eventDate, endStr);
+
+    const calendarEvent = {
+      summary: `Booking: ${booking.name} (${booking.service})`,
+      description: `Booking ID: ${bookingId}\nLocation: ${booking.location}\nSpecial Requests: ${booking.specialRequests || 'None'}`,
+      start: {
+        dateTime: startTime,
+        timeZone: 'Australia/Sydney', // Adjust if needed
+      },
+      end: {
+        dateTime: endTime,
+        timeZone: 'Australia/Sydney',
+      },
+      attendees: [
+        { email: booking.email },
+        { email: gmailEmail } // Sends to yourself
+      ]
+    };
+
+    try {
+      await calendar.events.insert({
+        calendarId: 'primary',
+        resource: calendarEvent,
+      });
+      console.log("📅 Google Calendar event created.");
+    } catch (err) {
+      console.error("❌ Failed to create calendar event:", err);
+    }
+  }
 );
 
 // ===============
