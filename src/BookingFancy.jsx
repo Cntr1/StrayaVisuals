@@ -14,7 +14,7 @@ import {
 import { app } from "./firebase-config.jsx";
 import { useNavigate } from "react-router-dom";
 import "./booking.css";
-import AddressAutocomplete from "./components/AddressAutocomplete";
+import GoogleMapsLoader from "./components/GoogleMapsLoader";
 
 const db = getFirestore(app);
 
@@ -125,6 +125,27 @@ const BookingFancy = () => {
   
       {/* Main Section with videos + form */}
       <section className="video-form-wrapper">
+        {/* ✅ Google Maps script loader */}
+  <GoogleMapsLoader
+    onLoad={() => {
+      const input = document.getElementById("bookingLocation");
+      if (!input) return;
+
+      const autocomplete = new window.google.maps.places.Autocomplete(input, {
+        types: ["geocode"],
+        componentRestrictions: { country: "au" },
+      });
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place && place.formatted_address) {
+          setValue("bookingLocation", place.formatted_address, {
+            shouldValidate: true,
+          });
+        }
+      });
+    }}
+  />
         {/* Left Video */}
         <div className="video-box">
           <video
@@ -222,18 +243,21 @@ const BookingFancy = () => {
   </div>
 
   {/* LOCATION */}
-<div className="form-item">
+  <div className="form-item">
   <label htmlFor="bookingLocation" className="form-label">Location</label>
-  <AddressAutocomplete
-  value={watch("bookingLocation")}
-  onChange={(value) =>
-    setValue("bookingLocation", value, { shouldValidate: true })
-  }
-/>
+  <input
+    id="bookingLocation"
+    type="text"
+    placeholder="Enter location"
+    className="form-input"
+    {...register("bookingLocation", { required: "Location is required." })}
+    autoComplete="off"
+  />
   {errors.bookingLocation && (
     <p className="text-red-600 text-sm">{errors.bookingLocation.message}</p>
   )}
 </div>
+
 
   {/* BUDGET */}
   <div className="form-item">
