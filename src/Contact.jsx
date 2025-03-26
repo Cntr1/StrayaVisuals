@@ -1,8 +1,8 @@
-// src/Contact.jsx
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { db } from "./firebase-config"; // Ensure this points to your Firestore config
-import { collection, addDoc } from "firebase/firestore";
+import { db } from "./firebase-config";
+import { collection, addDoc, getDocs } from "firebase/firestore";
+import { Timestamp } from 'firebase/firestore';
 
 import "./css/footer/fonts/ionicons/css/ionicons.min.css";
 import "./css/footer/style.css";
@@ -12,50 +12,10 @@ import "./css/contact/bootstrap.min.css";
 import "./css/contact/base.css";
 import "./css/contact/fonticons.css";
 import "./css/contact/font-awesome.min.css";
-import facebookIcon from "/images/contact/socials/facebook-icon.png";
-import facebookCover from "/images/contact/socials/facebook-cover.jpg";
-import facebookProfile from "/images/contact/socials/facebook-profile.jpeg";
-import twitterIcon from "/images/contact/socials/twitter-icon.png";
-import twitterCover from "/images/contact/socials/twitter-cover.jpg";
-import twitterProfile from "/images/contact/socials/twitter-profile.jpeg";
-import instagramIcon from "/images/contact/socials/instagram-icon.png";
-import instagramCover from "/images/contact/socials/instagram-cover.jpg";
-import instagramProfile from "/images/contact/socials/instagram-profile.jpeg";
-import logo from '/images/logo.jpeg';
 
 import video1 from "/images/contact/1.mp4";
 import video2 from "/images/contact/2.mp4";
 import video3 from "/images/contact/3.mp4";
-
-const socialData = [
-  {
-    id: "fbbox",
-    platform: "Facebook",
-    username: "@Straya Visuals",
-    link: "https://www.facebook.com/StrayaVisuals",
-    icon: facebookIcon,
-    cover: facebookCover,
-    profile: facebookProfile,
-  },
-  {
-    id: "instbox",
-    platform: "Instagram",
-    username: "@Straya_Visuals",
-    link: "https://www.instagram.com/StrayaVisuals",
-    icon: instagramIcon,
-    cover: instagramCover,
-    profile: instagramProfile,
-  },
-  {
-    id: "twtbox",
-    platform: "Twitter",
-    username: "@Straya Visuals AU",
-    link: "https://www.x.com/StrayaVisuals",
-    icon: twitterIcon,
-    cover: twitterCover,
-    profile: twitterProfile,
-  },
-];
 
 const Contact = () => {
   const videos = [video1, video2, video3];
@@ -65,6 +25,69 @@ const Contact = () => {
   const videoRefs = useRef([]);
   const observerRef = useRef(null);
   const intervalRef = useRef(null);
+
+  const [packages, setPackages] = useState([]);
+  const [loadingPackages, setLoadingPackages] = useState(true);
+  const [socials, setSocials] = useState([]);
+  const [loadingSocials, setLoadingSocials] = useState(true);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "packages"));
+        const packageOrder = ["bsNLepR9f1Gj9yFenTbm", "q7MT2hanXirpRTUVMmDQ", "66r7pumc0E12VaXWXDfP"];
+        const packagesData = [];
+
+        querySnapshot.forEach((doc) => {
+          packagesData.push({ id: doc.id, ...doc.data() });
+        });
+
+        const sortedPackages = packageOrder
+            .map((id) => packagesData.find((pkg) => pkg.id === id))
+            .filter((pkg) => pkg !== undefined);
+
+        setPackages(sortedPackages);
+        setLoadingPackages(false);
+      } catch (error) {
+        console.error("Error fetching packages: ", error);
+        setLoadingPackages(false);
+      }
+    };
+
+    const fetchSocials = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "socials"));
+        const socialOrder = ["xBU1afPDPfOroSUZBWp6", "Ehiy8FCG10N0NzB4E5cQ", "JtTNf3dWfmQnzoutV0as"];
+        const socialsData = [];
+
+        querySnapshot.forEach((doc) => {
+          socialsData.push({ id: doc.id, ...doc.data() });
+        });
+
+        const sortedSocials = socialOrder
+            .map((id) => socialsData.find((social) => social.id === id))
+            .filter((social) => social !== undefined)
+            .map((social, index) => ({
+              id: ["fbbox", "instbox", "twtbox"][index],
+              platform: ["Facebook", "Instagram", "Twitter"][index],
+              username: social.username,
+              link: social.socialLink,
+              icon: social.socialIcon,
+              cover: social.socialCover,
+              profile: social.socialProfile
+            }));
+
+        setSocials(sortedSocials);
+        setLoadingSocials(false);
+      } catch (error) {
+        console.error("Error fetching socials: ", error);
+        setLoadingSocials(false);
+      }
+    };
+
+    fetchPackages();
+    fetchSocials();
+  }, []);
 
   const startAutoPlay = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
@@ -100,16 +123,16 @@ const Contact = () => {
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            entry.target.pause();
-          } else {
-            entry.target.play();
-          }
-        });
-      },
-      { threshold: 0.1 }
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              entry.target.pause();
+            } else {
+              entry.target.play();
+            }
+          });
+        },
+        { threshold: 0.1 }
     );
 
     videoRefs.current.forEach((video) => {
@@ -154,14 +177,12 @@ const Contact = () => {
       ...formData,
       inquiryType,
       otherInquiryType,
-      submittedAt: new Date().toLocaleString()
+      submittedAt: Timestamp.fromDate(new Date()),
+      isRead: false
     };
 
     try {
-      // Add a new document to Firestore in the "contactMessages" collection
       await addDoc(collection(db, "contactMessages"), newFormData);
-
-      
 
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 3000);
@@ -182,6 +203,7 @@ const Contact = () => {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     if (dateInputRef.current) {
@@ -217,17 +239,17 @@ const Contact = () => {
     if (!socialsSection) return;
 
     const socialObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            requestAnimationFrame(() => {
-              entry.target.classList.add('in-view');
-            });
-            socialObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.4 }
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              requestAnimationFrame(() => {
+                entry.target.classList.add('in-view');
+              });
+              socialObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.4 }
     );
 
     socialObserver.observe(socialsSection);
@@ -238,170 +260,185 @@ const Contact = () => {
   }, []);
 
   return (
-    <div style={{marginTop:"-100px"}}>
-      <div className="image-container-contact">
-        <div className="video-wrapper">
-          <video
-            ref={(el) => (videoRefs.current[currentVideoIndex] = el)}
-            src={videos[currentVideoIndex]}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className={`carousel-video ${slideDirection === "next" ? "slide-next" : "slide-prev"} ${
-              isFading ? "fade-out" : "fade-in"
-            }`}
-          />
-        </div>
-        <div className="image-text-contact">
-          Recording your memories, preserving them forever.
-        </div>
-        <div className="video-indicators">
-          {videos.map((_, index) => (
-            <div
-              key={index}
-              className={`dot ${currentVideoIndex === index ? "active" : ""}`}
-              onClick={() => handleDotClick(index)}
+      <div style={{marginTop: "-98px"}}>
+        <div className="image-container-contact">
+          <div className="video-wrapper">
+            <video
+                ref={(el) => (videoRefs.current[currentVideoIndex] = el)}
+                src={videos[currentVideoIndex]}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className={`carousel-video ${slideDirection === "next" ? "slide-next" : "slide-prev"} ${
+                    isFading ? "fade-out" : "fade-in"
+                }`}
             />
-          ))}
-        </div>
-      </div>
-
-      <div className="textbox-header-contact">Why Choose Us?</div>
-
-      <div id="quality-container" className="container" style={{ marginTop: "45px", minWidth: "1440px" }}>
-        <div className="row text-center">
-          {[
-            { icon: "fa-money", text: "Affordable Packages" },
-            { icon: "fa-clock", text: "Fast Turnaround Time" },
-            { icon: "fa-certificate", text: "Experienced Team" },
-          ].map((item, index) => (
-            <div key={index} className="col-sm-4" style={{ marginBottom: "10px" }}>
-              <div>
-                <div>
-                  <i id="quality-icons" className={`fa ${item.icon}`}></i>
-                </div>
-                <h3 id="quality-points">{item.text}</h3>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="row text-center" style={{ marginTop: "30px" }}>
-          {[
-            { icon: "fa-star", text: "High-Quality Videography" },
-            { icon: "fa-pencil-square", text: "Professional Editing" },
-            { icon: "fa-video-camera", text: "Class-Leading Equipments" },
-          ].map((item, index) => (
-            <div key={index} className="col-sm-4">
-              <div>
-                <div>
-                  <i id="quality-icons" className={`fa ${item.icon}`}></i>
-                </div>
-                <h3 id="quality-points">{item.text}</h3>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <section className="rates-section-contact">
-        <div className="rates-title-contact">Our Starting Rates</div>
-        <div className="vertical-line-contact"></div>
-        <div className="rates-list-contact">
-          <p>Photography - From AUD 1,000 Onwards</p>
-          <p>Event Films - From AUD 1,500 Onwards</p>
-          <p>Photo + Video - From AUD 2,500 Onwards</p>
-        </div>
-      </section>
-
-      <div className="cta-container-contact">
-        <div className="line-contact"></div>
-        <div className="cta-text-contact">Any Questions? Feel free to ask us below, our team will get in touch with you as soon as we can!</div>
-        <div className="line-contact"></div>
-      </div>
-
-      <section className="contact-form-section-contact">
-        <form className="contact-form-contact" onSubmit={handleSubmit}>
-          <label htmlFor="name">Your Name *</label>
-          <input type="text" id="name" name="name" placeholder="Enter your name" value={formData.name}
-                 onChange={handleInputChange} required/>
-
-          <div className="location-budget-container-contact">
-            <div>
-              <label htmlFor="email">Your Email *</label>
-              <input type="text" id="email" name="email" placeholder="Enter location"
-                     value={formData.email} onChange={handleInputChange} required/>
-            </div>
-            <div>
-              <label htmlFor="phone-number">Your Phone Number *</label>
-              <input type="text" id="phone-number" name="phoneNumber" placeholder="Enter your phone number" value={formData.phoneNumber} onChange={(e) => {
-                    const re = /^[0-9\b]+$/;
-                    if (e.target.value === '' || re.test(e.target.value)) {
-                      handleInputChange(e);
-                    }
-                  }} required pattern="[0-9]*" inputMode="numeric"/>
-            </div>
           </div>
+          <div className="image-text-contact">
+            Recording your memories, preserving them forever.
+          </div>
+          <div className="video-indicators">
+            {videos.map((_, index) => (
+                <div
+                    key={index}
+                    className={`dot ${currentVideoIndex === index ? "active" : ""}`}
+                    onClick={() => handleDotClick(index)}
+                />
+            ))}
+          </div>
+        </div>
 
-          <label htmlFor="inquiry-type">Type of Your Inquiry *</label>
-          <select id="inquiry-type" name="inquiry-type" value={inquiryType} onChange={handleinquiryTypeChange} required>
-            <option value="" disabled>Select the type of your inquiry</option>
-            <option value="About a Video Packag">About a Video Package</option>
-            <option value="About a Custom Video Request">About a Custom Video Request</option>
-            <option value="About a Booking">About a Booking</option>
-            <option value="other">Other</option>
-          </select>
+        <div className="textbox-header-contact">Why Choose Us?</div>
 
-          {inquiryType === "other" && (
-              <div id="other-inquiry-type-container">
-                <label htmlFor="other-inquiry-type">Please Specify *</label>
-                <input type="text" id="other-inquiry-type" name="other-inquiry-type" placeholder="Please briefly specify the purpose of your inquiry"
-                       value={otherInquiryType} onChange={(e) => setOtherInquiry(e.target.value)} required/>
-              </div>
-          )}
+        <div id="quality-container" className="container" style={{marginTop: "45px", minWidth: "1440px"}}>
+          <div className="row text-center">
+            {[
+              {icon: "fa-money", text: "Affordable Packages"},
+              {icon: "fa-clock", text: "Fast Turnaround Time"},
+              {icon: "fa-certificate", text: "Experienced Team"},
+            ].map((item, index) => (
+                <div key={index} className="col-sm-4" style={{marginBottom: "10px"}}>
+                  <div>
+                    <div>
+                      <i id="quality-icons" className={`fa ${item.icon}`}></i>
+                    </div>
+                    <h3 id="quality-points">{item.text}</h3>
+                  </div>
+                </div>
+            ))}
+          </div>
+          <div className="row text-center" style={{marginTop: "30px"}}>
+            {[
+              {icon: "fa-star", text: "High-Quality Videography"},
+              {icon: "fa-pencil-square", text: "Professional Editing"},
+              {icon: "fa-video-camera", text: "Class-Leading Equipments"},
+            ].map((item, index) => (
+                <div key={index} className="col-sm-4">
+                  <div>
+                    <div>
+                      <i id="quality-icons" className={`fa ${item.icon}`}></i>
+                    </div>
+                    <h3 id="quality-points">{item.text}</h3>
+                  </div>
+                </div>
+            ))}
+          </div>
+        </div>
 
-
-          <label htmlFor="inquiry-details" style={{marginTop:"20px"}}>What is your Inquiry about?</label>
-          <textarea id="inquiry-details" name="inquiryDetails"
-                    placeholder="Don’t hesitate to ask, We’ll do our best to fulfill your wishes!"
-                    value={formData.inquiryDetails} onChange={handleInputChange}></textarea>
-
-          <button type="submit" className="send-button-contact" disabled={loading}>
-            {loading ? (
-                <>
-                  Sending <i className="fa fa-spinner fa-spin" style={{marginLeft: "10px"}}></i>
-                </>
+        <section className="rates-section-contact">
+          <div className="rates-title-contact">Our Starting Rates</div>
+          <div className="vertical-line-contact"></div>
+          <div className="rates-list-contact">
+            {loadingPackages ? (
+                <div >Loading packages...</div>
             ) : (
-                <>
-                  Send Now <i className="fa fa-send" style={{marginLeft: "10px"}}></i>
-                </>
+                packages.map((pkg, index) => (
+                    <p key={index}>
+                      {pkg.packageType} - From AUD {pkg.packagePrice} Onwards
+                    </p>
+                ))
             )}
-          </button>
+          </div>
+        </section>
 
-          {submitted && <p className="success-message">Your message has been sent!</p>}
-        </form>
-      </section>
+        <div className="cta-container-contact">
+          <div className="line-contact"></div>
+          <div className="cta-text-contact">Any Questions? Feel free to ask us below, our team will get in touch with
+            you as soon as we can!
+          </div>
+          <div className="line-contact"></div>
+        </div>
 
-      <div className="socials-header-contact">
-        <div className="line-social-contact"></div>
-        <div className="socials-text-contact">Contact Us on Socials</div>
-        <div className="line-social-contact"></div>
-      </div>
+        <section className="contact-form-section-contact">
+          <form className="contact-form-contact" onSubmit={handleSubmit}>
+            <label htmlFor="name">Your Name *</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" value={formData.name}
+                   onChange={handleInputChange} required/>
 
-      <div className="socials-container-contact">
-        {socialData.map((social, index) => (
-            <div key={index} id={social.id} className="social-box-contact"
-                 onClick={() => window.open(social.link, "_blank")}>
-              <img className="social-icon-contact" src={social.icon} alt={`${social.platform} Icon`}/>
-              <div className="social-content-contact">
-                <img className="landscape-image-contact" src={social.cover} alt={`${social.platform} Cover`}/>
-                <img className="profile-image-contact" src={social.profile} alt={`${social.platform} Profile`}/>
+            <div className="location-budget-container-contact">
+              <div>
+                <label htmlFor="email">Your Email *</label>
+                <input type="text" id="email" name="email" placeholder="Enter location"
+                       value={formData.email} onChange={handleInputChange} required/>
               </div>
-              <div className="social-username-contact">{social.username}</div>
+              <div>
+                <label htmlFor="phone-number">Your Phone Number *</label>
+                <input type="text" id="phone-number" name="phoneNumber" placeholder="Enter your phone number"
+                       value={formData.phoneNumber} onChange={(e) => {
+                  const re = /^[0-9\b]+$/;
+                  if (e.target.value === '' || re.test(e.target.value)) {
+                    handleInputChange(e);
+                  }
+                }} required pattern="[0-9]*" inputMode="numeric"/>
+              </div>
             </div>
-        ))}
-      </div>      
-    </div>
+
+            <label htmlFor="inquiry-type">Type of Your Inquiry *</label>
+            <select id="inquiry-type" name="inquiry-type" value={inquiryType} onChange={handleinquiryTypeChange}
+                    required>
+              <option value="" disabled>Select the type of your inquiry</option>
+              <option value="About a Video Package">About a Video Package</option>
+              <option value="About a Custom Video Request">About a Custom Video Request</option>
+              <option value="About a Booking">About a Booking</option>
+              <option value="other">Other</option>
+            </select>
+
+            {inquiryType === "other" && (
+                <div id="other-inquiry-type-container">
+                  <label htmlFor="other-inquiry-type">Please Specify *</label>
+                  <input type="text" id="other-inquiry-type" name="other-inquiry-type"
+                         placeholder="Please briefly specify the purpose of your inquiry"
+                         value={otherInquiryType} onChange={(e) => setOtherInquiry(e.target.value)} required/>
+                </div>
+            )}
+
+
+            <label htmlFor="inquiry-details" style={{marginTop: "20px"}}>What is your Inquiry about?</label>
+            <textarea id="inquiry-details" name="inquiryDetails"
+                      placeholder="Don't hesitate to ask anything, We are always here to help you"
+                      value={formData.inquiryDetails} onChange={handleInputChange}></textarea>
+
+            <button type="submit" className="send-button-contact" disabled={loading}>
+              {loading ? (
+                  <>
+                    Sending <i className="fa fa-spinner fa-spin" style={{marginLeft: "10px"}}></i>
+                  </>
+              ) : (
+                  <>
+                    Send Now <i className="fa fa-send" style={{marginLeft: "10px"}}></i>
+                  </>
+              )}
+            </button>
+
+            {submitted && <p className="success-message">Your message has been sent!</p>}
+          </form>
+        </section>
+
+        <div className="socials-header-contact">
+          <div className="line-social-contact"></div>
+          <div className="socials-text-contact">Contact Us on Socials</div>
+          <div className="line-social-contact"></div>
+        </div>
+
+        <div className="socials-container-contact">
+          {loadingSocials ? (
+              <div>Loading social media links...</div>
+          ) : (
+              socials.map((social, index) => (
+                  <div key={index} id={social.id} className="social-box-contact"
+                       onClick={() => window.open(social.link, "_blank")}>
+                    <img className="social-icon-contact" src={social.icon} alt={`${social.platform} Icon`}/>
+                    <div className="social-content-contact">
+                      <img className="landscape-image-contact" src={social.cover} alt={`${social.platform} Cover`}/>
+                      <img className="profile-image-contact" src={social.profile} alt={`${social.platform} Profile`}/>
+                    </div>
+                    <div className="social-username-contact">{social.username}</div>
+                  </div>
+              ))
+          )}
+        </div>
+      </div>
   );
 };
 
