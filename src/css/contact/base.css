@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Comfortaa', sans-serif; 
+    font-family: 'Comfortaa', sans-serif;
 }
 
 .image-container-contact {
@@ -67,8 +67,8 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     text-align: center;
     font-family: "Dancing Script", serif;
-    transform: translateY(30px); 
-    animation: fadeUp 0.8s ease-out forwards; 
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease-out forwards;
 }
 
 @keyframes fadeDown {
@@ -94,7 +94,7 @@ body {
 }
 
 .textbox-header-contact {
-	font-family: 'Comfortaa', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
     text-align: center;
     font-size: 32px;
     font-weight: 1000;
@@ -102,7 +102,7 @@ body {
 }
 
 .rates-section-contact {
-	font-family: 'Comfortaa', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
     background-color: #5C4519;
     color: white;
     display: flex;
@@ -110,8 +110,8 @@ body {
     justify-content: center;
     padding: 40px;
     gap: 70px;
-	margin-top: 60px;
-	margin-bottom: 70px;
+    margin-top: 60px;
+    margin-bottom: 70px;
 }
 
 .vertical-line-contact {
@@ -123,28 +123,28 @@ body {
 .rates-title-contact {
     font-size: 26px;
     font-weight: bold;
-    opacity: 0; 
-    transform: translateX(-100%); 
-    transition: transform 0.8s ease-out, opacity 1s ease-out; 
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: transform 0.8s ease-out, opacity 1s ease-out;
 }
 
 .rates-list-contact p {
     text-align: center;
     margin: 16px 0;
     font-size: 19px;
-    opacity: 0; 
-    transform: translateX(100%); 
-    transition: transform 0.8s ease-out, opacity 1s ease-out; 
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 0.8s ease-out, opacity 1s ease-out;
 }
 
 .rates-section-contact.in-view .rates-title-contact {
-    transform: translateX(0); 
-    opacity: 1; 
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .rates-section-contact.in-view .rates-list-contact p {
-    transform: translateX(0); 
-    opacity: 1; 
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .cta-container-contact {
@@ -162,30 +162,32 @@ body {
 }
 
 .cta-text-contact {
-	font-family: 'Comfortaa', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
     font-size: 24px;
     font-weight: 1000;
     text-align: center;
 }
 
 #quality-icons {
-	font-size: 30px;
-    color: cadetblue;
+    font-size: 30px;
+    color: rgba(198, 172, 1, 0.88);
+    text-shadow: 0 0 2px black, 0 0 3px black, 0 0 3px black;
 }
 
 #quality-points {
-	font-size: 20px;
-	font-family: 'Comfortaa', sans-serif;
-	font-weight: 600;
-	margin-top: 20px;
+    font-size: 20px;
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: 600;
+    margin-top: 20px;
+    color: #000000;
 }
 
 .contact-form-section-contact {
-	font-family: 'Comfortaa', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
     display: flex;
     justify-content: center;
     margin-top: -20px;
-	margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .contact-form-contact {
@@ -198,8 +200,8 @@ body {
 .contact-form-contact label {
     font-weight: 1000;
     font-size: 16px;
-	margin-top: 12px;
-	margin-bottom: -8px;
+    margin-top: 12px;
+    margin-bottom: -8px;
 }
 
 .contact-form-contact input[type="text"],
@@ -221,13 +223,13 @@ body {
     width: 100%;
     height: 150px;
     border: 2px solid black;
-	border-radius: 4px;
+    border-radius: 4px;
     padding: 10px;
     font-size: 16px;
     outline: none;
     resize: vertical;
-	background: transparent;
-	margin-top: 15px;
+    background: transparent;
+    margin-top: 15px;
 }
 
 .date-time-container-contact,
@@ -258,14 +260,34 @@ body {
     cursor: pointer;
 }
 
+.contact-form-contact input::placeholder,
+.contact-form-contact textarea::placeholder,
+.contact-form-contact select::placeholder {
+    color: #2c2c2c;
+    opacity: 1;
+}
+
+.contact-form-contact input:-moz-placeholder,
+.contact-form-contact textarea:-moz-placeholder,
+.contact-form-contact select:-moz-placeholder {
+    color: #2c2c2c;
+}
+
+.contact-form-contact input::-ms-input-placeholder,
+.contact-form-contact textarea::-ms-input-placeholder,
+.contact-form-contact select::-ms-input-placeholder {
+    color: #2c2c2c;
+}
+
+
 #event-location {
-	margin-top: 15px;
-	margin-bottom: 6px;
+    margin-top: 15px;
+    margin-bottom: 6px;
 }
 
 #event-budget {
     -moz-appearance: textfield;
-	margin-top: 15px;
+    margin-top: 15px;
 }
 
 #event-budget::-webkit-inner-spin-button,
@@ -275,8 +297,8 @@ body {
 }
 
 .send-button-contact {
-	font-family: 'Comfortaa', sans-serif; 
-	border-radius: 5px;
+    font-family: 'Comfortaa', sans-serif;
+    border-radius: 5px;
     display: block;
     margin: 20px auto;
     background-color: #5C4519;
@@ -313,23 +335,23 @@ body {
     justify-content: center;
     width: 100%;
     margin: 40px 0;
-	margin-bottom: 70px;
+    margin-bottom: 70px;
 }
 
 .line-social-contact {
     flex-grow: 1;
-    padding: 3px; 
+    padding: 3px;
     background-color: #5C4519;
 }
 
 .socials-text-contact {
-	font-family: 'Comfortaa', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
     font-size: 32px;
     font-weight: 1000;
     color: #241901;
     padding: 0 20px;
     text-transform: uppercase;
-	
+
 }
 
 .socials-container-contact {
@@ -337,7 +359,7 @@ body {
     justify-content: center;
     gap: 130px;
     margin: 40px 0;
-	margin-bottom: 100px;
+    margin-bottom: 100px;
 }
 
 .social-icon-contact {
@@ -357,11 +379,12 @@ body {
 }
 
 .landscape-image-contact {
-    width: 270%;
+    width: 400px;
     height: 100px;
     object-fit: cover;
     border: 2px solid black;
-	margin-top: 30px;
+    margin-top: 30px;
+    overflow: hidden;
 }
 
 .profile-image-contact {
@@ -377,68 +400,68 @@ body {
 }
 
 .social-username-contact {
-	font-family: 'Comfortaa', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
     font-size: 16px;
     font-weight: 1000;
     text-align: center;
     margin-top: 40px;
     color: black;
     position: relative;
-    top: 10px; 
+    top: 10px;
 }
 
 .social-box-contact {
     position: relative;
     width: 450px;
     height: 260px;
-    border: 2px solid black; 
+    border: 2px solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
     opacity: 0;
     transform: translateY(100px);
-    transition: transform 0.7s ease-out, opacity 0.7s ease-out, 
-                background-color 0.3s ease-in-out, border 0.3s ease-in-out; 
+    transition: transform 0.7s ease-out, opacity 0.7s ease-out,
+    background-color 0.3s ease-in-out, border 0.3s ease-in-out;
 }
 
-.in-view #fbbox, 
-.in-view #instbox, 
+.in-view #fbbox,
+.in-view #instbox,
 .in-view #twtbox {
     opacity: 1;
     transform: translateY(0);
 }
 
 .in-view #fbbox {
-    transition: transform 0.7s ease-out 0.1s, opacity 0.7s ease-out 0.1s, 
-                background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+    transition: transform 0.7s ease-out 0.1s, opacity 0.7s ease-out 0.1s,
+    background-color 0.3s ease-in-out, border 0.3s ease-in-out;
 }
 
 .in-view #instbox {
-    transition: transform 0.7s ease-out 0.3s, opacity 0.7s ease-out 0.3s, 
-                background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+    transition: transform 0.7s ease-out 0.3s, opacity 0.7s ease-out 0.3s,
+    background-color 0.3s ease-in-out, border 0.3s ease-in-out;
 }
 
 .in-view #twtbox {
-    transition: transform 0.7s ease-out 0.5s, opacity 0.7s ease-out 0.5s, 
-                background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+    transition: transform 0.7s ease-out 0.5s, opacity 0.7s ease-out 0.5s,
+    background-color 0.3s ease-in-out, border 0.3s ease-in-out;
 }
 
 .social-box-contact:hover {
     border: 2px solid #745800;
-    background-color: rgba(184,107,32,0.2);
+    background-color: rgba(184, 107, 32, 0.48);
     cursor: pointer;
 }
 
 .contact-form-contact input:focus,
 .contact-form-contact select:focus {
-    border-bottom: 2px solid #A87F2D; 
+    border-bottom: 2px solid #5a4200;
     outline: none;
     transition: border 0.0s ease-in-out;
 }
 
 .contact-form-contact textarea:focus {
-	border: 2px solid #A87F2D;
+    border: 2px solid #5a4200;
 }
 
 
