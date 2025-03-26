@@ -13,6 +13,7 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@react-google-maps/api": "^2.20.6",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "emailjs-com": "^3.2.0",
@@ -20,6 +21,7 @@
     "font-awesome": "^4.7.0",
     "framer-motion": "^12.5.0",
     "google-auth-library": "^9.15.1",
+    "googleapis": "^148.0.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
@@ -38,7 +40,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
     "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.15",
+    "tailwindcss": "^4.0.16",
     "vite": "^6.2.0"
   }
 }
