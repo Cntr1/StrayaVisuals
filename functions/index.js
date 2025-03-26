@@ -86,7 +86,9 @@ export const sendBookingConfirmation = onDocumentCreated(
     if (!snap) return;
 
     const booking = snap.data();
+    console.log("📦 Booking data:", booking); // ← add this
     const bookingId = event.params.bookingId;
+
 
     const subject = "Booking Request - Straya Visuals";
     const text = `Hello ${booking.name},
@@ -95,10 +97,10 @@ Thank you for your booking request. Here are the details:
 
 Name: ${booking.name}
 Email: ${booking.email}
-Type of Service: ${booking.service}
+Type of Service: ${booking.serviceType}
 Date of Service: ${booking.date}
 Time Slot: ${booking.timeSlot}
-Location: ${booking.location}
+Location: ${booking.bookingLocation}
 Your Budget: ${booking.budget}
 Any Special Requests: ${booking.specialRequests || "None"}
 
@@ -114,10 +116,10 @@ Straya Visuals Team`;
       <ul>
         <li><strong>Name:</strong> ${booking.name}</li>
         <li><strong>Email:</strong> ${booking.email}</li>
-        <li><strong>Type of Service:</strong> ${booking.service}</li>
+        <li><strong>Type of Service:</strong> ${booking.serviceType}</li>
         <li><strong>Date of Service:</strong> ${booking.date}</li>
         <li><strong>Time Slot:</strong> ${booking.timeSlot}</li>
-        <li><strong>Location:</strong> ${booking.location}</li>
+        <li><strong>Location:</strong> ${booking.bookingLocation}</li>
         <li><strong>Your Budget:</strong> ${booking.budget}</li>
         <li><strong>Any Special Requests:</strong> ${booking.specialRequests || "None"}</li>
       </ul>
@@ -156,8 +158,8 @@ Straya Visuals Team`;
     const endTime = formatToRFC3339(eventDate, endStr);
 
     const calendarEvent = {
-      summary: `Booking: ${booking.name} (${booking.service})`,
-      description: `Booking ID: ${bookingId}\nLocation: ${booking.location}\nSpecial Requests: ${booking.specialRequests || 'None'}`,
+      summary: `Booking: ${booking.name} (${booking.serviceType})`,
+      description: `Booking ID: ${bookingId}\nLocation: ${booking.bookingLocation}\nSpecial Requests: ${booking.specialRequests || 'None'}`,
       start: {
         dateTime: startTime,
         timeZone: 'Australia/Sydney', // Adjust if needed
@@ -217,10 +219,10 @@ Great news! Your booking has been approved. Here are the details:
 
 Name: ${booking.name}
 Email: ${booking.email}
-Type of Service: ${booking.service}
+Type of Service: ${booking.serviceType}
 Date of Service: ${booking.date}
 Time Slot: ${booking.timeSlot}
-Location: ${booking.location}
+Location: ${booking.bookingLocation}
 Your Budget: ${booking.budget}
 Any Special Requests: ${booking.specialRequests || "None"}
 
@@ -236,10 +238,10 @@ Straya Visuals Team`;
       <ul>
         <li><strong>Name:</strong> ${booking.name}</li>
         <li><strong>Email:</strong> ${booking.email}</li>
-        <li><strong>Type of Service:</strong> ${booking.service}</li>
+        <li><strong>Type of Service:</strong> ${booking.serviceType}</li>
         <li><strong>Date of Service:</strong> ${booking.date}</li>
         <li><strong>Time Slot:</strong> ${booking.timeSlot}</li>
-        <li><strong>Location:</strong> ${booking.location}</li>
+        <li><strong>Location:</strong> ${booking.bookingLocation}</li>
         <li><strong>Your Budget:</strong> ${booking.budget}</li>
         <li><strong>Any Special Requests:</strong> ${booking.specialRequests || "None"}</li>
       </ul>

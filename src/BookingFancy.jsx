@@ -14,6 +14,7 @@ import {
 import { app } from "./firebase-config.jsx";
 import { useNavigate } from "react-router-dom";
 import "./booking.css";
+import AddressAutocomplete from "./components/AddressAutocomplete";
 
 const db = getFirestore(app);
 
@@ -21,6 +22,7 @@ const BookingFancy = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     watch,
     formState: { errors },
@@ -79,6 +81,7 @@ const BookingFancy = () => {
     fetchBookedSlots();
   }, [watchDate]);
 
+  
   const onSubmit = async (data) => {
     try {
       const formattedDate = formatDateAsYYYYMMDD(data.date);
@@ -219,17 +222,18 @@ const BookingFancy = () => {
   </div>
 
   {/* LOCATION */}
-  <div className="form-item">
-    <label htmlFor="bookingLocation" className="form-label">Location</label>
-    <input
-      id="bookingLocation"
-      type="text"
-      placeholder="Enter location"
-      className="form-input"
-      {...register("bookingLocation", { required: "Location is required." })}
-    />
-    {errors.bookingLocation && <p className="text-red-600 text-sm">{errors.bookingLocation.message}</p>}
-  </div>
+<div className="form-item">
+  <label htmlFor="bookingLocation" className="form-label">Location</label>
+  <AddressAutocomplete
+  value={watch("bookingLocation")}
+  onChange={(value) =>
+    setValue("bookingLocation", value, { shouldValidate: true })
+  }
+/>
+  {errors.bookingLocation && (
+    <p className="text-red-600 text-sm">{errors.bookingLocation.message}</p>
+  )}
+</div>
 
   {/* BUDGET */}
   <div className="form-item">
