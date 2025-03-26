@@ -460,6 +460,10 @@ body {
     transition: border 0.0s ease-in-out;
 }
 
+.contact-form-contact select:hover{
+    cursor: pointer;
+}
+
 .contact-form-contact textarea:focus {
     border: 2px solid #5a4200;
 }
