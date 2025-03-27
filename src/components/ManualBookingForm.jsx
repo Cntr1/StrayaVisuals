@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import "../booking.css"; // adjust path based on your folder structure
 
-
 const db = getFirestore();
 
 const ManualBookingForm = ({ onSuccess }) => {
@@ -24,6 +23,18 @@ const ManualBookingForm = ({ onSuccess }) => {
       onSuccess("❌ Error: " + error.message);
     }
   };
+
+  // ✅ Your consistent time slots
+  const timeSlots = [
+    "9:00 AM - 10:00 AM",
+    "10:00 AM - 11:00 AM",
+    "11:00 AM - 12:00 PM",
+    "12:00 PM - 1:00 PM",
+    "1:00 PM - 2:00 PM",
+    "2:00 PM - 3:00 PM",
+    "3:00 PM - 4:00 PM",
+    "4:00 PM - 5:00 PM",
+  ];
 
   return (
     <form
@@ -92,16 +103,21 @@ const ManualBookingForm = ({ onSuccess }) => {
         {errors.date && <p className="text-red-500 text-sm">{errors.date.message}</p>}
       </div>
 
-      {/* Time Slot */}
+      {/* ✅ Time Slot Dropdown */}
       <div className="form-item">
         <label htmlFor="timeSlot" className="form-label">Time Slot</label>
-        <input
+        <select
           id="timeSlot"
-          type="text"
-          placeholder="e.g. 2:00 PM - 3:00 PM"
           className="form-input"
           {...register("timeSlot", { required: "Time slot is required." })}
-        />
+        >
+          <option value="">Select a Time Slot</option>
+          {timeSlots.map((slot) => (
+            <option key={slot} value={slot}>
+              {slot}
+            </option>
+          ))}
+        </select>
         {errors.timeSlot && <p className="text-red-500 text-sm">{errors.timeSlot.message}</p>}
       </div>
 
