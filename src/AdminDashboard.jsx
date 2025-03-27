@@ -7,6 +7,8 @@ import styles from "./AdminDashboard.module.css";
 import BookingCalendar from "./components/BookingCalendar";
 import ServiceAnalytics from "./components/ServiceAnalytics";
 import GoogleMapsLoader from "./components/GoogleMapsLoader";
+import ManualEmailForm from "./components/ManualEmailForm";
+
 
 
 const AdminDashboard = () => {
@@ -20,6 +22,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const auth = getAuth();
   const [showManualForm, setShowManualForm] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
   const [manualData, setManualData] = useState({
     name: "",
     email: "",
@@ -331,6 +334,18 @@ const AdminDashboard = () => {
   </div>
 )}
 
+{/* Manual Email Form Toggle Button */}
+<div className="mb-4">
+  <button
+    onClick={() => setShowEmailForm(!showEmailForm)}
+    className={`${styles.button} ${styles.dark}`}
+  >
+    {showEmailForm ? "Hide Manual Email Form" : "✉️ Send Email Manually"}
+  </button>
+</div>
+
+{/* Manual Email Form Component */}
+{showEmailForm && <ManualEmailForm />}
 
 
 
