@@ -1,5 +1,5 @@
 /* Portfolio.css */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syncopate:wght@400;700&display=swap");
 
 :root {
   --primary-dark: #ffffff; /* Changed to white */
@@ -13,7 +13,7 @@
 
 body {
   margin: 0;
-  padding: 0;  
+  padding: 0;
   background: var(--primary-dark);
   color: var(--text-color);
   overflow-x: hidden;
@@ -47,7 +47,7 @@ body {
 }
 
 .logo-text {
-  font-family: 'Syncopate', sans-serif;
+  font-family: "Syncopate", sans-serif;
   font-weight: 700;
   font-size: 1.5rem;
   letter-spacing: 2px;
@@ -71,7 +71,7 @@ body {
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -5px;
   left: 0;
@@ -114,8 +114,7 @@ body {
   height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.1); /* was likely 0.2 or 0.3 before */
-  z-index: 2; 
-  
+  z-index: 2;
 }
 
 .hero-content {
@@ -126,7 +125,7 @@ body {
 }
 
 .hero-content h1 {
-  font-family: 'Syncopate', sans-serif;
+  font-family: "Syncopate", sans-serif;
   font-size: 3rem;
   margin-bottom: 1rem;
   background: linear-gradient(90deg, #222222, var(--accent-gold));
@@ -162,7 +161,7 @@ body {
 }
 
 .hero-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
@@ -194,7 +193,7 @@ body {
 }
 
 .section-title h2 {
-  font-family: 'Syncopate', sans-serif;
+  font-family: "Syncopate", sans-serif;
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   color: #222222;
@@ -217,7 +216,7 @@ body {
 
 .filter-button {
   border-radius: 30px;
-  padding: 0.5rem 1.5rem;  
+  padding: 0.5rem 1.5rem;
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -272,7 +271,8 @@ body {
   overflow: hidden;
 }
 
-.card-image, .card-video {
+.card-image,
+.card-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -290,7 +290,11 @@ body {
   left: 0;
   width: 100%;
   height: 50%;
-  background: linear-gradient(0deg, rgba(248, 248, 248, 1) 0%, rgba(248, 248, 248, 0) 100%); /* Updated to match light theme */
+  background: linear-gradient(
+    0deg,
+    rgba(248, 248, 248, 1) 0%,
+    rgba(248, 248, 248, 0) 100%
+  ); /* Updated to match light theme */
 }
 
 .card-content {
@@ -336,20 +340,29 @@ body {
 /* CTA Section */
 .cta-section {
   padding: 5rem 2rem;
-  background: linear-gradient(180deg, #f8f8f8, #ffffff); /* Updated gradient for light theme */
+  background: linear-gradient(
+    180deg,
+    #f8f8f8,
+    #ffffff
+  ); /* Updated gradient for light theme */
   position: relative;
   overflow: hidden;
   margin-top: 5rem;
 }
 
 .cta-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-gold),
+    transparent
+  );
   box-shadow: var(--glow-shadow);
 }
 
@@ -360,7 +373,7 @@ body {
 }
 
 .cta-content h2 {
-  font-family: 'Syncopate', sans-serif;
+  font-family: "Syncopate", sans-serif;
   font-size: 2rem;
   margin-bottom: 1rem;
   color: #222222;
@@ -421,7 +434,12 @@ body {
 
 .footer-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(34, 34, 34, 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 34, 34, 0.1),
+    transparent
+  );
   margin: 1.5rem auto;
 }
 
@@ -435,11 +453,11 @@ body {
   .header-container {
     padding: 1rem 2rem;
   }
-  
+
   .hero-content h1 {
     font-size: 2.2rem;
   }
-  
+
   .content-container {
     padding: 1rem 2rem;
   }
@@ -450,19 +468,19 @@ body {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .main-nav {
     gap: 1rem;
   }
-  
+
   .hero-content h1 {
     font-size: 1.8rem;
   }
-  
+
   .hero-content h2 {
     font-size: 1.2rem;
   }
-  
+
   .filter-container {
     flex-wrap: wrap;
   }

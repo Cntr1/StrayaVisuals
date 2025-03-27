@@ -1,7 +1,16 @@
 // src/BookingForm.jsx
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { getFirestore, doc, getDoc, setDoc, query, where, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  query,
+  where,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { app } from "./firebase-config.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -39,7 +48,7 @@ const BookingForm = () => {
     return tomorrow.toISOString().split("T")[0];
   };
 
-  const formatDateAsYYYYMMDD = (dateStr) => dateStr.replace(/-/g, '');
+  const formatDateAsYYYYMMDD = (dateStr) => dateStr.replace(/-/g, "");
 
   const convertTo24Hour = (str) => {
     const [timePart, ampm] = str.split(" ");
@@ -72,7 +81,10 @@ const BookingForm = () => {
   useEffect(() => {
     const fetchBookedSlots = async () => {
       if (!watchDate) return;
-      const q = query(collection(db, "bookings"), where("date", "==", watchDate));
+      const q = query(
+        collection(db, "bookings"),
+        where("date", "==", watchDate),
+      );
       const snapshot = await getDocs(q);
       const slots = snapshot.docs.map((doc) => doc.data().timeSlot);
       setBookedSlots(slots);
@@ -89,7 +101,9 @@ const BookingForm = () => {
       const bookingRef = doc(db, "bookings", docId);
       const existingSnap = await getDoc(bookingRef);
       if (existingSnap.exists()) {
-        setErrorMessage("That time slot is already booked. Please pick a different one.");
+        setErrorMessage(
+          "That time slot is already booked. Please pick a different one.",
+        );
         return;
       }
 
@@ -97,8 +111,8 @@ const BookingForm = () => {
         ...data,
         createdAt: new Date(),
         status: "pending",
-      });    
-      
+      });
+
       setSuccessMessage("Thank you for your booking!");
       setTimeout(() => setSuccessMessage(""), 3000);
       reset();
@@ -132,7 +146,9 @@ const BookingForm = () => {
             type="text"
             {...register("name", { required: "Name is required." })}
           />
-          {errors.name && <p className="text-red-600 text-sm">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-red-600 text-sm">{errors.name.message}</p>
+          )}
 
           <label htmlFor="email">Your Email *</label>
           <input
@@ -147,18 +163,28 @@ const BookingForm = () => {
               },
             })}
           />
-          {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-600 text-sm">{errors.email.message}</p>
+          )}
 
           <label htmlFor="service-type">Type of Service *</label>
-          <select {...register("serviceType", { required: "Service type is required." })}>
-            <option value="" disabled>Select the type of service</option>
+          <select
+            {...register("serviceType", {
+              required: "Service type is required.",
+            })}
+          >
+            <option value="" disabled>
+              Select the type of service
+            </option>
             <option value="wedding">Wedding Coverage</option>
             <option value="corporate">Corporate Video</option>
             <option value="documentary">Documentary</option>
             <option value="event">Event Coverage</option>
             <option value="other">Other</option>
           </select>
-          {errors.serviceType && <p className="text-red-600 text-sm">{errors.serviceType.message}</p>}
+          {errors.serviceType && (
+            <p className="text-red-600 text-sm">{errors.serviceType.message}</p>
+          )}
 
           <label htmlFor="date">Date of Service *</label>
           <input
@@ -166,27 +192,43 @@ const BookingForm = () => {
             min={getTomorrowDate()}
             {...register("date", { required: "Date is required." })}
           />
-          {errors.date && <p className="text-red-600 text-sm">{errors.date.message}</p>}
+          {errors.date && (
+            <p className="text-red-600 text-sm">{errors.date.message}</p>
+          )}
 
           <label htmlFor="timeSlot">Time Slot *</label>
-          <select {...register("timeSlot", { required: "Time slot is required." })}>
+          <select
+            {...register("timeSlot", { required: "Time slot is required." })}
+          >
             <option value="">Select a Time Slot</option>
             {timeSlots.map((slot) => (
-              <option key={slot} value={slot} disabled={bookedSlots.includes(slot)}>
+              <option
+                key={slot}
+                value={slot}
+                disabled={bookedSlots.includes(slot)}
+              >
                 {slot} {bookedSlots.includes(slot) ? "(Booked)" : ""}
               </option>
             ))}
           </select>
-          {errors.timeSlot && <p className="text-red-600 text-sm">{errors.timeSlot.message}</p>}
+          {errors.timeSlot && (
+            <p className="text-red-600 text-sm">{errors.timeSlot.message}</p>
+          )}
 
           <label htmlFor="bookingLocation">Location *</label>
           <input
             id="bookingLocation"
             type="text"
             placeholder="Enter location"
-            {...register("bookingLocation", { required: "Location is required." })}
+            {...register("bookingLocation", {
+              required: "Location is required.",
+            })}
           />
-          {errors.bookingLocation && <p className="text-red-600 text-sm">{errors.bookingLocation.message}</p>}
+          {errors.bookingLocation && (
+            <p className="text-red-600 text-sm">
+              {errors.bookingLocation.message}
+            </p>
+          )}
 
           <label htmlFor="budget">Your Budget *</label>
           <input
@@ -196,7 +238,9 @@ const BookingForm = () => {
             min="0"
             {...register("budget", { required: "Budget is required." })}
           />
-          {errors.budget && <p className="text-red-600 text-sm">{errors.budget.message}</p>}
+          {errors.budget && (
+            <p className="text-red-600 text-sm">{errors.budget.message}</p>
+          )}
 
           <label htmlFor="specialRequests">Any Special Requests?</label>
           <textarea
@@ -206,11 +250,16 @@ const BookingForm = () => {
           />
 
           <button type="submit" className="send-button-contact">
-            Submit Booking <i className="fa fa-send" style={{ marginLeft: "10px" }}></i>
+            Submit Booking{" "}
+            <i className="fa fa-send" style={{ marginLeft: "10px" }}></i>
           </button>
 
-          {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
-          {successMessage && <p className="text-green-600 text-sm">{successMessage}</p>}
+          {errorMessage && (
+            <p className="text-red-600 text-sm">{errorMessage}</p>
+          )}
+          {successMessage && (
+            <p className="text-green-600 text-sm">{successMessage}</p>
+          )}
         </form>
       </div>
     </section>

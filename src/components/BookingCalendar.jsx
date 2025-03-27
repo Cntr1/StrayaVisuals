@@ -6,7 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import Modal from "react-modal";
-import "./calendar.css"; // optional for custom styling
+import "./calendar.css"; 
 
 const db = getFirestore();
 
@@ -36,8 +36,8 @@ const BookingCalendar = () => {
             booking.status === "approved"
               ? "#4caf50"
               : booking.status === "pending"
-              ? "#ff9800"
-              : "#f44336",
+                ? "#ff9800"
+                : "#f44336",
         };
       });
       setAllBookings(data);
@@ -52,7 +52,7 @@ const BookingCalendar = () => {
       setFilteredBookings(allBookings);
     } else {
       const filtered = allBookings.filter(
-        (event) => event.extendedProps.serviceType === serviceFilter
+        (event) => event.extendedProps.serviceType === serviceFilter,
       );
       setFilteredBookings(filtered);
     }
@@ -67,7 +67,9 @@ const BookingCalendar = () => {
     <div className="px-4">
       {/* Service Type Filter */}
       <div className="mb-4 text-center">
-        <label htmlFor="serviceFilter" className="mr-2 font-medium text-white">Filter by Service:</label>
+        <label htmlFor="serviceFilter" className="mr-2 font-medium text-white">
+          Filter by Service:
+        </label>
         <select
           id="serviceFilter"
           value={serviceFilter}
@@ -108,14 +110,31 @@ const BookingCalendar = () => {
         {selectedBooking && (
           <div>
             <h2>{selectedBooking.name}</h2>
-            <p><strong>Email:</strong> {selectedBooking.email}</p>
-            <p><strong>Service:</strong> {selectedBooking.serviceType}</p>
-            <p><strong>Date:</strong> {selectedBooking.date}</p>
-            <p><strong>Time:</strong> {selectedBooking.timeSlot}</p>
-            <p><strong>Location:</strong> {selectedBooking.bookingLocation}</p>
-            <p><strong>Budget:</strong> ${selectedBooking.budget}</p>
-            <p><strong>Requests:</strong> {selectedBooking.specialRequests || "None"}</p>
-            <p><strong>Status:</strong> {selectedBooking.status}</p>
+            <p>
+              <strong>Email:</strong> {selectedBooking.email}
+            </p>
+            <p>
+              <strong>Service:</strong> {selectedBooking.serviceType}
+            </p>
+            <p>
+              <strong>Date:</strong> {selectedBooking.date}
+            </p>
+            <p>
+              <strong>Time:</strong> {selectedBooking.timeSlot}
+            </p>
+            <p>
+              <strong>Location:</strong> {selectedBooking.bookingLocation}
+            </p>
+            <p>
+              <strong>Budget:</strong> ${selectedBooking.budget}
+            </p>
+            <p>
+              <strong>Requests:</strong>{" "}
+              {selectedBooking.specialRequests || "None"}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedBooking.status}
+            </p>
             <button
               onClick={() => setModalIsOpen(false)}
               className="bg-red-500 text-white px-4 py-2 mt-4 rounded"

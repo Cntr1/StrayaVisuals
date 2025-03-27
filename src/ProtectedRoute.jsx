@@ -1,9 +1,9 @@
 // src/ProtectedRoute.jsx
-import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const ADMIN_EMAIL = 'noreply.strayavisuals@gmail.com'; // Replace with your admin's email
+const ADMIN_EMAIL = "noreply.strayavisuals@gmail.com"; 
 
 const ProtectedRoute = ({ children }) => {
   const auth = getAuth();

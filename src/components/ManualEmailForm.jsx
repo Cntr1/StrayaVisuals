@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const ManualEmailForm = () => {
@@ -32,12 +37,17 @@ const ManualEmailForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-[900px] px-6 mx-auto mt-6 space-y-6 text-black">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-[900px] px-6 mx-auto mt-6 space-y-6 text-black"
+    >
       <h3 className="text-2xl font-bold text-center">✉️ Send Manual Email</h3>
-  
+
       {/* Recipient */}
       <div className="form-item">
-        <label htmlFor="to" className="form-label">Recipient Email</label>
+        <label htmlFor="to" className="form-label">
+          Recipient Email
+        </label>
         <input
           id="to"
           name="to"
@@ -49,10 +59,12 @@ const ManualEmailForm = () => {
           required
         />
       </div>
-  
+
       {/* Subject */}
       <div className="form-item">
-        <label htmlFor="subject" className="form-label">Subject</label>
+        <label htmlFor="subject" className="form-label">
+          Subject
+        </label>
         <input
           id="subject"
           name="subject"
@@ -64,10 +76,12 @@ const ManualEmailForm = () => {
           required
         />
       </div>
-  
+
       {/* Message */}
       <div className="form-item">
-        <label htmlFor="message" className="form-label">Message</label>
+        <label htmlFor="message" className="form-label">
+          Message
+        </label>
         <textarea
           id="message"
           name="message"
@@ -79,7 +93,7 @@ const ManualEmailForm = () => {
           required
         />
       </div>
-  
+
       {/* Submit */}
       <button
         type="submit"
@@ -87,14 +101,13 @@ const ManualEmailForm = () => {
       >
         Send Email
       </button>
-  
+
       {/* Status */}
       {statusMessage && (
         <p className="text-center text-sm mt-2">{statusMessage}</p>
       )}
     </form>
   );
-  
 };
 
 export default ManualEmailForm;

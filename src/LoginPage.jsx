@@ -25,7 +25,9 @@ const LoginPage = () => {
           navigate("/admin");
         } else {
           signOut(auth);
-          setError("Access Denied. You are not authorized to access this page.");
+          setError(
+            "Access Denied. You are not authorized to access this page.",
+          );
         }
       }
     });

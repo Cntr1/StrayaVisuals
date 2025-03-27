@@ -73,7 +73,10 @@ const BookingFancy = () => {
   useEffect(() => {
     const fetchBookedSlots = async () => {
       if (!watchDate) return;
-      const q = query(collection(db, "bookings"), where("date", "==", watchDate));
+      const q = query(
+        collection(db, "bookings"),
+        where("date", "==", watchDate),
+      );
       const snapshot = await getDocs(q);
       const slots = snapshot.docs.map((doc) => doc.data().timeSlot);
       setBookedSlots(slots);
@@ -81,7 +84,6 @@ const BookingFancy = () => {
     fetchBookedSlots();
   }, [watchDate]);
 
-  
   const onSubmit = async (data) => {
     try {
       const formattedDate = formatDateAsYYYYMMDD(data.date);
@@ -91,7 +93,9 @@ const BookingFancy = () => {
       const bookingRef = doc(db, "bookings", docId);
       const existingSnap = await getDoc(bookingRef);
       if (existingSnap.exists()) {
-        setErrorMessage("That time slot is already booked. Please pick a different one.");
+        setErrorMessage(
+          "That time slot is already booked. Please pick a different one.",
+        );
         return;
       }
 
@@ -114,38 +118,43 @@ const BookingFancy = () => {
     <>
       {/* Header Image at the very top */}
       <div className="header-wrapper">
-  <img src="/DroneHeader.png" alt="Header" className="form-header-image" />
-  <div className="header-heading">
-    <div className="header-heading1">Your Vision, Our Lens</div>
-    <div className="header-heading2">Schedule Your Shoot Today</div>
-  </div>
-</div>
+        <img
+          src="/DroneHeader.png"
+          alt="Header"
+          className="form-header-image"
+        />
+        <div className="header-heading">
+          <div className="header-heading1">Your Vision, Our Lens</div>
+          <div className="header-heading2">Schedule Your Shoot Today</div>
+        </div>
+      </div>
 
-
-  
       {/* Main Section with videos + form */}
       <section className="video-form-wrapper">
-        {/* ✅ Google Maps script loader */}
-  <GoogleMapsLoader
-    onLoad={() => {
-      const input = document.getElementById("bookingLocation");
-      if (!input) return;
+        
+        <GoogleMapsLoader
+          onLoad={() => {
+            const input = document.getElementById("bookingLocation");
+            if (!input) return;
 
-      const autocomplete = new window.google.maps.places.Autocomplete(input, {
-        types: ["geocode"],
-        componentRestrictions: { country: "au" },
-      });
+            const autocomplete = new window.google.maps.places.Autocomplete(
+              input,
+              {
+                types: ["geocode"],
+                componentRestrictions: { country: "au" },
+              },
+            );
 
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (place && place.formatted_address) {
-          setValue("bookingLocation", place.formatted_address, {
-            shouldValidate: true,
-          });
-        }
-      });
-    }}
-  />
+            autocomplete.addListener("place_changed", () => {
+              const place = autocomplete.getPlace();
+              if (place && place.formatted_address) {
+                setValue("bookingLocation", place.formatted_address, {
+                  shouldValidate: true,
+                });
+              }
+            });
+          }}
+        />
         {/* Left Video */}
         <div className="video-box">
           <video
@@ -158,160 +167,199 @@ const BookingFancy = () => {
           />
         </div>
 
-  
         <form
-  className="contact-form-contact w-full max-w-[900px] px-6 mx-auto mt-6 space-y-6 text-center"
-  onSubmit={handleSubmit(onSubmit)}
->
+          className="contact-form-contact w-full max-w-[900px] px-6 mx-auto mt-6 space-y-6 text-center"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          {/* NAME */}
+          <div className="form-item">
+            <label htmlFor="name" className="form-label">
+              Your Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              placeholder="Enter your name"
+              className="form-input"
+              {...register("name", { required: "Name is required." })}
+            />
+            {errors.name && (
+              <p className="text-red-600 text-sm">{errors.name.message}</p>
+            )}
+          </div>
 
-  {/* NAME */}
-  <div className="form-item">
-    <label htmlFor="name" className="form-label">Your Name</label>
-    <input
-      id="name"
-      type="text"
-      placeholder="Enter your name"
-      className="form-input"
-      {...register("name", { required: "Name is required." })}
-    />
-    {errors.name && <p className="text-red-600 text-sm">{errors.name.message}</p>}
-  </div>
+          {/* EMAIL */}
+          <div className="form-item">
+            <label htmlFor="email" className="form-label">
+              Your Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              className="form-input"
+              {...register("email", {
+                required: "Email is required.",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email address.",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-red-600 text-sm">{errors.email.message}</p>
+            )}
+          </div>
 
-  {/* EMAIL */}
-  <div className="form-item">
-    <label htmlFor="email" className="form-label">Your Email</label>
-    <input
-      id="email"
-      type="email"
-      placeholder="Enter your email"
-      className="form-input"
-      {...register("email", {
-        required: "Email is required.",
-        pattern: {
-          value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-          message: "Invalid email address.",
-        },
-      })}
-    />
-    {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
-  </div>
+          {/* SERVICE TYPE */}
+          <div className="form-item">
+            <label htmlFor="serviceType" className="form-label">
+              Type of Service
+            </label>
+            <select
+              className="form-input"
+              {...register("serviceType", {
+                required: "Service type is required.",
+              })}
+            >
+              <option value="">Select the type of service</option>
+              <option value="wedding">Wedding Coverage</option>
+              <option value="corporate">Corporate Video</option>
+              <option value="documentary">Documentary</option>
+              <option value="event">Event Coverage</option>
+              <option value="other">Other</option>
+            </select>
+            {errors.serviceType && (
+              <p className="text-red-600 text-sm">
+                {errors.serviceType.message}
+              </p>
+            )}
+          </div>
 
-  {/* SERVICE TYPE */}
-  <div className="form-item">
-    <label htmlFor="serviceType" className="form-label">Type of Service</label>
-    <select
-      className="form-input"
-      {...register("serviceType", { required: "Service type is required." })}
-    >
-      <option value="">Select the type of service</option>
-      <option value="wedding">Wedding Coverage</option>
-      <option value="corporate">Corporate Video</option>
-      <option value="documentary">Documentary</option>
-      <option value="event">Event Coverage</option>
-      <option value="other">Other</option>
-    </select>
-    {errors.serviceType && <p className="text-red-600 text-sm">{errors.serviceType.message}</p>}
-  </div>
+          {/* DATE */}
+          <div className="form-item">
+            <label htmlFor="date" className="form-label">
+              Date of Service
+            </label>
+            <input
+              type="date"
+              min={getTomorrowDate()}
+              className="form-input"
+              {...register("date", { required: "Date is required." })}
+            />
+            {errors.date && (
+              <p className="text-red-600 text-sm">{errors.date.message}</p>
+            )}
+          </div>
 
-  {/* DATE */}
-  <div className="form-item">
-    <label htmlFor="date" className="form-label">Date of Service</label>
-    <input
-      type="date"
-      min={getTomorrowDate()}
-      className="form-input"
-      {...register("date", { required: "Date is required." })}
-    />
-    {errors.date && <p className="text-red-600 text-sm">{errors.date.message}</p>}
-  </div>
+          {/* TIME SLOT */}
+          <div className="form-item">
+            <label htmlFor="timeSlot" className="form-label">
+              Time Slot
+            </label>
+            <select
+              className="form-input"
+              {...register("timeSlot", { required: "Time slot is required." })}
+            >
+              <option value="">Select a Time Slot</option>
+              {timeSlots.map((slot) => (
+                <option
+                  key={slot}
+                  value={slot}
+                  disabled={bookedSlots.includes(slot)}
+                >
+                  {slot} {bookedSlots.includes(slot) ? "(Booked)" : ""}
+                </option>
+              ))}
+            </select>
+            {errors.timeSlot && (
+              <p className="text-red-600 text-sm">{errors.timeSlot.message}</p>
+            )}
+          </div>
 
-  {/* TIME SLOT */}
-  <div className="form-item">
-    <label htmlFor="timeSlot" className="form-label">Time Slot</label>
-    <select
-      className="form-input"
-      {...register("timeSlot", { required: "Time slot is required." })}
-    >
-      <option value="">Select a Time Slot</option>
-      {timeSlots.map((slot) => (
-        <option key={slot} value={slot} disabled={bookedSlots.includes(slot)}>
-          {slot} {bookedSlots.includes(slot) ? "(Booked)" : ""}
-        </option>
-      ))}
-    </select>
-    {errors.timeSlot && <p className="text-red-600 text-sm">{errors.timeSlot.message}</p>}
-  </div>
+          {/* LOCATION */}
+          <div className="form-item">
+            <label htmlFor="bookingLocation" className="form-label">
+              Location
+            </label>
+            <input
+              id="bookingLocation"
+              type="text"
+              placeholder="Starting typing your Locoation or Postcode."
+              className="form-input"
+              {...register("bookingLocation", {
+                required: "Location is required.",
+              })}
+              autoComplete="off"
+            />
+            {errors.bookingLocation && (
+              <p className="text-red-600 text-sm">
+                {errors.bookingLocation.message}
+              </p>
+            )}
+          </div>
 
-  {/* LOCATION */}
-  <div className="form-item">
-  <label htmlFor="bookingLocation" className="form-label">Location</label>
-  <input
-    id="bookingLocation"
-    type="text"
-    placeholder="Starting typing your Locoation or Postcode."
-    className="form-input"
-    {...register("bookingLocation", { required: "Location is required." })}
-    autoComplete="off"
-  />
-  {errors.bookingLocation && (
-    <p className="text-red-600 text-sm">{errors.bookingLocation.message}</p>
-  )}
-</div>
+          {/* BUDGET */}
+          <div className="form-item">
+            <label htmlFor="budget" className="form-label">
+              Your Budget
+            </label>
+            <input
+              id="budget"
+              type="number"
+              placeholder="Enter your approximate budget"
+              className="form-input"
+              {...register("budget", { required: "Budget is required." })}
+            />
+            {errors.budget && (
+              <p className="text-red-600 text-sm">{errors.budget.message}</p>
+            )}
+          </div>
 
+          {/* SPECIAL REQUESTS */}
+          <div className="form-item">
+            <label htmlFor="specialRequests" className="form-label">
+              Anything Else?
+            </label>
+            <textarea
+              id="specialRequests"
+              placeholder="Please let us know if you have additional requirements."
+              className="form-input h-32 resize-none"
+              {...register("specialRequests")}
+            />
+          </div>
 
-  {/* BUDGET */}
-  <div className="form-item">
-    <label htmlFor="budget" className="form-label">Your Budget</label>
-    <input
-      id="budget"
-      type="number"
-      placeholder="Enter your approximate budget"
-      className="form-input"
-      {...register("budget", { required: "Budget is required." })}
-    />
-    {errors.budget && <p className="text-red-600 text-sm">{errors.budget.message}</p>}
-  </div>
+          {/* SUBMIT */}
+          <button
+            type="submit"
+            className="send-button-contact w-full max-w-lg mx-auto bg-black text-white py-3 rounded hover:bg-opacity-80"
+          >
+            Submit Booking <i className="fa fa-send ml-2"></i>
+          </button>
 
-  {/* SPECIAL REQUESTS */}
-  <div className="form-item">
-    <label htmlFor="specialRequests" className="form-label">Anything Else?</label>
-    <textarea
-      id="specialRequests"
-      placeholder="Please let us know if you have additional requirements."
-      className="form-input h-32 resize-none"
-      {...register("specialRequests")}
-    />
-  </div>
+          {/* STATUS MESSAGES */}
+          {errorMessage && (
+            <p className="text-red-600 text-sm">{errorMessage}</p>
+          )}
+          {successMessage && (
+            <p className="text-green-600 text-sm">{successMessage}</p>
+          )}
+        </form>
 
-  {/* SUBMIT */}
-  <button
-    type="submit"
-    className="send-button-contact w-full max-w-lg mx-auto bg-black text-white py-3 rounded hover:bg-opacity-80"
-  >
-    Submit Booking <i className="fa fa-send ml-2"></i>
-  </button>
-
-  {/* STATUS MESSAGES */}
-  {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
-  {successMessage && <p className="text-green-600 text-sm">{successMessage}</p>}
-</form>
-
-
-  {/* Right Video */}
-<div className="video-box-2">
-  <video
-    src="/videos/right.mp4"
-    autoPlay
-    loop
-    muted
-    playsInline
-    className="video-player"
-  />
-</div>
-    </section>
-  </>
-
-);
-}
+        {/* Right Video */}
+        <div className="video-box-2">
+          <video
+            src="/videos/right.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="video-player"
+          />
+        </div>
+      </section>
+    </>
+  );
+};
 
 export default BookingFancy;

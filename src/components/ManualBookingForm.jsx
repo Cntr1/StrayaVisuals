@@ -2,12 +2,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
-import "../booking.css"; // adjust path based on your folder structure
+import "../booking.css"; 
 
 const db = getFirestore();
 
 const ManualBookingForm = ({ onSuccess }) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data) => {
     try {
@@ -24,7 +29,7 @@ const ManualBookingForm = ({ onSuccess }) => {
     }
   };
 
-  // ✅ Your consistent time slots
+  // Consistent time slots
   const timeSlots = [
     "9:00 AM - 10:00 AM",
     "10:00 AM - 11:00 AM",
@@ -43,7 +48,9 @@ const ManualBookingForm = ({ onSuccess }) => {
     >
       {/* Name */}
       <div className="form-item">
-        <label htmlFor="name" className="form-label">Your Name</label>
+        <label htmlFor="name" className="form-label">
+          Your Name
+        </label>
         <input
           id="name"
           type="text"
@@ -51,12 +58,16 @@ const ManualBookingForm = ({ onSuccess }) => {
           className="form-input"
           {...register("name", { required: "Name is required." })}
         />
-        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-red-500 text-sm">{errors.name.message}</p>
+        )}
       </div>
 
       {/* Email */}
       <div className="form-item">
-        <label htmlFor="email" className="form-label">Your Email</label>
+        <label htmlFor="email" className="form-label">
+          Your Email
+        </label>
         <input
           id="email"
           type="email"
@@ -70,16 +81,22 @@ const ManualBookingForm = ({ onSuccess }) => {
             },
           })}
         />
-        {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+        {errors.email && (
+          <p className="text-red-500 text-sm">{errors.email.message}</p>
+        )}
       </div>
 
       {/* Service Type */}
       <div className="form-item">
-        <label htmlFor="serviceType" className="form-label">Type of Service</label>
+        <label htmlFor="serviceType" className="form-label">
+          Type of Service
+        </label>
         <select
           id="serviceType"
           className="form-input"
-          {...register("serviceType", { required: "Service type is required." })}
+          {...register("serviceType", {
+            required: "Service type is required.",
+          })}
         >
           <option value="">Select the type of service</option>
           <option value="wedding">Wedding Coverage</option>
@@ -88,24 +105,32 @@ const ManualBookingForm = ({ onSuccess }) => {
           <option value="event">Event Coverage</option>
           <option value="other">Other</option>
         </select>
-        {errors.serviceType && <p className="text-red-500 text-sm">{errors.serviceType.message}</p>}
+        {errors.serviceType && (
+          <p className="text-red-500 text-sm">{errors.serviceType.message}</p>
+        )}
       </div>
 
       {/* Date */}
       <div className="form-item">
-        <label htmlFor="date" className="form-label">Date of Service</label>
+        <label htmlFor="date" className="form-label">
+          Date of Service
+        </label>
         <input
           id="date"
           type="date"
           className="form-input"
           {...register("date", { required: "Date is required." })}
         />
-        {errors.date && <p className="text-red-500 text-sm">{errors.date.message}</p>}
+        {errors.date && (
+          <p className="text-red-500 text-sm">{errors.date.message}</p>
+        )}
       </div>
 
-      {/* ✅ Time Slot Dropdown */}
+      {/* Time Slot Dropdown */}
       <div className="form-item">
-        <label htmlFor="timeSlot" className="form-label">Time Slot</label>
+        <label htmlFor="timeSlot" className="form-label">
+          Time Slot
+        </label>
         <select
           id="timeSlot"
           className="form-input"
@@ -118,25 +143,37 @@ const ManualBookingForm = ({ onSuccess }) => {
             </option>
           ))}
         </select>
-        {errors.timeSlot && <p className="text-red-500 text-sm">{errors.timeSlot.message}</p>}
+        {errors.timeSlot && (
+          <p className="text-red-500 text-sm">{errors.timeSlot.message}</p>
+        )}
       </div>
 
       {/* Location */}
       <div className="form-item">
-        <label htmlFor="bookingLocation" className="form-label">Location</label>
+        <label htmlFor="bookingLocation" className="form-label">
+          Location
+        </label>
         <input
           id="manual-booking-location"
           type="text"
           placeholder="Start typing your address or postcode"
           className="form-input"
-          {...register("bookingLocation", { required: "Location is required." })}
+          {...register("bookingLocation", {
+            required: "Location is required.",
+          })}
         />
-        {errors.bookingLocation && <p className="text-red-500 text-sm">{errors.bookingLocation.message}</p>}
+        {errors.bookingLocation && (
+          <p className="text-red-500 text-sm">
+            {errors.bookingLocation.message}
+          </p>
+        )}
       </div>
 
       {/* Budget */}
       <div className="form-item">
-        <label htmlFor="budget" className="form-label">Your Budget</label>
+        <label htmlFor="budget" className="form-label">
+          Your Budget
+        </label>
         <input
           id="budget"
           type="number"
@@ -144,12 +181,16 @@ const ManualBookingForm = ({ onSuccess }) => {
           className="form-input"
           {...register("budget", { required: "Budget is required." })}
         />
-        {errors.budget && <p className="text-red-500 text-sm">{errors.budget.message}</p>}
+        {errors.budget && (
+          <p className="text-red-500 text-sm">{errors.budget.message}</p>
+        )}
       </div>
 
       {/* Special Requests */}
       <div className="form-item">
-        <label htmlFor="specialRequests" className="form-label">Anything Else?</label>
+        <label htmlFor="specialRequests" className="form-label">
+          Anything Else?
+        </label>
         <textarea
           id="specialRequests"
           placeholder="Please let us know if you have additional requirements."

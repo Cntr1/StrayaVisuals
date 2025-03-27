@@ -63,7 +63,12 @@ const FeaturedFilms = () => {
   }
 
   return (
-    <div style={{ background: 'linear-gradient(to right, #f8f8f8, #ffeb99)', minHeight: '100vh' }}>
+    <div
+      style={{
+        background: "linear-gradient(to right, #f8f8f8, #ffeb99)",
+        minHeight: "100vh",
+      }}
+    >
       <div className="container text-center py-5">
         <h2 className="mb-4 fw-bold">FEATURED FILMS</h2>
         <div className="row g-4">

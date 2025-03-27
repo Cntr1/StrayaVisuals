@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import {  collection,  onSnapshot,  updateDoc,  doc,  deleteDoc,  setDoc,} from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc,
+  deleteDoc,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "./firebase-config";
 import styles from "./AdminDashboard.module.css";
 import BookingCalendar from "./components/BookingCalendar";
@@ -11,15 +18,13 @@ import ManualEmailForm from "./components/ManualEmailForm";
 import ManualBookingForm from "./components/ManualBookingForm";
 import Modal from "react-modal";
 
-
-
 const AdminDashboard = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [showCalendar, setShowCalendar] = useState(false); 
+  const [showCalendar, setShowCalendar] = useState(false);
   const [showAnalytics, setShowAnalytics] = useState(false);
   const bookingsPerPage = 10;
   const navigate = useNavigate();
@@ -136,20 +141,20 @@ const AdminDashboard = () => {
     <section className={styles.dashboardContainer}>
       <div className={styles.innerWrapper}>
         {/* Header */}
-        <h1 className={styles.dashboardTitle}>
-  Straya Visuals Admin Panel
-</h1>
+        <h1 className={styles.dashboardTitle}>Straya Visuals Admin Panel</h1>
 
-<div className={styles.headerActions}>
-  <div className={styles.buttonGroup}>
-
-          <button
-  onClick={() => setShowAnalytics(true)}
-  className={`${styles.button} ${styles.pink}`}
->
-  📊 Analytics
-</button>
-          <button onClick={() => navigate("/admin/contact/update")} className={`${styles.button} ${styles.brown}`}>
+        <div className={styles.headerActions}>
+          <div className={styles.buttonGroup}>
+            <button
+              onClick={() => setShowAnalytics(true)}
+              className={`${styles.button} ${styles.pink}`}
+            >
+              📊 Analytics
+            </button>
+            <button
+              onClick={() => navigate("/admin/contact/update")}
+              className={`${styles.button} ${styles.brown}`}
+            >
               Contact Dashboard
             </button>
             <button
@@ -168,107 +173,108 @@ const AdminDashboard = () => {
         </div>
 
         {/* Button Group Row: Send Email | Calendar | Add Booking */}
-<div className="flex flex-wrap justify-center gap-4 mt-6 mb-8">
-  <button
-    onClick={() => setShowEmailForm(!showEmailForm)}
-    className={`${styles.button} ${styles.dark}`}
-  >
-    {showEmailForm ? "Hide Email Form" : "✉️ Send Email"}
-  </button>
+        <div className="flex flex-wrap justify-center gap-4 mt-6 mb-8">
+          <button
+            onClick={() => setShowEmailForm(!showEmailForm)}
+            className={`${styles.button} ${styles.dark}`}
+          >
+            {showEmailForm ? "Hide Email Form" : "✉️ Send Email"}
+          </button>
 
-  <button
-    onClick={() => setShowCalendar(!showCalendar)}
-    className={`${styles.button} ${styles.dark}`}
-  >
-    {showCalendar ? "Hide Calendar View" : "📅 Calendar View"}
-  </button>
+          <button
+            onClick={() => setShowCalendar(!showCalendar)}
+            className={`${styles.button} ${styles.dark}`}
+          >
+            {showCalendar ? "Hide Calendar View" : "📅 Calendar View"}
+          </button>
 
-  <button
-    onClick={() => setShowManualForm(!showManualForm)}
-    className={`${styles.button} ${styles.blue}`}
-  >
-    {showManualForm ? "Hide Booking Form" : "➕ Add Booking"}
-  </button>
-</div>
-      
+          <button
+            onClick={() => setShowManualForm(!showManualForm)}
+            className={`${styles.button} ${styles.blue}`}
+          >
+            {showManualForm ? "Hide Booking Form" : "➕ Add Booking"}
+          </button>
+        </div>
 
         {/* Manual Booking Form */}
         <Modal
-  isOpen={showManualForm}
-  onRequestClose={() => setShowManualForm(false)}
-  contentLabel="Manual Booking Form"
-  className="ReactModal__Content"
-  overlayClassName="ReactModal__Overlay"
->
-  {/* Close Button */}
-  <button
-    onClick={() => setShowManualForm(false)}
-    className="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-red-600"
-  >
-    &times;
-  </button>
+          isOpen={showManualForm}
+          onRequestClose={() => setShowManualForm(false)}
+          contentLabel="Manual Booking Form"
+          className="ReactModal__Content"
+          overlayClassName="ReactModal__Overlay"
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setShowManualForm(false)}
+            className="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-red-600"
+          >
+            &times;
+          </button>
 
-  {/* Google Maps Autocomplete Loader */}
-  <GoogleMapsLoader
-    onLoad={() => {
-      setTimeout(() => {
-        const input = document.getElementById("manual-booking-location");
-        if (!input) return;
-        const autocomplete = new window.google.maps.places.Autocomplete(input, {
-          types: ["geocode"],
-          componentRestrictions: { country: "au" },
-        });
-        autocomplete.addListener("place_changed", () => {
-          const place = autocomplete.getPlace();
-          if (place?.formatted_address) {
-            input.value = place.formatted_address;
-          }
-        });
-      }, 200);
-    }}
-  />
+          {/* Google Maps Autocomplete Loader */}
+          <GoogleMapsLoader
+            onLoad={() => {
+              setTimeout(() => {
+                const input = document.getElementById(
+                  "manual-booking-location",
+                );
+                if (!input) return;
+                const autocomplete = new window.google.maps.places.Autocomplete(
+                  input,
+                  {
+                    types: ["geocode"],
+                    componentRestrictions: { country: "au" },
+                  },
+                );
+                autocomplete.addListener("place_changed", () => {
+                  const place = autocomplete.getPlace();
+                  if (place?.formatted_address) {
+                    input.value = place.formatted_address;
+                  }
+                });
+              }, 200);
+            }}
+          />
 
-  {/* Manual Booking Form */}
-  <ManualBookingForm
-    onSuccess={(msg) => {
-      alert(msg);
-      setShowManualForm(false);
-    }}
-  />
-</Modal>
+          {/* Manual Booking Form */}
+          <ManualBookingForm
+            onSuccess={(msg) => {
+              alert(msg);
+              setShowManualForm(false);
+            }}
+          />
+        </Modal>
 
+        {/* Manual Email Form Component */}
+        <Modal
+          isOpen={showEmailForm}
+          onRequestClose={() => setShowEmailForm(false)}
+          contentLabel="Manual Email Form"
+          className="ReactModal__Content"
+          overlayClassName="ReactModal__Overlay"
+        >
+          <button
+            onClick={() => setShowEmailForm(false)}
+            className="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-red-600"
+          >
+            &times;
+          </button>
 
-{/* Manual Email Form Component */}
-<Modal
-  isOpen={showEmailForm}
-  onRequestClose={() => setShowEmailForm(false)}
-  contentLabel="Manual Email Form"
-  className="ReactModal__Content"
-  overlayClassName="ReactModal__Overlay"
->
-  <button
-    onClick={() => setShowEmailForm(false)}
-    className="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-red-600"
-  >
-    &times;
-  </button>
+          <ManualEmailForm
+            onSuccess={(msg) => {
+              alert(msg);
+              setShowEmailForm(false);
+            }}
+          />
+        </Modal>
 
-  <ManualEmailForm
-    onSuccess={(msg) => {
-      alert(msg);
-      setShowEmailForm(false);
-    }}
-  />
-</Modal>
-
-
-{/* Booking Calendar View */}
-{showCalendar && (
-  <div className="mb-10">
-    <BookingCalendar key="calendar-visible" />
-  </div>
-)}
-
+        {/* Booking Calendar View */}
+        {showCalendar && (
+          <div className="mb-10">
+            <BookingCalendar key="calendar-visible" />
+          </div>
+        )}
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap gap-3 mb-4">
@@ -286,116 +292,117 @@ const AdminDashboard = () => {
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </button>
           ))}
-        </div>      
+        </div>
 
         {/* Table */}
         {!loading && bookings.length > 0 && (
           <div className="flex flex-col lg:flex-row gap-6 justify-center items-start mt-6 w-full px-4">
-          <div className={styles.tableWrapper}>
-          <table className={styles.adminTable}>
-              <thead className="bg-[#241901] text-white uppercase text-sm sticky top-0 z-10">
-                <tr>
-                  <th className="border px-4 py-3">Name</th>
-                  <th className="border px-4 py-3">Status</th>
-                  <th className="border px-4 py-3">
-                    <i className="fa fa-envelope mr-2" />
-                    Email
-                  </th>
-                  <th className="border px-4 py-3">
-                    <i className="fa fa-calendar mr-2" />
-                    Date
-                  </th>
-                  <th className={`border px-4 py-3 ${styles.timeColumn}`}>
-  <i className="fa fa-clock-o mr-2" />
-  Time
-</th>
+            <div className={styles.tableWrapper}>
+              <table className={styles.adminTable}>
+                <thead className="bg-[#241901] text-white uppercase text-sm sticky top-0 z-10">
+                  <tr>
+                    <th className="border px-4 py-3">Name</th>
+                    <th className="border px-4 py-3">Status</th>
+                    <th className="border px-4 py-3">
+                      <i className="fa fa-envelope mr-2" />
+                      Email
+                    </th>
+                    <th className="border px-4 py-3">
+                      <i className="fa fa-calendar mr-2" />
+                      Date
+                    </th>
+                    <th className={`border px-4 py-3 ${styles.timeColumn}`}>
+                      <i className="fa fa-clock-o mr-2" />
+                      Time
+                    </th>
 
-                  <th className="border px-4 py-3">
-                    <i className="fa fa-video-camera mr-2" />
-                    Service
-                  </th>
-                  <th className="border px-4 py-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedBookings.map((booking) => (
-                  <tr
-                    key={booking.id}
-                    className="hover:bg-[#3a2e1a] transition duration-200 ease-in-out"
-                  >
-                    <td className="border px-4 py-3">{booking.name}</td>
-                    <td className="border px-4 py-3">
-                      <span
-                        className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
-                          booking.status === "approved"
-                            ? "bg-green-200 text-green-800"
-                            : booking.status === "cancelled"
-                              ? "bg-red-200 text-red-800"
-                              : "bg-yellow-200 text-yellow-800"
-                        }`}
-                      >
-                        {booking.status || "pending"}
-                      </span>
-                    </td>
-                    <td className="border px-4 py-3">{booking.email}</td>
-                    <td className="border px-4 py-3">
-                      {booking.date || booking.serviceDate}
-                    </td>
-                    <td className={`border px-4 py-3 ${styles.timeColumn}`}>
-  {booking.timeSlot || "N/A"}
-</td>
-
-                    <td className="border px-4 py-3">
-                      {booking.serviceType || booking.service}
-                    </td>
-                    <td className="border px-4 py-3 flex flex-wrap gap-2 justify-center">
-                      {booking.status !== "approved" && (
-                        <button
-                          onClick={() => updateStatus(booking.id, "approved")}
-                          className={styles.approveButton}
-                        >
-                          Approve
-                        </button>
-                      )}
-                      {booking.status === "approved" && (
-                        <button
-                          onClick={() => updateStatus(booking.id, "cancelled")}
-                          className={`${styles.button} ${styles.red} text-xs`}
-                        >
-                          Cancel
-                        </button>
-                      )}
-                      <button
-                        onClick={() => deleteBooking(booking.id)}
-                        className={`${styles.button} ${styles.gray} text-xs`}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                    <th className="border px-4 py-3">
+                      <i className="fa fa-video-camera mr-2" />
+                      Service
+                    </th>
+                    <th className="border px-4 py-3">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedBookings.map((booking) => (
+                    <tr
+                      key={booking.id}
+                      className="hover:bg-[#3a2e1a] transition duration-200 ease-in-out"
+                    >
+                      <td className="border px-4 py-3">{booking.name}</td>
+                      <td className="border px-4 py-3">
+                        <span
+                          className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${
+                            booking.status === "approved"
+                              ? "bg-green-200 text-green-800"
+                              : booking.status === "cancelled"
+                                ? "bg-red-200 text-red-800"
+                                : "bg-yellow-200 text-yellow-800"
+                          }`}
+                        >
+                          {booking.status || "pending"}
+                        </span>
+                      </td>
+                      <td className="border px-4 py-3">{booking.email}</td>
+                      <td className="border px-4 py-3">
+                        {booking.date || booking.serviceDate}
+                      </td>
+                      <td className={`border px-4 py-3 ${styles.timeColumn}`}>
+                        {booking.timeSlot || "N/A"}
+                      </td>
+
+                      <td className="border px-4 py-3">
+                        {booking.serviceType || booking.service}
+                      </td>
+                      <td className="border px-4 py-3 flex flex-wrap gap-2 justify-center">
+                        {booking.status !== "approved" && (
+                          <button
+                            onClick={() => updateStatus(booking.id, "approved")}
+                            className={styles.approveButton}
+                          >
+                            Approve
+                          </button>
+                        )}
+                        {booking.status === "approved" && (
+                          <button
+                            onClick={() =>
+                              updateStatus(booking.id, "cancelled")
+                            }
+                            className={`${styles.button} ${styles.red} text-xs`}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                        <button
+                          onClick={() => deleteBooking(booking.id)}
+                          className={`${styles.button} ${styles.gray} text-xs`}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Analytics Widget */}
+            <Modal
+              isOpen={showAnalytics}
+              onRequestClose={() => setShowAnalytics(false)}
+              contentLabel="Service Analytics Chart"
+              className="ReactModal__Content"
+              overlayClassName="ReactModal__Overlay"
+            >
+              <button
+                onClick={() => setShowAnalytics(false)}
+                className="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-red-600"
+              >
+                &times;
+              </button>
+
+              <ServiceAnalytics />
+            </Modal>
           </div>
-          {/* Analytics Widget */}
-          <Modal
-  isOpen={showAnalytics}
-  onRequestClose={() => setShowAnalytics(false)}
-  contentLabel="Service Analytics Chart"
-  className="ReactModal__Content"
-  overlayClassName="ReactModal__Overlay"
->
-  <button
-    onClick={() => setShowAnalytics(false)}
-    className="absolute top-4 right-4 text-2xl font-bold text-gray-600 hover:text-red-600"
-  >
-    &times;
-  </button>
-
-  <ServiceAnalytics />
-</Modal>
-
-  </div>
         )}
 
         {/* Pagination */}

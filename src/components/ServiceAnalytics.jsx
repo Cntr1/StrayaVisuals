@@ -58,7 +58,6 @@ const ServiceAnalytics = () => {
       },
     },
   };
-  
 
   return (
     <div className="bg-white text-black p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
@@ -71,7 +70,6 @@ const ServiceAnalytics = () => {
       )}
     </div>
   );
-  
 };
 
 export default ServiceAnalytics;

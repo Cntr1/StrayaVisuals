@@ -1,96 +1,97 @@
 .dashboardContainerContact {
-    padding: 20px;
-    background-color: #f8f9fa;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .innerWrapperContact {
-    width: 80%;
-    max-width: 900px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 900px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .titleContact {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .tableContact {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.tableContact th, .tableContact td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: center;
+.tableContact th,
+.tableContact td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
 }
 
 .tableContact th {
-    background-color: #007bff;
-    color: white;
+  background-color: #007bff;
+  color: white;
 }
 
 .tableRowContact:nth-child(even) {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .buttonGroupContact {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
 .buttonContact {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
 }
 
 .buttonContact.blueContact {
-    background-color: #007bff;
-    color: white;
+  background-color: #007bff;
+  color: white;
 }
 
 .buttonContact.redContact {
-    background-color: #dc3545;
-    color: white;
+  background-color: #dc3545;
+  color: white;
 }
 
 .buttonContact.orangeContact {
-    background-color: #fd7e14;
-    color: white;
+  background-color: #fd7e14;
+  color: white;
 }
 
 .buttonContact.greenContact {
-    background-color: #28a745;
-    color: white;
+  background-color: #28a745;
+  color: white;
 }
 
 .buttonContact.grayContact {
-    background-color: #6c757d;
-    color: white;
+  background-color: #6c757d;
+  color: white;
 }
 
 .buttonContact:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .inputContact {
-    width: 80%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 80%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

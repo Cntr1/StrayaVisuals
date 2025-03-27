@@ -1,6 +1,5 @@
 // src/components/Footer.jsx
 import React from "react";
-// If you have a dedicated footer style file, import it here:
 import "../css/footer/style.css";
 
 const Footer = () => {
@@ -13,7 +12,10 @@ const Footer = () => {
             <div className="con con-1 w-100 py-5">
               <div className="con-info w-100 text-center">
                 <div className="icon d-flex align-items-center justify-content-center">
-                  <span className="fa fa-phone" style={{ color: "lightgray" }}></span>
+                  <span
+                    className="fa fa-phone"
+                    style={{ color: "lightgray" }}
+                  ></span>
                 </div>
                 <div className="text">
                   <span
@@ -58,7 +60,10 @@ const Footer = () => {
             <div className="con con-3 w-100 py-5">
               <div className="con-info w-100 text-center">
                 <div className="icon d-flex align-items-center justify-content-center">
-                  <span className="fa fa-inbox" style={{ color: "lightgray" }}></span>
+                  <span
+                    className="fa fa-inbox"
+                    style={{ color: "lightgray" }}
+                  ></span>
                 </div>
                 <div className="text">
                   <span
@@ -192,8 +197,8 @@ const Footer = () => {
         <div className="row mt-5 pt-4 border-top">
           <div className="col-md-6 col-lg-8 mb-md-0 mb-4">
             <p className="copyright mb-0" style={{ textAlign: "left" }}>
-              Copyright © {new Date().getFullYear()} StrayaVisuals |
-              All rights reserved.
+              Copyright © {new Date().getFullYear()} StrayaVisuals | All rights
+              reserved.
             </p>
           </div>
           <div className="col-md-6 col-lg-4 text-md-right">
@@ -204,7 +209,10 @@ const Footer = () => {
                   data-placement="top"
                   title="Facebook"
                   onClick={() =>
-                    window.open("https://www.facebook.com/StrayaVisuals", "_blank")
+                    window.open(
+                      "https://www.facebook.com/StrayaVisuals",
+                      "_blank",
+                    )
                   }
                 >
                   <span className="bi bi-facebook"></span>
@@ -216,7 +224,10 @@ const Footer = () => {
                   data-placement="top"
                   title="Instagram"
                   onClick={() =>
-                    window.open("https://www.instagram.com/StrayaVisuals", "_blank")
+                    window.open(
+                      "https://www.instagram.com/StrayaVisuals",
+                      "_blank",
+                    )
                   }
                 >
                   <span className="bi bi-instagram"></span>

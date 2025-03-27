@@ -4,14 +4,18 @@
 
 .login-container {
   min-height: 100vh;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.84), rgba(247, 177, 63, 1));
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.84),
+    rgba(247, 177, 63, 1)
+  );
   background-size: 600% 600%;
   animation: backgroundShift 20s ease infinite;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Space Grotesk", sans-serif;
-  margin-top: -22rem; 
+  margin-top: -22rem;
   margin-left: auto;
   margin-right: auto;
 }

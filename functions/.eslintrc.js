@@ -8,14 +8,11 @@ export default {
     ecmaVersion: 2022, // Use a recent ECMAScript version
     sourceType: "module", // Use ES modules
   },
-  extends: [
-    "eslint:recommended",
-    "google",
-  ],
+  extends: ["eslint:recommended", "google"],
   rules: {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
-    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
+    quotes: ["error", "double", { allowTemplateLiterals: true }],
   },
   overrides: [
     {
