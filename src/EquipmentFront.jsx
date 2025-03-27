@@ -253,9 +253,9 @@ const EquipmentFront = () => {
           </div>
 
           <div className="video-section">
-            <div className="video-container">
-              {videos.map((video, index) => (
-                  <div className="video-card" key={index}>
+          <div className="video-container-equipment">
+  {videos.map((video, index) => (
+    <div className="video-card" key={index}>
 
                     <button
                         className="mute-button"
