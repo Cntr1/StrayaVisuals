@@ -248,7 +248,7 @@ const BookingFancy = () => {
   <input
     id="bookingLocation"
     type="text"
-    placeholder="Enter location"
+    placeholder="Starting typing your Locoation or Postcode."
     className="form-input"
     {...register("bookingLocation", { required: "Location is required." })}
     autoComplete="off"

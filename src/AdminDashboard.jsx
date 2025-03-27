@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, onSnapshot, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from './firebase-config';
 import styles from './AdminDashboard.module.css';
+import BookingCalendar from "./components/BookingCalendar";
 
 const AdminDashboard = () => {
   const [bookings, setBookings] = useState([]);
@@ -11,6 +12,7 @@ const AdminDashboard = () => {
   const [user, setUser] = useState(null);
   const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [showCalendar, setShowCalendar] = useState(false); // ✅ NEW
   const bookingsPerPage = 10;
   const navigate = useNavigate();
   const auth = getAuth();
@@ -89,6 +91,23 @@ const AdminDashboard = () => {
             </button>
           </div>
         </div>
+
+        {/* Calendar Toggle Button */}
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={() => setShowCalendar(!showCalendar)}
+            className={`${styles.button} ${styles.dark}`}
+          >
+            {showCalendar ? "Hide Calendar View" : "Show Calendar View"}
+          </button>
+        </div>
+
+        {/* Calendar View */}
+        {showCalendar && (
+          <div className="mb-10">
+            <BookingCalendar />
+          </div>
+        )}
 
         {/* Filter Buttons */}
         <div className="flex flex-wrap gap-3 mb-4">
