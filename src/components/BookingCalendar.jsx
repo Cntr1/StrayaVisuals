@@ -11,9 +11,11 @@ import "./calendar.css"; // optional for custom styling
 const db = getFirestore();
 
 const BookingCalendar = () => {
-  const [bookings, setBookings] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [serviceFilter, setServiceFilter] = useState("all");
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -38,11 +40,23 @@ const BookingCalendar = () => {
               : "#f44336",
         };
       });
-      setBookings(data);
+      setAllBookings(data);
+      setFilteredBookings(data);
     };
 
     fetchBookings();
   }, []);
+
+  useEffect(() => {
+    if (serviceFilter === "all") {
+      setFilteredBookings(allBookings);
+    } else {
+      const filtered = allBookings.filter(
+        (event) => event.extendedProps.serviceType === serviceFilter
+      );
+      setFilteredBookings(filtered);
+    }
+  }, [serviceFilter, allBookings]);
 
   const handleEventClick = ({ event }) => {
     setSelectedBooking(event.extendedProps);
@@ -50,11 +64,30 @@ const BookingCalendar = () => {
   };
 
   return (
-    <div>
+    <div className="px-4">
+      {/* Service Type Filter */}
+      <div className="mb-4 text-center">
+        <label htmlFor="serviceFilter" className="mr-2 font-medium text-white">Filter by Service:</label>
+        <select
+          id="serviceFilter"
+          value={serviceFilter}
+          onChange={(e) => setServiceFilter(e.target.value)}
+          className="px-3 py-2 rounded bg-white text-black"
+        >
+          <option value="all">All</option>
+          <option value="wedding">Wedding Coverage</option>
+          <option value="corporate">Corporate Video</option>
+          <option value="documentary">Documentary</option>
+          <option value="event">Event Coverage</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      {/* Calendar */}
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={bookings}
+        events={filteredBookings}
         eventClick={handleEventClick}
         headerToolbar={{
           left: "prev,next today",
