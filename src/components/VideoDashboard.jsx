@@ -3,7 +3,10 @@ import React, { useState, useEffect } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getFirestore, collection, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { db, storage } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
+import styles from "../AdminDashboard.module.css"
  // adjust the path as needed
+
 
 const VideoDashboard = () => {
   // Define four upload sections (one per video slot)
@@ -80,9 +83,17 @@ const VideoDashboard = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Video Dashboard</h2>
+      <button
+                    onClick={() => navigate("/admin")}
+                    className={`${styles.button} ${styles.blue}`}
+                  >
+                    Admin Dashboard
+                  </button>
       
       {/* Upload Sections */}
       <div className="row">

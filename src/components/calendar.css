@@ -43,3 +43,10 @@
     background-color: #f44336;
   }
   
+  .fc .fc-col-header-cell-cushion {
+    color: rgb(0, 164, 185) !important;
+    font-weight: 600;
+    font-family: 'Comfortaa', sans-serif;
+  }
+  
+  

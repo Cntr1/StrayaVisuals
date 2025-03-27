@@ -42,6 +42,14 @@
     transition: background-color 0.3s ease;
     color: #fff;
   }
+
+  .brown {
+    background-color: #df6c00;
+  }
+
+  .brown:hover {
+    background-color: #ff7c01;
+  }
   
   .blue {
     background-color: #1e3a8a;

@@ -32,59 +32,69 @@ const ManualEmailForm = () => {
   };
 
   return (
-    <div className="bg-[#1c1505] p-6 rounded-lg text-white shadow-lg mb-8 max-w-2xl mx-auto">
-      <h3 className="text-xl font-bold mb-4 text-center">✉️ Send Email Manually</h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1 text-sm font-semibold">Recipient Email</label>
-          <input
-            type="email"
-            name="to"
-            value={formData.to}
-            onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#2a1f0b] text-white rounded"
-            placeholder="Enter recipient email"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1 text-sm font-semibold">Subject</label>
-          <input
-            type="text"
-            name="subject"
-            value={formData.subject}
-            onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#2a1f0b] text-white rounded"
-            placeholder="Enter email subject"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1 text-sm font-semibold">Message</label>
-          <textarea
-            name="message"
-            rows="6"
-            value={formData.message}
-            onChange={handleChange}
-            className="w-full px-4 py-2 bg-[#2a1f0b] text-white rounded resize-none"
-            placeholder="Enter your message..."
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-green-600 hover:bg-green-700 py-2 rounded font-semibold"
-        >
-          Send Email
-        </button>
-        {statusMessage && (
-          <p className="mt-2 text-center text-sm">
-            {statusMessage}
-          </p>
-        )}
-      </form>
-    </div>
+    <form onSubmit={handleSubmit} className="w-full max-w-[900px] px-6 mx-auto mt-6 space-y-6 text-black">
+      <h3 className="text-2xl font-bold text-center">✉️ Send Manual Email</h3>
+  
+      {/* Recipient */}
+      <div className="form-item">
+        <label htmlFor="to" className="form-label">Recipient Email</label>
+        <input
+          id="to"
+          name="to"
+          type="email"
+          className="form-input"
+          placeholder="Enter recipient email"
+          value={formData.to}
+          onChange={handleChange}
+          required
+        />
+      </div>
+  
+      {/* Subject */}
+      <div className="form-item">
+        <label htmlFor="subject" className="form-label">Subject</label>
+        <input
+          id="subject"
+          name="subject"
+          type="text"
+          className="form-input"
+          placeholder="Enter subject"
+          value={formData.subject}
+          onChange={handleChange}
+          required
+        />
+      </div>
+  
+      {/* Message */}
+      <div className="form-item">
+        <label htmlFor="message" className="form-label">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="6"
+          className="form-input resize-none"
+          placeholder="Type your message here..."
+          value={formData.message}
+          onChange={handleChange}
+          required
+        />
+      </div>
+  
+      {/* Submit */}
+      <button
+        type="submit"
+        className="send-button-contact w-full max-w-lg mx-auto bg-green-600 text-white py-3 rounded hover:bg-green-700"
+      >
+        Send Email
+      </button>
+  
+      {/* Status */}
+      {statusMessage && (
+        <p className="text-center text-sm mt-2">{statusMessage}</p>
+      )}
+    </form>
   );
+  
 };
 
 export default ManualEmailForm;

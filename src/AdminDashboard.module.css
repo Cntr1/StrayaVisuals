@@ -1,4 +1,18 @@
 /* src/AdminDashboard.module.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.dashboardTitle {
+  font-size: 6rem; /* text-3xl */
+  font-weight: 700;
+  text-align: center;
+  color: white;
+  margin-top: -3rem;
+  margin-bottom: 1rem;
+}
+
 .dashboardContainer {
     width: 100%;
     display: flex;
@@ -18,10 +32,10 @@
   }
   
   .headerActions {
-    width: 100%;
+    width: 43%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 1.5rem;
   }
@@ -29,8 +43,10 @@
   @media (min-width: 768px) {
     .headerActions {
       flex-direction: row;
+      justify-content: space-between;
     }
   }
+ 
   
   .buttonGroup {
     display: flex;
@@ -46,6 +62,14 @@
     color: #fff;
   }
   
+  .brown {
+    background-color: #df6c00;
+  }
+
+  .brown:hover {
+    background-color: #ff7c01;
+  }
+
   .blue {
     background-color: #1e3a8a;
   }

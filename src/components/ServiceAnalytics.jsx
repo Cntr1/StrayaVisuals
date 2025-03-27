@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import "./analytics.css";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -44,32 +45,33 @@ const ServiceAnalytics = () => {
     ],
   };
 
-  return (
-    <div className="bg-[#1c1505] border border-[#241901] p-6 rounded-lg shadow-md text-white w-full max-w-md">
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg font-semibold">📊 Service Analytics</h2>
-        <button
-          onClick={() => setShowChart(!showChart)}
-          className="bg-[#241901] text-white px-3 py-1 text-sm rounded hover:bg-[#3a2e1a] transition"
-        >
-          {showChart ? "Hide Chart" : "Show Chart"}
-        </button>
-      </div>
+  const chartOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          color: "#000000", // black label text
+          font: {
+            size: 14,
+            weight: "bold",
+          },
+        },
+      },
+    },
+  };
+  
 
-      {/* Conditionally Render Chart */}
-      {showChart && (
-        <div className="transition-all duration-500 ease-in-out mt-4">
-          {Object.keys(serviceCounts).length === 0 ? (
-            <p className="text-center text-sm text-gray-400">No data available.</p>
-          ) : (
-            <div className="w-60 mx-auto">
-              <Doughnut data={chartData} />
-            </div>
-          )}
+  return (
+    <div className="bg-white text-black p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
+      {Object.keys(serviceCounts).length === 0 ? (
+        <p className="text-center text-sm text-gray-500">No data available.</p>
+      ) : (
+        <div className="w-60 mx-auto">
+          <Doughnut data={chartData} options={chartOptions} />
         </div>
       )}
     </div>
   );
+  
 };
 
 export default ServiceAnalytics;
