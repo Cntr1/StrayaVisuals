@@ -1,4 +1,4 @@
-# Straya Visuals – Booking Platform and Admin Dashboard
+# Straya Visuals – A Website For Videography Company Straya Visuals.
 
 Straya Visuals is a full-stack web application designed for a professional videography company based in Australia. The platform facilitates service bookings for clients and provides administrators with tools to manage bookings, view service analytics, automate email communications, and integrate with Google Calendar.
 
