@@ -16,7 +16,7 @@ import Contact from './Contact';
 import EquipmentFront from "./EquipmentFront";
 import { VideoContext } from './VideoContext';
 import About from './About';
-import './app.css';
+import './App.css';
 import ContactDashboard from "./components/ContactDashboard.jsx";
 import Modal from "react-modal";
 
