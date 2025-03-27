@@ -3,3 +3,28 @@
     margin: 2rem auto;
   }
   
+  /* Pink heading */
+  .analytics-heading {
+    color: #ec4899; /* Tailwind pink-500 */
+    font-weight: 600;
+    font-size: 3rem;
+  }
+  
+  .analytics-toggle-btn {
+    background-color: #241901;
+    color: #ec4899;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.5rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .analytics-toggle-btn:hover {
+    background-color: #3a2e1a;
+  }
+ 
+
+/* Chart label text color */
+canvas text {
+  fill: #000000 !important;
+}

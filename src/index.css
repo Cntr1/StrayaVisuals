@@ -85,3 +85,26 @@ code {
 .shadow-sm {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+.ReactModal__Overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999 !important;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  padding-top: 5rem;
+}
+
+.ReactModal__Content {
+  background-color: white;
+  color: black;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 768px;
+  position: relative;
+  margin: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}

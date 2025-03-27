@@ -289,7 +289,7 @@ const ContactDashboard = () => {
             <div className={styles.innerWrapper}>
                 <div className={styles.headerActions1}>
                     <div className={styles.buttonGroup}>
-                        <button onClick={() => navigate("/admin")} className={`${styles.button} ${styles.blue}`}>
+                        <button onClick={() => navigate("/admin")} className={`${styles.button} ${styles.brown}`}>
                             Bookings Dashboard
                         </button>
                         <button onClick={() => navigate("/admin/videos")} className={`${styles.button} ${styles.blue}`}>

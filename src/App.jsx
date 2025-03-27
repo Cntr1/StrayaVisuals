@@ -18,6 +18,9 @@ import { VideoContext } from './VideoContext';
 import About from './About';
 import './app.css';
 import ContactDashboard from "./components/ContactDashboard.jsx";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 const App = () => {
   const [user, setUser] = useState(null);
