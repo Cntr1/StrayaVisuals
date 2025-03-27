@@ -4,7 +4,7 @@ import logo from "/images/logo.jpeg";
 import "../css/contact/base.css";
 import "../css/contact/font-awesome.min.css";
 import "../css/footer/style.css";
-import "./header.css";
+import "./Header.css";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
