@@ -145,7 +145,7 @@ const AdminDashboard = () => {
 
           <button
   onClick={() => setShowAnalytics(true)}
-  className={`${styles.button} ${styles.dark}`}
+  className={`${styles.button} ${styles.pink}`}
 >
   📊 Analytics
 </button>
@@ -291,8 +291,8 @@ const AdminDashboard = () => {
         {/* Table */}
         {!loading && bookings.length > 0 && (
           <div className="flex flex-col lg:flex-row gap-6 justify-center items-start mt-6 w-full px-4">
-          <div className="w-full max-w-6xl mx-auto overflow-x-auto mt-6">
-            <table className="w-full border-collapse bg-[#1c1505] text-white shadow-lg rounded-lg overflow-hidden">
+          <div className={styles.tableWrapper}>
+          <table className={styles.adminTable}>
               <thead className="bg-[#241901] text-white uppercase text-sm sticky top-0 z-10">
                 <tr>
                   <th className="border px-4 py-3">Name</th>
@@ -305,10 +305,11 @@ const AdminDashboard = () => {
                     <i className="fa fa-calendar mr-2" />
                     Date
                   </th>
-                  <th className="border px-4 py-3">
-                    <i className="fa fa-clock-o mr-2" />
-                    Time
-                  </th>
+                  <th className={`border px-4 py-3 ${styles.timeColumn}`}>
+  <i className="fa fa-clock-o mr-2" />
+  Time
+</th>
+
                   <th className="border px-4 py-3">
                     <i className="fa fa-video-camera mr-2" />
                     Service
@@ -340,9 +341,10 @@ const AdminDashboard = () => {
                     <td className="border px-4 py-3">
                       {booking.date || booking.serviceDate}
                     </td>
-                    <td className="border px-4 py-3">
-                      {booking.timeSlot || "N/A"}
-                    </td>
+                    <td className={`border px-4 py-3 ${styles.timeColumn}`}>
+  {booking.timeSlot || "N/A"}
+</td>
+
                     <td className="border px-4 py-3">
                       {booking.serviceType || booking.service}
                     </td>
