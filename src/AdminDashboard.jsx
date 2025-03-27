@@ -135,6 +135,9 @@ const AdminDashboard = () => {
             Straya Visuals Admin Panel
           </h1>
           <div className={styles.buttonGroup}>
+          <button onClick={() => navigate("/admin/contact/update")} className={`${styles.button} ${styles.blue}`}>
+              Contact Dashboard
+            </button>
             <button
               onClick={() => navigate("/admin/videos")}
               className={`${styles.button} ${styles.blue}`}
