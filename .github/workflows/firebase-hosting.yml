@@ -19,12 +19,12 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install -g vite
 
       - name: Run build with Vite
-        run: |
-          npx chmod +x node_modules/vite/bin/vite.js
-          npx vite build
+        run: npx vite build
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
