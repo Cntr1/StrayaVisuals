@@ -514,7 +514,7 @@ const ContactDashboard = () => {
                                             <label style={{marginTop: "13px"}}>Change Profile Image:</label>
                                             <div className={styles["contactdashboard-preview-images"]}
                                                  style={{marginBottom: "10px"}}>
-                                                <img style={{marginTop: "-15px"}}
+                                                <img style={{marginTop: "-15px", borderRadius:"50%"}}
                                                     className={styles["contactdashboard-landscape-image"]}
                                                     src={updatedSocials.profile}
                                                     alt="Profile Preview"

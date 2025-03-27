@@ -402,7 +402,7 @@
 }
 .contactdashboard-social-box-editing {
   margin-bottom: 500px;
-  transition: margin-bottom 0.3s ease-in-out;
+  transition: margin-bottom 0.1s ease-in-out;
 }
 
 .contactdashboard-social-box:hover {
@@ -410,4 +410,7 @@
   background-color: #dfd1b0;
 
 }
+
+
+
 
