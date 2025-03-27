@@ -355,3 +355,33 @@ Submitted At: ${data.submittedAt}
     await sendEmail(GMAIL_EMAIL.value(), subject, text, html);
   },
 );
+
+export const sendManualEmail = onDocumentCreated(
+  {
+    document: "manualEmails/{emailId}",
+    region: "us-central1",
+    secrets: [GMAIL_EMAIL, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN],
+  },
+  async (event) => {
+    const snap = event.data;
+    if (!snap) return;
+    const data = snap.data();
+
+    const transporter = await createTransporter();
+    const mailOptions = {
+      from: GMAIL_EMAIL.value(),
+      to: data.to,
+      subject: data.subject,
+      text: data.message,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(`✅ Manual email sent to ${data.to}`);
+      await snap.ref.update({ status: "sent" });
+    } catch (err) {
+      console.error(`❌ Failed to send manual email:`, err);
+      await snap.ref.update({ status: "failed" });
+    }
+  }
+);
