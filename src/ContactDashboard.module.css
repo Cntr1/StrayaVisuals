@@ -146,10 +146,13 @@
 
 .tableRow:nth-child(even) {
   background-color: #f2f2f2;
+  color: black;
 }
 
 .tableRow:nth-child(odd) {
   background-color: #dddddd;
+  color: black;
+  font-weight: 600;
 }
 
 .tableRow:hover {
@@ -328,7 +331,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 800px;
+  min-height: 780px;
   gap: 10px;
   width: 100%;
   padding: 15px;

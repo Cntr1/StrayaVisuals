@@ -469,10 +469,11 @@ const ContactDashboard = () => {
                             >
                                 {editingSocialId === social.id ? (
                                     <div className={styles["contactdashboard-edit-container"]}>
+                                        <label style={{marginTop: "10px"}}>Change Icon Image:</label>
                                         <div className={styles["contactdashboard-edit-file"]}
                                              style={{marginTop: "40px"}}>
-                                            <label>Change Icon Image:</label>
-                                            <input
+
+                                            <input style={{marginTop: "10px"}}
                                                 type="file"
                                                 accept="image/*"
                                                 onChange={(e) => handleFileChange(e, "icon")}
@@ -481,26 +482,26 @@ const ContactDashboard = () => {
                                             <div className={styles["contactdashboard-preview-images"]}>
                                                 <img
                                                     className={styles["contactdashboard-social-icon"]}
-                                                    style={{height: "70px", width: "70px"}}
+                                                    style={{marginTop:"80px", height: "50px", width: "50px"}}
                                                     src={updatedSocials.icon}
                                                     alt="Icon Preview"
                                                 />
                                             </div>
                                         </div>
 
-                                        <div className={styles["contactdashboard-edit-file"]}
-                                             style={{marginTop: "-40px"}}>
+                                        <div className={styles["contactdashboard-edit-file"]} style={{marginTop:"3px"}}>
+                                            <label style={{marginTop: "-5px"}}>Change Cover Image:</label>
                                             <div className={styles["contactdashboard-preview-images"]}
-                                                 style={{marginBottom: "10px"}}>
+                                                 style={{marginBottom: "-10px"}}>
                                                 <img
                                                     className={styles["contactdashboard-landscape-image"]}
-                                                    style={{minWidth: "250px"}}
+                                                    style={{minWidth: "250px", marginTop:"-15px"}}
                                                     src={updatedSocials.cover}
                                                     alt="Cover Preview"
                                                 />
                                             </div>
-                                            <label>Change Cover Image:</label>
-                                            <input
+
+                                            <input style={{marginTop: "18px"}}
                                                 type="file"
                                                 accept="image/*"
                                                 onChange={(e) => handleFileChange(e, "cover")}
@@ -509,16 +510,16 @@ const ContactDashboard = () => {
                                         </div>
 
                                         <div className={styles["contactdashboard-edit-file"]}
-                                             style={{marginTop: "-20px", marginBottom: "20px"}}>
+                                             style={{ marginBottom: "20px"}}>
+                                            <label style={{marginTop: "13px"}}>Change Profile Image:</label>
                                             <div className={styles["contactdashboard-preview-images"]}
                                                  style={{marginBottom: "10px"}}>
-                                                <img
+                                                <img style={{marginTop: "-15px"}}
                                                     className={styles["contactdashboard-landscape-image"]}
                                                     src={updatedSocials.profile}
                                                     alt="Profile Preview"
                                                 />
                                             </div>
-                                            <label>Change Profile Image:</label>
                                             <input
                                                 type="file"
                                                 accept="image/*"
@@ -528,7 +529,7 @@ const ContactDashboard = () => {
 
                                         </div>
                                         <div className={styles["contactdashboard-edit-file"]}
-                                             style={{marginBottom: "20px"}}>
+                                             style={{marginBottom: "20px", marginTop:"-5px"}}>
                                             <label>Username:</label>
                                             <input style={{cursor: "text"}} type="text" value={updatedSocials.username}
                                                    onChange={(e) => handleInputChange(e, "username")}
