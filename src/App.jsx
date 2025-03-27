@@ -6,7 +6,7 @@ import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import AdminDashboard from './AdminDashboard';
 import LoginPage from './LoginPage';
 import BookingFancy from "./BookingFancy";
-import HomePage from './Homepage/HomePage';
+import HomePage from './HomePage/HomePage';
 import ProtectedRoute from './ProtectedRoute';
 import Header from './components/Header';
 import Footer from './components/Footer';
