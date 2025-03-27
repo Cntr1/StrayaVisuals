@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Fix Vite binary permission
+        run: chmod +x node_modules/.bin/vite
+
       - name: Build the app
         run: npx vite build
 
