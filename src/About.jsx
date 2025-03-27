@@ -9,6 +9,7 @@ import { faYoutube, faVimeoV, faInstagram } from '@fortawesome/free-brands-svg-i
 
 // Remove inbuilt header and footer here
 // Keep the HeroSection, Portfolio content, CTA, etc.
+//<h1>🚀 Deployed via GitHub Actions!</h1>
 
 const HeroSection = () => {
   return (
