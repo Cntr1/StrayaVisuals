@@ -260,7 +260,7 @@ const Contact = () => {
   }, []);
 
   return (
-      <div style={{marginTop: "-51px"}}>
+      <div style={{marginTop: "-50px"}}>
         <div className="image-container-contact">
           <div className="video-wrapper">
             <video
