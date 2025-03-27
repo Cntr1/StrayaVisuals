@@ -156,39 +156,30 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Calendar Toggle Button */}
-        <div className="flex justify-center mb-6">
-          <button
-            onClick={() => setShowCalendar(!showCalendar)}
-            className={`${styles.button} ${styles.dark}`}
-          >
-            {showCalendar ? "Hide Calendar View" : "Show Calendar View"}
-          </button>
-        </div>
+        {/* Button Group Row: Send Email | Calendar | Add Booking */}
+<div className="flex flex-wrap justify-center gap-4 mt-6 mb-8">
+  <button
+    onClick={() => setShowEmailForm(!showEmailForm)}
+    className={`${styles.button} ${styles.dark}`}
+  >
+    {showEmailForm ? "Hide Email Form" : "✉️ Send Email"}
+  </button>
 
-        <div className="flex flex-wrap gap-4 justify-center mb-6"></div>
-        {/* Calendar View */}
-        {showCalendar && (
-          <div className="mb-10">
-            <BookingCalendar />
-          </div>
-        )}
+  <button
+    onClick={() => setShowCalendar(!showCalendar)}
+    className={`${styles.button} ${styles.dark}`}
+  >
+    {showCalendar ? "Hide Calendar View" : "📅 Calendar View"}
+  </button>
 
-<div className="flex flex-wrap justify-center mb-6">
-          <ServiceAnalytics />
-        </div>
-
-        {/* Manual Booking Toggle Button */}
-        <div className="mb-4">
-          <button
-            onClick={() => setShowManualForm(!showManualForm)}
-            className={`${styles.button} ${styles.blue}`}
-          >
-            {showManualForm
-              ? "Hide Manual Booking Form"
-              : "➕ Add Booking Manually"}
-          </button>
-        </div>          
+  <button
+    onClick={() => setShowManualForm(!showManualForm)}
+    className={`${styles.button} ${styles.blue}`}
+  >
+    {showManualForm ? "Hide Booking Form" : "➕ Add Booking"}
+  </button>
+</div>
+      
 
         {/* Manual Booking Form */}
 {showManualForm && (
@@ -334,19 +325,16 @@ const AdminDashboard = () => {
   </div>
 )}
 
-{/* Manual Email Form Toggle Button */}
-<div className="mb-4">
-  <button
-    onClick={() => setShowEmailForm(!showEmailForm)}
-    className={`${styles.button} ${styles.dark}`}
-  >
-    {showEmailForm ? "Hide Manual Email Form" : "✉️ Send Email Manually"}
-  </button>
-</div>
 
 {/* Manual Email Form Component */}
 {showEmailForm && <ManualEmailForm />}
 
+{/* Booking Calendar View */}
+{showCalendar && (
+  <div className="mb-10">
+    <BookingCalendar key="calendar-visible" />
+  </div>
+)}
 
 
         {/* Filter Buttons */}
@@ -369,6 +357,7 @@ const AdminDashboard = () => {
 
         {/* Table */}
         {!loading && bookings.length > 0 && (
+          <div className="flex flex-col lg:flex-row gap-6 justify-center items-start mt-6 w-full px-4">
           <div className="w-full max-w-6xl mx-auto overflow-x-auto mt-6">
             <table className="w-full border-collapse bg-[#1c1505] text-white shadow-lg rounded-lg overflow-hidden">
               <thead className="bg-[#241901] text-white uppercase text-sm sticky top-0 z-10">
@@ -453,6 +442,11 @@ const AdminDashboard = () => {
               </tbody>
             </table>
           </div>
+          {/* Analytics Widget */}
+    <div className="w-full lg:w-1/3">
+      <ServiceAnalytics />
+    </div>
+  </div>
         )}
 
         {/* Pagination */}
