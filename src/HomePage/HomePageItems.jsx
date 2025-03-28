@@ -42,13 +42,9 @@ const StrayaVisualsHome = () => {
                 style={{ width: "180px" }}
               />
               <p className="text-dark text-center">
-                With over [X years] of experience in the world of videography,
-                we specialize in capturing compelling stories through the lens.
-                Our passion lies in creating visually stunning and emotionally
-                engaging content that resonates with audiences. Whether it's a
-                corporate video, a wedding, a documentary, or a creative short
-                film, we bring a unique blend of technical expertise, artistic
-                vision, and attention to detail to every project.
+              With over 03 years of experience in the world of videography, we specialize in capturing compelling stories through the lens. 
+              Our passion lies in creating visually stunning and emotionally engaging content that resonates with audiences. 
+              Whether it's a corporate video, a wedding, a documentary, or a creative short film, we bring a unique blend of technical expertise, artistic vision, and attention to detail to every project we undertake.
               </p>
             </div>
           </div>
